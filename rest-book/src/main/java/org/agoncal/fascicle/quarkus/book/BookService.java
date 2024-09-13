@@ -1,5 +1,8 @@
 package org.agoncal.fascicle.quarkus.book;
 
+import org.agoncal.fascicle.quarkus.book.client.IsbnNumbers;
+import org.agoncal.fascicle.quarkus.book.client.NumberProxy;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -16,10 +19,18 @@ public class BookService {
   private static final Logger LOGGER = Logger.getLogger(BookService.class);
   @Inject
   EntityManager em;
+  @Inject
+  @RestClient
+  NumberProxy numberProxy;
   public Book persistBook(@Valid Book book) {
+// The Book microservice invokes the Number microservice
+    IsbnNumbers isbnNumbers = numberProxy.generateIsbnNumbers();
+    book.isbn13 = isbnNumbers.getIsbn13();
+    book.isbn10 = isbnNumbers.getIsbn10();
     Book.persist(book);
     return book;
   }
+
   @Transactional(Transactional.TxType.SUPPORTS)
   public List<Book> findAllBooks() {
     return Book.listAll();
