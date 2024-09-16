@@ -1,4 +1,4 @@
-package org.agoncal.fascicle.quarkus.number.health;
+package org.agoncal.fascicle.quarkus.number;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 

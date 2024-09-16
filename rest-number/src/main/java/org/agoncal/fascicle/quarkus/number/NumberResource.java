@@ -1,4 +1,4 @@
-package org.agoncal.fascicle.quarkus.number.health;
+package org.agoncal.fascicle.quarkus.number;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -28,6 +28,13 @@ public class NumberResource {
   @ConfigProperty(name = "seconds.sleep", defaultValue = "0")
   int secondsToSleep = 0;
   private static final Logger LOGGER = Logger.getLogger(NumberResource.class);
+
+  @GET
+  @Path("/ping")
+  @Produces(MediaType.TEXT_PLAIN)
+  public String ping() {
+    return "ping";
+  }
   @Operation(summary = "Generates book numbers", description = "These book numbers have several formats: ISBN, ASIN and EAN")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookNumbers.class)))
   @Timeout(250)

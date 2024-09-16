@@ -1,4 +1,4 @@
-package org.agoncal.fascicle.quarkus.number.health;
+package org.agoncal.fascicle.quarkus.number;
 
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;

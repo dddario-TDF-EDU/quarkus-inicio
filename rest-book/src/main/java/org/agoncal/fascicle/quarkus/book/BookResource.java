@@ -28,6 +28,12 @@ public class BookResource {
   @Inject
   BookService service;
   private static final Logger LOGGER = Logger.getLogger(BookResource.class);
+    @GET
+    @Path("/ping")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String ping() {
+      return "ping";
+    }
 
   @Operation(summary = "Returns a random book")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Book.class)))

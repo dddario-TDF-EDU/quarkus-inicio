@@ -5,3 +5,4 @@ org/agoncal/fascicle/quarkus/book/BookApplicationLifeCycle.class
 org/agoncal/fascicle/quarkus/book/client/NumberProxy.class
 org/agoncal/fascicle/quarkus/book/BookService.class
 org/agoncal/fascicle/quarkus/book/BookApplication.class
+org/agoncal/fascicle/quarkus/book/health/PingBookResourceHealthCheck.class
