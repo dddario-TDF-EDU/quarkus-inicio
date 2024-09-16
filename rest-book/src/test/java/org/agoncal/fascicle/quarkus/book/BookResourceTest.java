@@ -1,4 +1,4 @@
-package org.agoncal.fascicle.quarkus.book.client;
+package org.agoncal.fascicle.quarkus.book;
 
 import io.quarkus.test.junit.DisabledOnNativeImage;
 import io.quarkus.test.junit.QuarkusTest;

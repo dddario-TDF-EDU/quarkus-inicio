@@ -7,6 +7,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.github.javafaker.Faker;
+import org.eclipse.microprofile.faulttolerance.Timeout;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -16,18 +17,25 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
 
 import java.time.Instant;
+import java.util.concurrent.TimeUnit;
 
 @Path("/api/numbers/book")
 @Tag(name = "Number Endpoint")
 public class NumberResource {
   @ConfigProperty(name = "number.separator", defaultValue = "false")
   boolean separator;
+
+  @ConfigProperty(name = "seconds.sleep", defaultValue = "0")
+  int secondsToSleep = 0;
   private static final Logger LOGGER = Logger.getLogger(NumberResource.class);
   @Operation(summary = "Generates book numbers", description = "These book numbers have several formats: ISBN, ASIN and EAN")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookNumbers.class)))
+  @Timeout(250)
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Response generateBookNumbers() throws InterruptedException {
+    LOGGER.info("Waiting for " + secondsToSleep + " seconds");
+    TimeUnit.SECONDS.sleep(secondsToSleep);
     LOGGER.info("Generating book numbers");
     Faker faker = new Faker();
     BookNumbers bookNumbers = new BookNumbers();
