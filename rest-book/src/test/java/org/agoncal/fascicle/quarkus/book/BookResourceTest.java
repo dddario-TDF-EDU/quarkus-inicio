@@ -19,6 +19,8 @@ import java.util.Random;
 
 // tag::adocImportStatic[]
 import static io.restassured.RestAssured.given;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import static javax.ws.rs.core.HttpHeaders.ACCEPT;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -215,6 +217,32 @@ public class BookResourceTest {
   }
 // end::adocShouldRemoveAnItem[]
 
+  @Test
+  void shouldPingLiveness() {
+    given().
+      when()
+      .get("/health/live").
+      then()
+      .statusCode(OK.getStatusCode());
+  }
 
+  @Test
+  void shouldPingReadiness() {
+    given().
+      when()
+      .get("/health/ready").
+      then()
+      .statusCode(OK.getStatusCode());
+  }
+
+  @Test
+  void shouldPingMetrics() {
+    given()
+      .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON).
+      when()
+      .get("/metrics/application").
+      then()
+      .statusCode(OK.getStatusCode());
+  }
 
 }

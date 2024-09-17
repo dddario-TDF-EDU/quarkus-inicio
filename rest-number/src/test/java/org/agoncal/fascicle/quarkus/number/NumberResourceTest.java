@@ -57,5 +57,31 @@ public class NumberResourceTest {
       .statusCode(OK.getStatusCode());
   }
 
+  @Test
+  void shouldPingLiveness() {
+    given().
+      when()
+      .get("/health/live").
+      then()
+      .statusCode(OK.getStatusCode());
+  }
+
+  @Test
+  void shouldPingReadiness() {
+    given().
+      when()
+      .get("/health/ready").
+      then()
+      .statusCode(OK.getStatusCode());
+  }
+  @Test
+  void shouldPingMetrics() {
+    given()
+      .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON).
+      when()
+      .get("/metrics/application").
+      then()
+      .statusCode(OK.getStatusCode());
+  }
 }
 // end::adocSnippet[]
