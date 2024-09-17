@@ -1,4 +1,11 @@
 -------------------------------------------------------------------------------
 Test set: org.agoncal.fascicle.quarkus.number.NumberResourceTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.397 s - in org.agoncal.fascicle.quarkus.number.NumberResourceTest
+Tests run: 6, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 7.165 s <<< FAILURE! - in org.agoncal.fascicle.quarkus.number.NumberResourceTest
+org.agoncal.fascicle.quarkus.number.NumberResourceTest.shouldPingMetrics  Time elapsed: 0.048 s  <<< FAILURE!
+java.lang.AssertionError: 
+1 expectation failed.
+Expected status code <200> but was <204>.
+
+	at org.agoncal.fascicle.quarkus.number.NumberResourceTest.shouldPingMetrics(NumberResourceTest.java:85)
+

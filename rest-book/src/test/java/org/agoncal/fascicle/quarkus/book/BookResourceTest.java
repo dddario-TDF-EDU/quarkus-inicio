@@ -91,6 +91,7 @@ public class BookResourceTest {
     };
   }
 
+  @DisabledOnNativeImage
   @Test
   @Order(2)
   void shouldAddABook() {
@@ -155,6 +156,7 @@ public class BookResourceTest {
     assertEquals(nbBooks + 1, books.size());
   }
 
+  @DisabledOnNativeImage
   @Test
   @Order(3)
   void shouldUpdateABook() {
@@ -191,6 +193,7 @@ public class BookResourceTest {
       .body("description", Is.is(UPDATED_DESCRIPTION));
   }
 
+  @DisabledOnNativeImage
   @Test
   @Order(4)
   void shouldRemoveABook() {
@@ -244,5 +247,16 @@ public class BookResourceTest {
       then()
       .statusCode(OK.getStatusCode());
   }
+
+  @DisabledOnNativeImage
+  @Test
+  void shouldPingSwaggerUI() {
+    given().
+      when()
+      .get("/swagger-ui").
+      then()
+      .statusCode(OK.getStatusCode());
+  }
+  // end::adocOpenAPI[]
 
 }

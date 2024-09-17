@@ -48,6 +48,7 @@ public class NumberResourceTest {
       .statusCode(OK.getStatusCode());
   }
 
+  @DisabledOnNativeImage
   @Test
   void shouldPingSwaggerUI() {
     given().

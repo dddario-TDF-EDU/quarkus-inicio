@@ -1,2 +1,4 @@
-/home/dario/Proyecto/proy-FUNCIONAL/rest-book/src/test/java/org/agoncal/fascicle/quarkus/book/client/BookResourceTest.java
+/home/dario/Proyecto/proy-FUNCIONAL/rest-book/src/test/java/org/agoncal/fascicle/quarkus/book/client/MockNumberProxy.java
+/home/dario/Proyecto/proy-FUNCIONAL/rest-book/src/test/java/org/agoncal/fascicle/quarkus/book/BookResourceTest.java
 /home/dario/Proyecto/proy-FUNCIONAL/rest-book/src/test/java/org/agoncal/fascicle/quarkus/book/infrastructure/Database.java
+/home/dario/Proyecto/proy-FUNCIONAL/rest-book/src/test/java/org/agoncal/fascicle/quarkus/book/NativeBookResourceIT.java
