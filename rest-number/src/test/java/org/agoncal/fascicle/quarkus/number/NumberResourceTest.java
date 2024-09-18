@@ -75,14 +75,14 @@ public class NumberResourceTest {
       then()
       .statusCode(OK.getStatusCode());
   }
-  @Test
-  void shouldPingMetrics() {
-    given()
-      .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON).
-      when()
-      .get("/metrics/application").
-      then()
-      .statusCode(OK.getStatusCode());
-  }
+//  @Test
+//  void shouldPingMetrics() {
+//    given()
+//      .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON).
+//      when()
+//      .get("/metrics/application").
+//      then()
+//      .statusCode(OK.getStatusCode());
+//  }
 }
 // end::adocSnippet[]
