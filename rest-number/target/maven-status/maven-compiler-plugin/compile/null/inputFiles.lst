@@ -1,5 +1,5 @@
-/home/dario/Proyecto/proy-FUNCIONAL/rest-number/src/main/java/org/agoncal/fascicle/quarkus/number/NumberResource.java
-/home/dario/Proyecto/proy-FUNCIONAL/rest-number/src/main/java/org/agoncal/fascicle/quarkus/number/health/PingNumberResourceHealthCheck.java
-/home/dario/Proyecto/proy-FUNCIONAL/rest-number/src/main/java/org/agoncal/fascicle/quarkus/number/BookNumbers.java
-/home/dario/Proyecto/proy-FUNCIONAL/rest-number/src/main/java/org/agoncal/fascicle/quarkus/number/NumberApplication.java
-/home/dario/Proyecto/proy-FUNCIONAL/rest-number/src/main/java/org/agoncal/fascicle/quarkus/number/NumberApplicationLifeCycle.java
+/home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-number/src/main/java/org/agoncal/fascicle/quarkus/number/health/PingNumberResourceHealthCheck.java
+/home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-number/src/main/java/org/agoncal/fascicle/quarkus/number/NumberApplicationLifeCycle.java
+/home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-number/src/main/java/org/agoncal/fascicle/quarkus/number/BookNumbers.java
+/home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-number/src/main/java/org/agoncal/fascicle/quarkus/number/NumberApplication.java
+/home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-number/src/main/java/org/agoncal/fascicle/quarkus/number/NumberResource.java
