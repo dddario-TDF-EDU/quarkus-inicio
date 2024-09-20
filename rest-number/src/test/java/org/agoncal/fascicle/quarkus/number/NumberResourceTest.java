@@ -1,16 +1,20 @@
 package org.agoncal.fascicle.quarkus.number;
 
-import io.quarkus.test.junit.DisabledOnNativeImage;
+//import io.quarkus.test.junit.DisabledOnNativeImage;
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
 import org.junit.jupiter.api.Test;
 
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
+//import javax.ws.rs.core.HttpHeaders;
+//import javax.ws.rs.core.MediaType;
 
 import static io.restassured.RestAssured.given;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static javax.ws.rs.core.Response.Status.OK;
-import static org.hamcrest.CoreMatchers.is;
+//import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+//import static javax.ws.rs.core.Response.Status.OK;
+//import static org.hamcrest.CoreMatchers.is;
+import static jakarta.ws.rs.core.Response.Status.NO_CONTENT;
+import static jakarta.ws.rs.core.Response.Status.OK;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.not;
 
@@ -19,9 +23,7 @@ import static org.hamcrest.Matchers.not;
 @QuarkusTest
 public class NumberResourceTest {
 
-  // tag::adocNative[]
-  @DisabledOnNativeImage
-  // end::adocNative[]
+
   @Test
   void shouldGenerateBookNumber() {
     given()
@@ -43,17 +45,16 @@ public class NumberResourceTest {
     given()
       .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON).
       when()
-      .get("/openapi").
+      .get("/q/openapi").
       then()
       .statusCode(OK.getStatusCode());
   }
 
-  @DisabledOnNativeImage
   @Test
   void shouldPingSwaggerUI() {
     given().
       when()
-      .get("/swagger-ui").
+      .get("q/swagger-ui").
       then()
       .statusCode(OK.getStatusCode());
   }
@@ -62,7 +63,7 @@ public class NumberResourceTest {
   void shouldPingLiveness() {
     given().
       when()
-      .get("/health/live").
+      .get("/q/health/live").
       then()
       .statusCode(OK.getStatusCode());
   }
@@ -71,7 +72,7 @@ public class NumberResourceTest {
   void shouldPingReadiness() {
     given().
       when()
-      .get("/health/ready").
+      .get("/q/health/ready").
       then()
       .statusCode(OK.getStatusCode());
   }
@@ -80,7 +81,7 @@ public class NumberResourceTest {
 //    given()
 //      .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON).
 //      when()
-//      .get("/metrics/application").
+//      .get("/q/metrics/application").
 //      then()
 //      .statusCode(OK.getStatusCode());
 //  }

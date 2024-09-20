@@ -7,8 +7,10 @@ import io.quarkus.runtime.configuration.ProfileManager;
 import org.jboss.logging.Logger;
 
 // end::adocSnippet[]
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Observes;
+//import javax.enterprise.context.ApplicationScoped;
+//import javax.enterprise.event.Observes;
 
 // tag::adocSnippet[]
 @ApplicationScoped

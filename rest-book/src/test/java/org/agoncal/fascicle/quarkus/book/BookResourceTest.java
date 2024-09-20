@@ -1,8 +1,10 @@
 package org.agoncal.fascicle.quarkus.book;
 
-import io.quarkus.test.junit.DisabledOnNativeImage;
+//import io.quarkus.test.junit.DisabledOnNativeImage;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.common.mapper.TypeRef;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
 import org.agoncal.fascicle.quarkus.book.Book;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.MethodOrderer;
@@ -19,16 +21,21 @@ import java.util.Random;
 
 // tag::adocImportStatic[]
 import static io.restassured.RestAssured.given;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import static javax.ws.rs.core.HttpHeaders.ACCEPT;
-import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-import static javax.ws.rs.core.Response.Status.CREATED;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static javax.ws.rs.core.Response.Status.NO_CONTENT;
-import static javax.ws.rs.core.Response.Status.OK;
+//import javax.ws.rs.core.HttpHeaders;
+//import javax.ws.rs.core.MediaType;
+
+import static jakarta.ws.rs.core.HttpHeaders.ACCEPT;
+import static jakarta.ws.rs.core.HttpHeaders.CONTENT_TYPE;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+//import static javax.ws.rs.core.HttpHeaders.ACCEPT;
+//import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
+//import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+//import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+//import static javax.ws.rs.core.Response.Status.CREATED;
+//import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+//import static javax.ws.rs.core.Response.Status.NO_CONTENT;
+//import static javax.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.core.Response.Status.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasKey;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -91,7 +98,7 @@ public class BookResourceTest {
     };
   }
 
-  @DisabledOnNativeImage
+
   @Test
   @Order(2)
   void shouldAddABook() {
@@ -156,7 +163,7 @@ public class BookResourceTest {
     assertEquals(nbBooks + 1, books.size());
   }
 
-  @DisabledOnNativeImage
+
   @Test
   @Order(3)
   void shouldUpdateABook() {
@@ -193,7 +200,7 @@ public class BookResourceTest {
       .body("description", Is.is(UPDATED_DESCRIPTION));
   }
 
-  @DisabledOnNativeImage
+
   @Test
   @Order(4)
   void shouldRemoveABook() {
@@ -224,7 +231,7 @@ public class BookResourceTest {
   void shouldPingLiveness() {
     given().
       when()
-      .get("/health/live").
+      .get("/q/health/live").
       then()
       .statusCode(OK.getStatusCode());
   }
@@ -233,7 +240,7 @@ public class BookResourceTest {
   void shouldPingReadiness() {
     given().
       when()
-      .get("/health/ready").
+      .get("/q/health/ready").
       then()
       .statusCode(OK.getStatusCode());
   }
@@ -241,19 +248,19 @@ public class BookResourceTest {
   @Test
   void shouldPingMetrics() {
     given()
-      .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON).
+      .header(ACCEPT, APPLICATION_JSON).
       when()
-      .get("/metrics/application").
+      .get("/q/metrics/application").
       then()
       .statusCode(OK.getStatusCode());
   }
 
-  @DisabledOnNativeImage
+
   @Test
   void shouldPingSwaggerUI() {
     given().
       when()
-      .get("/swagger-ui").
+      .get("/q/swagger-ui").
       then()
       .statusCode(OK.getStatusCode());
   }

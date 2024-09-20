@@ -1,12 +1,14 @@
 package org.agoncal.fascicle.quarkus.book.health;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.agoncal.fascicle.quarkus.book.BookResource;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.Liveness;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+//import javax.enterprise.context.ApplicationScoped;
+//import javax.inject.Inject;
 
 @Liveness
 @ApplicationScoped

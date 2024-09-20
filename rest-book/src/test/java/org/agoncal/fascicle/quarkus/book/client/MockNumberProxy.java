@@ -2,9 +2,10 @@ package org.agoncal.fascicle.quarkus.book.client;
 
 
 import io.quarkus.test.Mock;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
-import javax.enterprise.context.ApplicationScoped;
+//import javax.enterprise.context.ApplicationScoped;
 
 // tag::adocSnippet[]
 @Mock

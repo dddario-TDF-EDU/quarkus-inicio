@@ -1,5 +1,9 @@
 package org.agoncal.fascicle.quarkus.book;
 
+import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
 import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
@@ -13,15 +17,17 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
 
-import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+//import javax.inject.Inject;
+//import javax.validation.Valid;
+//import javax.ws.rs.*;
+//import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
+
+//import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
 @Path("/api/books")
 @Produces(MediaType.APPLICATION_JSON)

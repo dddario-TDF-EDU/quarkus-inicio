@@ -18,7 +18,6 @@ import { InventoryModule } from './inventory/inventory.module';
     NumberModule,
     InventoryModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

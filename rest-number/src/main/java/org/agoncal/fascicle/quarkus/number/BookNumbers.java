@@ -1,9 +1,12 @@
 package org.agoncal.fascicle.quarkus.number;
 
+import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.json.bind.annotation.JsonbTransient;
+
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-import javax.json.bind.annotation.JsonbProperty;
-import javax.json.bind.annotation.JsonbTransient;
+//import javax.json.bind.annotation.JsonbProperty;
+//import javax.json.bind.annotation.JsonbTransient;
 import java.time.Instant;
 
 @Schema(description = "Several formats of book numbers")

@@ -16,10 +16,10 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="infrastructure" options="-parameters" />
+      <module name="infrastructure" options="" />
       <module name="load-bookstore" options="" />
       <module name="rest-book" options="" />
-      <module name="rest-number" options="" />
+      <module name="rest-number" options="-parameters" />
       <module name="ui-bookstore" options="" />
     </option>
   </component>
