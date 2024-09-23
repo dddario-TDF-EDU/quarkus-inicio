@@ -1,5 +1,7 @@
 package org.agoncal.fascicle.quarkus.book;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -25,6 +27,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import io.quarkus.security.Authenticated;
+
 import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 
 //import static javax.ws.rs.core.Response.Status.NOT_FOUND;
@@ -33,6 +37,7 @@ import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Book Endpoint")
+@Authenticated
 public class BookResource {
   @Inject
   BookService service;
@@ -40,6 +45,7 @@ public class BookResource {
     @GET
     @Path("/ping")
     @Produces(MediaType.TEXT_PLAIN)
+    @PermitAll
     public String ping() {
       return "ping";
     }
@@ -52,6 +58,7 @@ public class BookResource {
   // end::adocMetrics[]
   @GET
   @Path("/random")
+  @PermitAll
   public Response getRandomBook() {
     Book book = service.findRandomBook();
     LOGGER.debug("Found random book " + book);
@@ -66,6 +73,7 @@ public class BookResource {
   @Timed(name = "timeGetAllBooks", description = "Times how long it takes to invoke the getAllBooks method", unit = MetricUnits.MILLISECONDS)
   // end::adocMetrics[]
   @GET
+  @PermitAll
   public Response getAllBooks() {
     List<Book> books = service.findAllBooks();
     LOGGER.debug("Total number of books " + books);
@@ -81,6 +89,7 @@ public class BookResource {
   // end::adocMetrics[]
   @GET
   @Path("/{id}")
+  @PermitAll
   public Response getBook(@Parameter(description = "Book identifier", required = true)
                           @PathParam("id") Long id) {
     Optional<Book> book = service.findBookById(id);
@@ -93,12 +102,14 @@ public class BookResource {
     }
   }
 
+  // PARTE CON Keycloak
   @Operation(summary = "Creates a valid book")
   @APIResponse(responseCode = "201", description = "The URI of the created book",
     content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = URI.class)))
   @Counted(name = "countCreateBook", description = "Counts how many times the createBook method has been invoked")
   @Timed(name = "timeCreateBook", description = "Times how long it takes to invoke the createBook method", unit = MetricUnits.MILLISECONDS)
   @POST
+  @RolesAllowed("admin")
   public Response createBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Book.class))) @Valid Book book, @Context UriInfo uriInfo) {
     book = service.persistBook(book);
     UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(book.id));
@@ -112,6 +123,7 @@ public class BookResource {
   @Counted(name = "countUpdateBook", description = "Counts how many times the updateBook method has been invoked")
   @Timed(name = "timeUpdateBook", description = "Times how long it takes to invoke the updateBook method", unit = MetricUnits.MILLISECONDS)
   @PUT
+  @RolesAllowed("admin")
   public Response updateBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Book.class))) @Valid Book book) {
     book = service.updateBook(book);
     LOGGER.debug("Book updated with new valued " + book);
@@ -126,6 +138,7 @@ public class BookResource {
   // end::adocMetrics[]
   @DELETE
   @Path("/{id}")
+  @RolesAllowed("admin")
   public Response deleteBook(@Parameter(description = "Book identifier", required = true) @PathParam("id") Long id) {
     service.deleteBook(id);
     LOGGER.debug("Book deleted with " + id);
