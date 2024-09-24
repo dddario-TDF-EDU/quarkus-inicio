@@ -58,7 +58,6 @@ public class BookResource {
   // end::adocMetrics[]
   @GET
   @Path("/random")
-  @PermitAll
   public Response getRandomBook() {
     Book book = service.findRandomBook();
     LOGGER.debug("Found random book " + book);
