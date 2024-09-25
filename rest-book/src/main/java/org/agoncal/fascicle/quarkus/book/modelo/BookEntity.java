@@ -1,30 +1,28 @@
-package org.agoncal.fascicle.quarkus.book;
-
+package org.agoncal.fascicle.quarkus.book.modelo;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-//import javax.persistence.Column;
-//import javax.persistence.Entity;
-//import javax.validation.constraints.Max;
-//import javax.validation.constraints.Min;
-//import javax.validation.constraints.NotNull;
-//import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Random;
 
 @Schema(description = "Book representation")
 @Entity
-public class Book extends PanacheEntity {
+public class BookEntity extends PanacheEntity {
+
+  //añadido para sacar panache entity
   @NotNull
   @Schema(required = true)
   public String title;
@@ -48,11 +46,12 @@ public class Book extends PanacheEntity {
   @Size(min = 1, max = 10000)
   public String description;
 
-  public static Book findRandom() {
-    long countBooks = Book.count();
+  public static BookEntity findRandom() {
+    long countBooks = BookEntity.count();
     int randomBook = new Random().nextInt((int) countBooks);
-    return Book.findAll().page(randomBook, 1).firstResult();
+    return BookEntity.findAll().page(randomBook, 1).firstResult();
   }
+
 
 
 }

@@ -1,4 +1,4 @@
-package org.agoncal.fascicle.quarkus.book;
+package org.agoncal.fascicle.quarkus.book.servicio;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -8,6 +8,9 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.agoncal.fascicle.quarkus.book.client.IsbnNumbers;
 import org.agoncal.fascicle.quarkus.book.client.NumberProxy;
+
+import org.agoncal.fascicle.quarkus.book.transferible.BookDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.CreateBookDTO;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
@@ -35,16 +38,16 @@ public class BookService {
   @RestClient
   NumberProxy numberProxy;
   @Fallback(fallbackMethod = "fallbackPersistBook")
-  public Book persistBook(@Valid Book book) {
+  public BookDTO persistBook(@Valid CreateBookDTO book) {
 // The Book microservice invokes the Number microservice
     IsbnNumbers isbnNumbers = numberProxy.generateIsbnNumbers();
     book.isbn13 = isbnNumbers.getIsbn13();
     book.isbn10 = isbnNumbers.getIsbn10();
-    Book.persist(book);
+    // AAAAAA BookEntity.persist(book);
     return book;
   }
 
-  private Book fallbackPersistBook(Book book) throws FileNotFoundException {
+  private BookDTO fallbackPersistBook(BookDTO book) throws FileNotFoundException {
     LOGGER.warn("Falling back on persisting a book");
     String bookJson = JsonbBuilder.create().toJson(book);
     try (PrintWriter out = new PrintWriter("book-" + Instant.now().toEpochMilli() + ".json")) {
@@ -53,27 +56,27 @@ public class BookService {
     throw new IllegalStateException();
   }
   @Transactional(Transactional.TxType.SUPPORTS)
-  public List<Book> findAllBooks() {
-    return Book.listAll();
+  public List<BookDTO> findAllBooks() {
+    return BookDTO.listAll(); //AAAAAA
   }
   @Transactional(Transactional.TxType.SUPPORTS)
-  public Optional<Book> findBookById(Long id) {
-    return Book.findByIdOptional(id);
+  public Optional<BookDTO> findBookById(Long id) {
+    return BookEntity.findByIdOptional(id); //AAAAA
   }
   @Transactional(Transactional.TxType.SUPPORTS)
-  public Book findRandomBook() {
-    Book randomBook = null;
+  public BookDTO findRandomBook() {
+    BookEntity randomBook = null; // AAAAA
     while (randomBook == null) {
-      randomBook = Book.findRandom();
+      randomBook = BookEntity.findRandom();
     }
     return randomBook;
   }
-  public Book updateBook(@Valid Book book) {
-    Book entity = em.merge(book);
+  public BookDTO updateBook(@Valid BookDTO book) {
+    BookEntity entity = em.merge(book); // AAAAA
     return entity;
   }
   public void deleteBook(Long id) {
-    Book.deleteById(id);
+    BookEntity.deleteById(id);
   }
 
 }

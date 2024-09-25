@@ -3,9 +3,9 @@ package org.agoncal.fascicle.quarkus.book.health;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-import org.agoncal.fascicle.quarkus.book.Book;
-import org.agoncal.fascicle.quarkus.book.BookService;
+import org.agoncal.fascicle.quarkus.book.servicio.BookService;
 
+import org.agoncal.fascicle.quarkus.book.modelo.BookEntity;
 import org.eclipse.microprofile.health.Readiness;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
@@ -26,7 +26,7 @@ public class DatabaseConnectionHealthCheck implements HealthCheck {
     HealthCheckResponseBuilder responseBuilder = HealthCheckResponse
       .named("Book Datasource connection health check");
     try {
-      List<Book> books = bookService.findAllBooks();
+      List<BookEntity> books = bookService.findAllBooks();
       responseBuilder.withData("Number of books in the database", books.size()).up();
     } catch (IllegalStateException e) {
       responseBuilder.down();

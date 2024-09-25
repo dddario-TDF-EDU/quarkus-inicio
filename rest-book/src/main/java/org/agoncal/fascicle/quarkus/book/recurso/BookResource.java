@@ -1,4 +1,4 @@
-package org.agoncal.fascicle.quarkus.book;
+package org.agoncal.fascicle.quarkus.book.recurso;
 
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
@@ -6,6 +6,9 @@ import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
+
+import org.agoncal.fascicle.quarkus.book.servicio.BookService;
+import org.agoncal.fascicle.quarkus.book.transferible.BookDTO;
 import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
@@ -51,7 +54,7 @@ public class BookResource {
     }
 
   @Operation(summary = "Returns a random book")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Book.class)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class)))
   // tag::adocMetrics[]
   @Counted(name = "countGetRandomBook", description = "Counts how many times the getRandomBook method has been invoked")
   @Timed(name = "timeGetRandomBook", description = "Times how long it takes to invoke the getRandomBook method", unit = MetricUnits.MILLISECONDS)
@@ -59,13 +62,13 @@ public class BookResource {
   @GET
   @Path("/random")
   public Response getRandomBook() {
-    Book book = service.findRandomBook();
+    BookDTO book = service.findRandomBook();
     LOGGER.debug("Found random book " + book);
     return Response.ok(book).build();
   }
 
   @Operation(summary = "Returns all the books from the database")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Book.class, type = SchemaType.ARRAY)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class, type = SchemaType.ARRAY)))
   @APIResponse(responseCode = "204", description = "No books")
   // tag::adocMetrics[]
   @Counted(name = "countGetAllBooks", description = "Counts how many times the getAllBooks method has been invoked")
@@ -74,13 +77,13 @@ public class BookResource {
   @GET
   @PermitAll
   public Response getAllBooks() {
-    List<Book> books = service.findAllBooks();
+    List<BookDTO> books = service.findAllBooks();
     LOGGER.debug("Total number of books " + books);
     return Response.ok(books).build();
   }
 
   @Operation(summary = "Returns a book for a given identifier")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Book.class)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class)))
   @APIResponse(responseCode = "404", description = "The book is not found for the given identifier")
   // tag::adocMetrics[]
   @Counted(name = "countGetBook", description = "Counts how many times the getBook method has been invoked")
@@ -91,7 +94,7 @@ public class BookResource {
   @PermitAll
   public Response getBook(@Parameter(description = "Book identifier", required = true)
                           @PathParam("id") Long id) {
-    Optional<Book> book = service.findBookById(id);
+    Optional<BookDTO> book = service.findBookById(id);
     if (book.isPresent()) {
       LOGGER.debug("Found book " + book);
       return Response.ok(book).build();
@@ -109,7 +112,7 @@ public class BookResource {
   @Timed(name = "timeCreateBook", description = "Times how long it takes to invoke the createBook method", unit = MetricUnits.MILLISECONDS)
   @POST
   @RolesAllowed("admin")
-  public Response createBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Book.class))) @Valid Book book, @Context UriInfo uriInfo) {
+  public Response createBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class))) @Valid BookDTO book, @Context UriInfo uriInfo) {
     book = service.persistBook(book);
     UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(book.id));
     LOGGER.debug("New book created with URI " + builder.build().toString());
@@ -118,12 +121,12 @@ public class BookResource {
 
   @Operation(summary = "Updates an existing book")
   @APIResponse(responseCode = "200", description = "The updated book", content =
-  @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Book.class)))
+  @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class)))
   @Counted(name = "countUpdateBook", description = "Counts how many times the updateBook method has been invoked")
   @Timed(name = "timeUpdateBook", description = "Times how long it takes to invoke the updateBook method", unit = MetricUnits.MILLISECONDS)
   @PUT
   @RolesAllowed("admin")
-  public Response updateBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Book.class))) @Valid Book book) {
+  public Response updateBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class))) @Valid BookDTO book) {
     book = service.updateBook(book);
     LOGGER.debug("Book updated with new valued " + book);
     return Response.ok(book).build();

@@ -3,9 +3,7 @@ package org.agoncal.fascicle.quarkus.book;
 //import io.quarkus.test.junit.DisabledOnNativeImage;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.common.mapper.TypeRef;
-import jakarta.ws.rs.core.HttpHeaders;
-import jakarta.ws.rs.core.MediaType;
-import org.agoncal.fascicle.quarkus.book.Book;
+import org.agoncal.fascicle.quarkus.book.modelo.Book;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -17,7 +15,6 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.Random;
 
 // tag::adocImportStatic[]
 import static io.restassured.RestAssured.given;
