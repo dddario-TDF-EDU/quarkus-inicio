@@ -4,6 +4,7 @@ package org.agoncal.fascicle.quarkus.book;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.common.mapper.TypeRef;
 import org.agoncal.fascicle.quarkus.book.modelo.Book;
+import org.agoncal.fascicle.quarkus.book.transferible.BookDTO;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -164,7 +165,7 @@ public class BookResourceTest {
   @Test
   @Order(3)
   void shouldUpdateABook() {
-    Book book = new Book();
+    BookDTO book = new BookDTO();
     book.id = Long.valueOf(bookId);
     book.title = UPDATED_TITLE;
     book.author = UPDATED_AUTHOR;

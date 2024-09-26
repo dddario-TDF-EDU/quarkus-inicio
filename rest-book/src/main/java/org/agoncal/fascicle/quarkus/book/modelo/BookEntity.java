@@ -22,7 +22,7 @@ import java.util.Random;
 @Entity
 public class BookEntity extends PanacheEntity {
 
-  //añadido para sacar panache entity
+  //añadido para sacar panache entity (id)
   @NotNull
   @Schema(required = true)
   public String title;

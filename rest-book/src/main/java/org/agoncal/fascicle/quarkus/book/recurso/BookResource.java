@@ -1,7 +1,7 @@
 package org.agoncal.fascicle.quarkus.book.recurso;
 
-import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
+
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -9,6 +9,7 @@ import jakarta.ws.rs.core.*;
 
 import org.agoncal.fascicle.quarkus.book.servicio.BookService;
 import org.agoncal.fascicle.quarkus.book.transferible.BookDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.CreateBookDTO;
 import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
@@ -31,6 +32,8 @@ import java.util.List;
 import java.util.Optional;
 
 import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 
 import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 
@@ -40,7 +43,8 @@ import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Book Endpoint")
-@Authenticated
+//@Authenticated
+@ApplicationScoped
 public class BookResource {
   @Inject
   BookService service;
@@ -48,7 +52,7 @@ public class BookResource {
     @GET
     @Path("/ping")
     @Produces(MediaType.TEXT_PLAIN)
-    @PermitAll
+//    @PermitAll
     public String ping() {
       return "ping";
     }
@@ -67,20 +71,20 @@ public class BookResource {
     return Response.ok(book).build();
   }
 
-  @Operation(summary = "Returns all the books from the database")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class, type = SchemaType.ARRAY)))
-  @APIResponse(responseCode = "204", description = "No books")
-  // tag::adocMetrics[]
-  @Counted(name = "countGetAllBooks", description = "Counts how many times the getAllBooks method has been invoked")
-  @Timed(name = "timeGetAllBooks", description = "Times how long it takes to invoke the getAllBooks method", unit = MetricUnits.MILLISECONDS)
-  // end::adocMetrics[]
-  @GET
-  @PermitAll
-  public Response getAllBooks() {
-    List<BookDTO> books = service.findAllBooks();
-    LOGGER.debug("Total number of books " + books);
-    return Response.ok(books).build();
-  }
+//  @Operation(summary = "Returns all the books from the database")
+//  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class, type = SchemaType.ARRAY)))
+//  @APIResponse(responseCode = "204", description = "No books")
+//  // tag::adocMetrics[]
+//  @Counted(name = "countGetAllBooks", description = "Counts how many times the getAllBooks method has been invoked")
+//  @Timed(name = "timeGetAllBooks", description = "Times how long it takes to invoke the getAllBooks method", unit = MetricUnits.MILLISECONDS)
+//  // end::adocMetrics[]
+//  @GET
+//  //@PermitAll
+//  public Response getAllBooks() {
+//    List<BookDTO> books = service.findAllBooks();
+//    LOGGER.debug("Total number of books " + books);
+//    return Response.ok(books).build();
+//  }
 
   @Operation(summary = "Returns a book for a given identifier")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class)))
@@ -89,13 +93,14 @@ public class BookResource {
   @Counted(name = "countGetBook", description = "Counts how many times the getBook method has been invoked")
   @Timed(name = "timeGetBook", description = "Times how long it takes to invoke the getBook method", unit = MetricUnits.MILLISECONDS)
   // end::adocMetrics[]
+
   @GET
   @Path("/{id}")
-  @PermitAll
+  //@PermitAll
   public Response getBook(@Parameter(description = "Book identifier", required = true)
                           @PathParam("id") Long id) {
-    Optional<BookDTO> book = service.findBookById(id);
-    if (book.isPresent()) {
+    BookDTO book = service.findBookById(id);
+    if (book != null) {
       LOGGER.debug("Found book " + book);
       return Response.ok(book).build();
     } else {
@@ -105,19 +110,19 @@ public class BookResource {
   }
 
   // PARTE CON Keycloak
-  @Operation(summary = "Creates a valid book")
-  @APIResponse(responseCode = "201", description = "The URI of the created book",
-    content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = URI.class)))
-  @Counted(name = "countCreateBook", description = "Counts how many times the createBook method has been invoked")
-  @Timed(name = "timeCreateBook", description = "Times how long it takes to invoke the createBook method", unit = MetricUnits.MILLISECONDS)
-  @POST
-  @RolesAllowed("admin")
-  public Response createBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class))) @Valid BookDTO book, @Context UriInfo uriInfo) {
-    book = service.persistBook(book);
-    UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(book.id));
-    LOGGER.debug("New book created with URI " + builder.build().toString());
-    return Response.created(builder.build()).build();
-  }
+//  @Operation(summary = "Creates a valid book")
+//  @APIResponse(responseCode = "201", description = "The URI of the created book",
+//    content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = URI.class)))
+//  @Counted(name = "countCreateBook", description = "Counts how many times the createBook method has been invoked")
+//  @Timed(name = "timeCreateBook", description = "Times how long it takes to invoke the createBook method", unit = MetricUnits.MILLISECONDS)
+//  @POST
+//  //@RolesAllowed("admin")
+//  public Response createBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CreateBookDTO.class))) @Valid CreateBookDTO book, @Context UriInfo uriInfo) {
+//    BookDTO bookCreado = service.persistBook(book);
+//    UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(bookCreado.id));
+//    LOGGER.debug("News book created with URI " + builder.build().toString());
+//    return Response.created(builder.build()).build();
+//  }
 
   @Operation(summary = "Updates an existing book")
   @APIResponse(responseCode = "200", description = "The updated book", content =
@@ -125,7 +130,7 @@ public class BookResource {
   @Counted(name = "countUpdateBook", description = "Counts how many times the updateBook method has been invoked")
   @Timed(name = "timeUpdateBook", description = "Times how long it takes to invoke the updateBook method", unit = MetricUnits.MILLISECONDS)
   @PUT
-  @RolesAllowed("admin")
+  //@RolesAllowed("admin")
   public Response updateBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class))) @Valid BookDTO book) {
     book = service.updateBook(book);
     LOGGER.debug("Book updated with new valued " + book);
@@ -140,7 +145,7 @@ public class BookResource {
   // end::adocMetrics[]
   @DELETE
   @Path("/{id}")
-  @RolesAllowed("admin")
+  //@RolesAllowed("admin")
   public Response deleteBook(@Parameter(description = "Book identifier", required = true) @PathParam("id") Long id) {
     service.deleteBook(id);
     LOGGER.debug("Book deleted with " + id);
