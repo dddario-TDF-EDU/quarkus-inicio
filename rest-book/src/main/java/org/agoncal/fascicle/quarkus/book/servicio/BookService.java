@@ -3,11 +3,10 @@ package org.agoncal.fascicle.quarkus.book.servicio;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.bind.JsonbBuilder;
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.agoncal.fascicle.quarkus.book.client.IsbnNumbers;
-import org.agoncal.fascicle.quarkus.book.client.NumberProxy;
+import org.agoncal.fascicle.quarkus.book.acceso.DBAccess;
+import org.agoncal.fascicle.quarkus.book.servicio.numberResources.IsbnNumbers;
+import org.agoncal.fascicle.quarkus.book.servicio.numberResources.NumberProxy;
 
 import org.agoncal.fascicle.quarkus.book.modelo.BookEntity;
 import org.agoncal.fascicle.quarkus.book.transferible.BookDTO;
@@ -32,16 +31,17 @@ import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
-@Transactional(Transactional.TxType.REQUIRED)
 public class BookService {
   private static final Logger LOGGER = Logger.getLogger(BookService.class);
-  @Inject
-  EntityManager em;
+
   @Inject
   @RestClient
   NumberProxy numberProxy;
   @Inject
   BookMapper bookMapper;
+
+  @Inject
+  DBAccess dbAccess;
 
   @Fallback(fallbackMethod = "fallbackPersistBook")
   public BookDTO persistBook(@Valid CreateBookDTO book) {
@@ -50,32 +50,48 @@ public class BookService {
     BookEntity newBook = bookMapper.toNewEntity(book);
     newBook.isbn13 = isbnNumbers.getIsbn13();
     newBook.isbn10 = isbnNumbers.getIsbn10();
-    BookEntity.persist(newBook);
+    LOGGER.info(newBook);
+    dbAccess.createNewBook(newBook); //???
     return bookMapper.toDTO(newBook);
   }
 
-  private BookDTO fallbackPersistBook(CreateBookDTO newBook) throws FileNotFoundException {
+//  private BookDTO fallbackPersistBook(CreateBookDTO newBook) throws FileNotFoundException {
+//    LOGGER.warn("Falling back on persisting a book");
+//    String bookJson = JsonbBuilder.create().toJson(newBook);
+//    try (PrintWriter out = new PrintWriter("book-" + Instant.now().toEpochMilli() + ".json")) {
+//      out.println(bookJson);
+//    }
+//    throw new IllegalStateException();
+//  }
+  private BookDTO fallbackPersistBook(CreateBookDTO newBook) {
     LOGGER.warn("Falling back on persisting a book");
     String bookJson = JsonbBuilder.create().toJson(newBook);
+
+    // Intentar guardar el JSON en un archivo
     try (PrintWriter out = new PrintWriter("book-" + Instant.now().toEpochMilli() + ".json")) {
       out.println(bookJson);
+    } catch (FileNotFoundException e) {
+      LOGGER.error("Error writing to file: ", e);
     }
-    throw new IllegalStateException();
-  }
-//  @Transactional(Transactional.TxType.SUPPORTS)
-//  public List<BookDTO> findAllBooks() {
-//    List<BookEntity> booksEntity = BookEntity.listAll();
-//    List<BookDTO> booksDTO = new ArrayList<>();
-//    for (BookEntity bookEntity: booksEntity
-//         ) {
-//      booksDTO.add(bookMapper.toDTO(bookEntity));
-//    }
-//    return booksDTO; //AAAAAA
-//  }
 
-  @Transactional(Transactional.TxType.SUPPORTS)
+    // Retornar un objeto BookDTO vacío o con valores predeterminados
+    return new BookDTO(); // O ajusta esto según sea necesario
+  }
+
+
+  public List<BookDTO> findAllBooks() {
+    List<BookEntity> booksEntity = BookEntity.listAll();
+    List<BookDTO> booksDTO = new ArrayList<>();
+    for (BookEntity bookEntity: booksEntity
+         ) {
+      booksDTO.add(bookMapper.toDTO(bookEntity));
+    }
+    return booksDTO; //AAAAAA
+  }
+
+
   public BookDTO findBookById(Long id) {
-    Optional <BookEntity> bookQuery = BookEntity.findByIdOptional(id);
+    Optional <BookEntity> bookQuery = dbAccess.findById(id);
     if (bookQuery.isPresent()) {
       BookEntity bookEntity = bookQuery.get();
       BookDTO result = bookMapper.toDTO(bookEntity);
@@ -85,20 +101,21 @@ public class BookService {
     }
 
   }
-  @Transactional(Transactional.TxType.SUPPORTS)
+
   public BookDTO findRandomBook() {
-    BookEntity randomBook = null; // AAAAA
-    while (randomBook == null) {
-      randomBook = BookEntity.findRandom();
-    }
-    return bookMapper.toDTO(randomBook);
+    return bookMapper.toDTO(dbAccess.findRandomBook());
   }
   public BookDTO updateBook(@Valid BookDTO book) {
-    BookEntity entity = em.merge(bookMapper.toEntity(book)); // AAAAA
-    return bookMapper.toDTO(entity);
+    if (book.getId() > 0) {
+      if (findBookById(book.getId()) != null) {
+        BookEntity entity = dbAccess.updateBook(bookMapper.toEntity(book));
+        return bookMapper.toDTO(entity);
+      }
+    }
+    return null;
   }
   public void deleteBook(Long id) {
-    BookEntity.deleteById(id);
+    dbAccess.deleteById(id);
   }
 
 }

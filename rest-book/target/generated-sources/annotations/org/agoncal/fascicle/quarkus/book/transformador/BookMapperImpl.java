@@ -1,5 +1,7 @@
 package org.agoncal.fascicle.quarkus.book.transformador;
 
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import javax.annotation.processing.Generated;
 import org.agoncal.fascicle.quarkus.book.modelo.BookEntity;
 import org.agoncal.fascicle.quarkus.book.transferible.BookDTO;
@@ -7,9 +9,11 @@ import org.agoncal.fascicle.quarkus.book.transferible.CreateBookDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-09-26T13:58:57-0300",
+    date = "2024-09-27T13:16:18-0300",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.9 (GraalVM Community)"
 )
+@Singleton
+@Named
 public class BookMapperImpl implements BookMapper {
 
     @Override
@@ -48,7 +52,6 @@ public class BookMapperImpl implements BookMapper {
 
         bookEntity.isbn13 = bookDTO.getIsbn_13();
         bookEntity.isbn10 = bookDTO.getIsbn_10();
-        bookEntity.id = bookDTO.getId();
         bookEntity.title = bookDTO.getTitle();
         bookEntity.author = bookDTO.getAuthor();
         bookEntity.yearOfPublication = bookDTO.getYearOfPublication();

@@ -1,9 +1,10 @@
-package org.agoncal.fascicle.quarkus.book.client;
+package org.agoncal.fascicle.quarkus.book.servicio.numberResources;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import org.agoncal.fascicle.quarkus.book.servicio.numberResources.IsbnNumbers;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 //import javax.ws.rs.GET;

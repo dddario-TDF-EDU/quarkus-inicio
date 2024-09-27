@@ -71,20 +71,20 @@ public class BookResource {
     return Response.ok(book).build();
   }
 
-//  @Operation(summary = "Returns all the books from the database")
-//  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class, type = SchemaType.ARRAY)))
-//  @APIResponse(responseCode = "204", description = "No books")
-//  // tag::adocMetrics[]
-//  @Counted(name = "countGetAllBooks", description = "Counts how many times the getAllBooks method has been invoked")
-//  @Timed(name = "timeGetAllBooks", description = "Times how long it takes to invoke the getAllBooks method", unit = MetricUnits.MILLISECONDS)
-//  // end::adocMetrics[]
-//  @GET
-//  //@PermitAll
-//  public Response getAllBooks() {
-//    List<BookDTO> books = service.findAllBooks();
-//    LOGGER.debug("Total number of books " + books);
-//    return Response.ok(books).build();
-//  }
+  @Operation(summary = "Returns all the books from the database")
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class, type = SchemaType.ARRAY)))
+  @APIResponse(responseCode = "204", description = "No books")
+  // tag::adocMetrics[]
+  @Counted(name = "countGetAllBooks", description = "Counts how many times the getAllBooks method has been invoked")
+  @Timed(name = "timeGetAllBooks", description = "Times how long it takes to invoke the getAllBooks method", unit = MetricUnits.MILLISECONDS)
+  // end::adocMetrics[]
+  @GET
+  //@PermitAll
+  public Response getAllBooks() {
+    List<BookDTO> books = service.findAllBooks();
+    LOGGER.debug("Total number of books " + books);
+    return Response.ok(books).build();
+  }
 
   @Operation(summary = "Returns a book for a given identifier")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class)))
@@ -110,19 +110,19 @@ public class BookResource {
   }
 
   // PARTE CON Keycloak
-//  @Operation(summary = "Creates a valid book")
-//  @APIResponse(responseCode = "201", description = "The URI of the created book",
-//    content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = URI.class)))
-//  @Counted(name = "countCreateBook", description = "Counts how many times the createBook method has been invoked")
-//  @Timed(name = "timeCreateBook", description = "Times how long it takes to invoke the createBook method", unit = MetricUnits.MILLISECONDS)
-//  @POST
-//  //@RolesAllowed("admin")
-//  public Response createBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CreateBookDTO.class))) @Valid CreateBookDTO book, @Context UriInfo uriInfo) {
-//    BookDTO bookCreado = service.persistBook(book);
-//    UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(bookCreado.id));
-//    LOGGER.debug("News book created with URI " + builder.build().toString());
-//    return Response.created(builder.build()).build();
-//  }
+  @Operation(summary = "Creates a valid book")
+  @APIResponse(responseCode = "201", description = "The URI of the created book",
+    content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = URI.class)))
+  @Counted(name = "countCreateBook", description = "Counts how many times the createBook method has been invoked")
+  @Timed(name = "timeCreateBook", description = "Times how long it takes to invoke the createBook method", unit = MetricUnits.MILLISECONDS)
+  @POST
+//  @RolesAllowed("admin")
+  public Response createBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CreateBookDTO.class))) @Valid CreateBookDTO book, @Context UriInfo uriInfo) {
+    BookDTO bookCreado = service.persistBook(book);
+    UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(bookCreado.id));
+    LOGGER.debug("News book created with URI " + builder.build().toString());
+    return Response.created(builder.build()).build();
+  }
 
   @Operation(summary = "Updates an existing book")
   @APIResponse(responseCode = "200", description = "The updated book", content =

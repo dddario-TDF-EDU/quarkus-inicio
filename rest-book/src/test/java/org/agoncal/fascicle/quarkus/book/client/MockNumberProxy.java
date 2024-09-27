@@ -3,6 +3,8 @@ package org.agoncal.fascicle.quarkus.book.client;
 
 import io.quarkus.test.Mock;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.agoncal.fascicle.quarkus.book.servicio.numberResources.IsbnNumbers;
+import org.agoncal.fascicle.quarkus.book.servicio.numberResources.NumberProxy;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 //import javax.enterprise.context.ApplicationScoped;

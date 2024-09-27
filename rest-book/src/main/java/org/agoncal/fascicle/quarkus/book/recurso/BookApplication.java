@@ -1,4 +1,4 @@
-package org.agoncal.fascicle.quarkus.book;
+package org.agoncal.fascicle.quarkus.book.recurso;
 
 
 import jakarta.ws.rs.ApplicationPath;

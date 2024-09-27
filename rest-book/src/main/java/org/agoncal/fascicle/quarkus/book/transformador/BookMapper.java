@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(uses = BookDTO.class)
+@Mapper()
 public interface BookMapper {
 
 
@@ -17,9 +17,9 @@ public interface BookMapper {
   @Mapping(target = "isbn_10", source = "isbn10")
   BookDTO toDTO(BookEntity bookEntity);
 
-  @InheritInverseConfiguration
   @Mapping(target = "isbn13", source = "isbn_13")
   @Mapping(target = "isbn10", source = "isbn_10")
+  @Mapping(target = "id", ignore = true)
   BookEntity toEntity(BookDTO bookDTO);
 
 

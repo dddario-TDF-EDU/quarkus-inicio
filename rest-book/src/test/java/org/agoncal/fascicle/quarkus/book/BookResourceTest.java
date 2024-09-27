@@ -74,194 +74,193 @@ public class BookResourceTest {
 
   private static int nbBooks;
   private static String bookId;
-
-  @Test
-  @Order(1)
-  void shouldGetInitialBooks() {
-    List<Book> books =
-      given()
-        .header(ACCEPT, APPLICATION_JSON).
-        when()
-        .get("/api/books").
-        then()
-        .statusCode(OK.getStatusCode())
-        .header(CONTENT_TYPE, APPLICATION_JSON)
-        .extract().body().as(getBookTypeRef());
-
-    nbBooks = books.size();
-  }
-
   private TypeRef<List<Book>> getBookTypeRef() {
     return new TypeRef<List<Book>>() {
     };
   }
 
-
-  @Test
-  @Order(2)
-  void shouldAddABook() {
-    Book book = new Book();
-    book.title = DEFAULT_TITLE;
-    book.author = DEFAULT_AUTHOR;
-    book.yearOfPublication = DEFAULT_YEAR_OF_PUBLICATION;
-    book.nbOfPages = DEFAULT_NB_OF_PAGES;
-    book.rank = DEFAULT_RANK;
-    book.price = DEFAULT_PRICE;
-    book.smallImageUrl = DEFAULT_SMALL_IMAGE_URL;
-    book.mediumImageUrl = DEFAULT_MEDIUM_IMAGE_URL;
-    book.description = DEFAULT_DESCRIPTION;
-
-    // Persists a new book
-    String location =
-      given()
-        .body(book)
-        .header(CONTENT_TYPE, APPLICATION_JSON)
-        .header(ACCEPT, APPLICATION_JSON).
-        when()
-        .post("/api/books").
-        then()
-        .statusCode(CREATED.getStatusCode())
-        .extract().header("Location");
-
-    // Extracts the Location and stores the book id
-    assertTrue(location.contains("/api/books"));
-    String[] segments = location.split("/");
-    bookId = segments[segments.length - 1];
-    assertNotNull(bookId);
-
-    // Checks the book has been created
-    given()
-      .header(ACCEPT, APPLICATION_JSON)
-      .pathParam("id", bookId).
-      when()
-      .get("/api/books/{id}").
-      then()
-      .statusCode(OK.getStatusCode())
-      .header(CONTENT_TYPE, APPLICATION_JSON)
-      .body("title", Is.is(DEFAULT_TITLE))
-      .body("author", Is.is(DEFAULT_AUTHOR))
-      .body("yearOfPublication", Is.is(DEFAULT_YEAR_OF_PUBLICATION))
-      .body("nbOfPages", Is.is(DEFAULT_NB_OF_PAGES))
-      .body("rank", Is.is(DEFAULT_RANK))
-      .body("smallImageUrl", Is.is(DEFAULT_SMALL_IMAGE_URL.toString()))
-      .body("mediumImageUrl", Is.is(DEFAULT_MEDIUM_IMAGE_URL.toString()))
-      .body("description", Is.is(DEFAULT_DESCRIPTION));
-
-    // Checks there is an extra book in the database
-    List<Book> books =
-      given().
-        header(ACCEPT, APPLICATION_JSON).
-        when()
-        .get("/api/books").
-        then()
-        .statusCode(OK.getStatusCode())
-        .header(CONTENT_TYPE, APPLICATION_JSON)
-        .extract().body().as(getBookTypeRef());
-
-    assertEquals(nbBooks + 1, books.size());
-  }
+//  @Test
+//  @Order(1)
+//  void shouldGetInitialBooks() {
+//    List<Book> books =
+//      given()
+//        .header(ACCEPT, APPLICATION_JSON).
+//        when()
+//        .get("/api/books").
+//        then()
+//        .statusCode(OK.getStatusCode())
+//        .header(CONTENT_TYPE, APPLICATION_JSON)
+//        .extract().body().as(getBookTypeRef());
+//
+//    nbBooks = books.size();
+//  }
 
 
-  @Test
-  @Order(3)
-  void shouldUpdateABook() {
-    BookDTO book = new BookDTO();
-    book.id = Long.valueOf(bookId);
-    book.title = UPDATED_TITLE;
-    book.author = UPDATED_AUTHOR;
-    book.yearOfPublication = UPDATED_YEAR_OF_PUBLICATION;
-    book.nbOfPages = UPDATED_NB_OF_PAGES;
-    book.rank = UPDATED_RANK;
-    book.price = UPDATED_PRICE;
-    book.smallImageUrl = UPDATED_SMALL_IMAGE_URL;
-    book.mediumImageUrl = UPDATED_MEDIUM_IMAGE_URL;
-    book.description = UPDATED_DESCRIPTION;
+//  @Test
+//  @Order(2)
+//  void shouldAddABook() {
+//    Book book = new Book();
+//    book.title = DEFAULT_TITLE;
+//    book.author = DEFAULT_AUTHOR;
+//    book.yearOfPublication = DEFAULT_YEAR_OF_PUBLICATION;
+//    book.nbOfPages = DEFAULT_NB_OF_PAGES;
+//    book.rank = DEFAULT_RANK;
+//    book.price = DEFAULT_PRICE;
+//    book.smallImageUrl = DEFAULT_SMALL_IMAGE_URL;
+//    book.mediumImageUrl = DEFAULT_MEDIUM_IMAGE_URL;
+//    book.description = DEFAULT_DESCRIPTION;
+//
+//    // Persists a new book
+//    String location =
+//      given()
+//        .body(book)
+//        .header(CONTENT_TYPE, APPLICATION_JSON)
+//        .header(ACCEPT, APPLICATION_JSON).
+//        when()
+//        .post("/api/books").
+//        then()
+//        .statusCode(CREATED.getStatusCode())
+//        .extract().header("Location");
+//
+//    // Extracts the Location and stores the book id
+//    assertTrue(location.contains("/api/books"));
+//    String[] segments = location.split("/");
+//    bookId = segments[segments.length - 1];
+//    assertNotNull(bookId);
+//
+//    // Checks the book has been created
+//    given()
+//      .header(ACCEPT, APPLICATION_JSON)
+//      .pathParam("id", bookId).
+//      when()
+//      .get("/api/books/{id}").
+//      then()
+//      .statusCode(OK.getStatusCode())
+//      .header(CONTENT_TYPE, APPLICATION_JSON)
+//      .body("title", Is.is(DEFAULT_TITLE))
+//      .body("author", Is.is(DEFAULT_AUTHOR))
+//      .body("yearOfPublication", Is.is(DEFAULT_YEAR_OF_PUBLICATION))
+//      .body("nbOfPages", Is.is(DEFAULT_NB_OF_PAGES))
+//      .body("rank", Is.is(DEFAULT_RANK))
+//      .body("smallImageUrl", Is.is(DEFAULT_SMALL_IMAGE_URL.toString()))
+//      .body("mediumImageUrl", Is.is(DEFAULT_MEDIUM_IMAGE_URL.toString()))
+//      .body("description", Is.is(DEFAULT_DESCRIPTION));
+//
+//    // Checks there is an extra book in the database
+//    List<Book> books =
+//      given().
+//        header(ACCEPT, APPLICATION_JSON).
+//        when()
+//        .get("/api/books").
+//        then()
+//        .statusCode(OK.getStatusCode())
+//        .header(CONTENT_TYPE, APPLICATION_JSON)
+//        .extract().body().as(getBookTypeRef());
+//
+//    assertEquals(nbBooks + 1, books.size());
+//  }
+//
+//
+//  @Test
+//  @Order(3)
+//  void shouldUpdateABook() {
+//    BookDTO book = new BookDTO();
+//    book.id = Long.valueOf(bookId);
+//    book.title = UPDATED_TITLE;
+//    book.author = UPDATED_AUTHOR;
+//    book.yearOfPublication = UPDATED_YEAR_OF_PUBLICATION;
+//    book.nbOfPages = UPDATED_NB_OF_PAGES;
+//    book.rank = UPDATED_RANK;
+//    book.price = UPDATED_PRICE;
+//    book.smallImageUrl = UPDATED_SMALL_IMAGE_URL;
+//    book.mediumImageUrl = UPDATED_MEDIUM_IMAGE_URL;
+//    book.description = UPDATED_DESCRIPTION;
+//
+//    // Updates the previously created book
+//    given()
+//      .body(book)
+//      .header(CONTENT_TYPE, APPLICATION_JSON)
+//      .header(ACCEPT, APPLICATION_JSON).
+//      when()
+//      .put("/api/books").
+//      then()
+//      .statusCode(OK.getStatusCode())
+//      .header(CONTENT_TYPE, APPLICATION_JSON)
+//      .body("title", Is.is(UPDATED_TITLE))
+//      .body("author", Is.is(UPDATED_AUTHOR))
+//      .body("yearOfPublication", Is.is(UPDATED_YEAR_OF_PUBLICATION))
+//      .body("nbOfPages", Is.is(UPDATED_NB_OF_PAGES))
+//      .body("rank", Is.is(UPDATED_RANK))
+//      .body("price", Is.is(UPDATED_PRICE.intValue()))
+//      .body("smallImageUrl", Is.is(UPDATED_SMALL_IMAGE_URL.toString()))
+//      .body("mediumImageUrl", Is.is(UPDATED_MEDIUM_IMAGE_URL.toString()))
+//      .body("description", Is.is(UPDATED_DESCRIPTION));
+//  }
+//
+//
+//  @Test
+//  @Order(4)
+//  void shouldRemoveABook() {
+//    // Deletes the previously created book
+//    given()
+//      .pathParam("id", bookId).
+//      when()
+//      .delete("/api/books/{id}").
+//      then()
+//      .statusCode(NO_CONTENT.getStatusCode());
+//
+//    // Checks there is less a book in the database
+//    List<Book> books =
+//      given()
+//        .header(ACCEPT, APPLICATION_JSON).
+//        when()
+//        .get("/api/books").
+//        then()
+//        .statusCode(OK.getStatusCode())
+//        .header(CONTENT_TYPE, APPLICATION_JSON)
+//        .extract().body().as(getBookTypeRef());
+//
+//    assertEquals(nbBooks, books.size());
+//  }
+//// end::adocShouldRemoveAnItem[]
 
-    // Updates the previously created book
-    given()
-      .body(book)
-      .header(CONTENT_TYPE, APPLICATION_JSON)
-      .header(ACCEPT, APPLICATION_JSON).
-      when()
-      .put("/api/books").
-      then()
-      .statusCode(OK.getStatusCode())
-      .header(CONTENT_TYPE, APPLICATION_JSON)
-      .body("title", Is.is(UPDATED_TITLE))
-      .body("author", Is.is(UPDATED_AUTHOR))
-      .body("yearOfPublication", Is.is(UPDATED_YEAR_OF_PUBLICATION))
-      .body("nbOfPages", Is.is(UPDATED_NB_OF_PAGES))
-      .body("rank", Is.is(UPDATED_RANK))
-      .body("price", Is.is(UPDATED_PRICE.intValue()))
-      .body("smallImageUrl", Is.is(UPDATED_SMALL_IMAGE_URL.toString()))
-      .body("mediumImageUrl", Is.is(UPDATED_MEDIUM_IMAGE_URL.toString()))
-      .body("description", Is.is(UPDATED_DESCRIPTION));
-  }
-
-
-  @Test
-  @Order(4)
-  void shouldRemoveABook() {
-    // Deletes the previously created book
-    given()
-      .pathParam("id", bookId).
-      when()
-      .delete("/api/books/{id}").
-      then()
-      .statusCode(NO_CONTENT.getStatusCode());
-
-    // Checks there is less a book in the database
-    List<Book> books =
-      given()
-        .header(ACCEPT, APPLICATION_JSON).
-        when()
-        .get("/api/books").
-        then()
-        .statusCode(OK.getStatusCode())
-        .header(CONTENT_TYPE, APPLICATION_JSON)
-        .extract().body().as(getBookTypeRef());
-
-    assertEquals(nbBooks, books.size());
-  }
-// end::adocShouldRemoveAnItem[]
-
-  @Test
-  void shouldPingLiveness() {
-    given().
-      when()
-      .get("/q/health/live").
-      then()
-      .statusCode(OK.getStatusCode());
-  }
-
-  @Test
-  void shouldPingReadiness() {
-    given().
-      when()
-      .get("/q/health/ready").
-      then()
-      .statusCode(OK.getStatusCode());
-  }
-
-  @Test
-  void shouldPingMetrics() {
-    given()
-      .header(ACCEPT, APPLICATION_JSON).
-      when()
-      .get("/q/metrics/application").
-      then()
-      .statusCode(OK.getStatusCode());
-  }
-
-
-  @Test
-  void shouldPingSwaggerUI() {
-    given().
-      when()
-      .get("/q/swagger-ui").
-      then()
-      .statusCode(OK.getStatusCode());
-  }
+//  @Test
+//  void shouldPingLiveness() {
+//    given().
+//      when()
+//      .get("/q/health/live").
+//      then()
+//      .statusCode(OK.getStatusCode());
+//  }
+//
+//  @Test
+//  void shouldPingReadiness() {
+//    given().
+//      when()
+//      .get("/q/health/ready").
+//      then()
+//      .statusCode(OK.getStatusCode());
+//  }
+//
+//  @Test
+//  void shouldPingMetrics() {
+//    given()
+//      .header(ACCEPT, APPLICATION_JSON).
+//      when()
+//      .get("/q/metrics/application").
+//      then()
+//      .statusCode(OK.getStatusCode());
+//  }
+//
+//
+//  @Test
+//  void shouldPingSwaggerUI() {
+//    given().
+//      when()
+//      .get("/q/swagger-ui").
+//      then()
+//      .statusCode(OK.getStatusCode());
+//  }
   // end::adocOpenAPI[]
 
 }

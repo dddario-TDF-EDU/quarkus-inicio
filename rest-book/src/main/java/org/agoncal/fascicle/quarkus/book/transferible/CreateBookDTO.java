@@ -3,6 +3,7 @@ package org.agoncal.fascicle.quarkus.book.transferible;
 public class CreateBookDTO {
   public String title;
   public String author;
+  public Integer yearOfPublication;
 
   public String getTitle() {
     return title;
@@ -28,5 +29,5 @@ public class CreateBookDTO {
     this.yearOfPublication = yearOfPublication;
   }
 
-  public Integer yearOfPublication;
+
 }

@@ -125,15 +125,30 @@
         </executions>
       </plugin>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-      </plugin>
-      <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <systemProperties>
             <java.util.logging.manager>
               org.jboss.logmanager.LogManager</java.util.logging.manager>
           </systemProperties>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${compiler-plugin.version}</version>
+        <configuration>
+          <compilerArgs>
+            <arg>-parameters</arg>
+            <!-- para quarkus 2.x hay que cambiar "jakarta" por "cdi" -->
+            <arg>-Amapstruct.defaultComponentModel=jakarta</arg>
+          </compilerArgs>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.mapstruct</groupId>
+              <artifactId>mapstruct-processor</artifactId>
+              <version>${org.mapstruct.version}</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
     </plugins>
@@ -149,24 +164,6 @@
       </activation>
       <build>
         <plugins>
-          <plugin>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>${compiler-plugin.version}</version>
-            <configuration>
-              <compilerArgs>
-                <arg>-parameters</arg>
-                <!-- para quarkus 2.x hay que cambiar "jakarta" por "cdi" -->
-                <arg>-Amapstruct.defaultComponentModel=jakarta</arg>
-              </compilerArgs>
-              <annotationProcessorPaths>
-                <path>
-                  <groupId>org.mapstruct</groupId>
-                  <artifactId>mapstruct-processor</artifactId>
-                  <version>${org.mapstruct.version}</version>
-                </path>
-              </annotationProcessorPaths>
-            </configuration>
-          </plugin>
           <plugin>
             <artifactId>maven-failsafe-plugin</artifactId>
             <executions>
