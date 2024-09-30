@@ -3,8 +3,12 @@ package org.agoncal.fascicle.quarkus.book.servicio;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.bind.JsonbBuilder;
+import jakarta.persistence.Column;
 import jakarta.validation.Valid;
-import org.agoncal.fascicle.quarkus.book.acceso.DBAccess;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
+import org.agoncal.fascicle.quarkus.book.acceso.BookRepository;
 import org.agoncal.fascicle.quarkus.book.servicio.numberResources.IsbnNumbers;
 import org.agoncal.fascicle.quarkus.book.servicio.numberResources.NumberProxy;
 
@@ -25,6 +29,8 @@ import org.jboss.logging.Logger;
 //import javax.validation.Valid;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.net.URL;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +47,7 @@ public class BookService {
   BookMapper bookMapper;
 
   @Inject
-  DBAccess dbAccess;
+  BookRepository bookRepository;
 
   @Fallback(fallbackMethod = "fallbackPersistBook")
   public BookDTO persistBook(@Valid CreateBookDTO book) {
@@ -51,7 +57,7 @@ public class BookService {
     newBook.isbn13 = isbnNumbers.getIsbn13();
     newBook.isbn10 = isbnNumbers.getIsbn10();
     LOGGER.info(newBook);
-    dbAccess.createNewBook(newBook); //???
+    bookRepository.createNewBookRepo(newBook); //???
     return bookMapper.toDTO(newBook);
   }
 
@@ -80,9 +86,9 @@ public class BookService {
 
 
   public List<BookDTO> findAllBooks() {
-    List<BookEntity> booksEntity = BookEntity.listAll();
+    List<BookEntity> booksEntities = bookRepository.listAll();
     List<BookDTO> booksDTO = new ArrayList<>();
-    for (BookEntity bookEntity: booksEntity
+    for (BookEntity bookEntity: booksEntities
          ) {
       booksDTO.add(bookMapper.toDTO(bookEntity));
     }
@@ -91,10 +97,10 @@ public class BookService {
 
 
   public BookDTO findBookById(Long id) {
-    Optional <BookEntity> bookQuery = dbAccess.findById(id);
-    if (bookQuery.isPresent()) {
-      BookEntity bookEntity = bookQuery.get();
-      BookDTO result = bookMapper.toDTO(bookEntity);
+    BookEntity bookQuery = bookRepository.findByIdRepo(id);
+    if (bookQuery != null) {
+      //BookEntity bookEntity = bookQuery.get();
+      BookDTO result = bookMapper.toDTO(bookQuery);
       return result;
     } else {
       return null;
@@ -103,19 +109,36 @@ public class BookService {
   }
 
   public BookDTO findRandomBook() {
-    return bookMapper.toDTO(dbAccess.findRandomBook());
+    return bookMapper.toDTO(bookRepository.findRandomBookRepo());
   }
   public BookDTO updateBook(@Valid BookDTO book) {
-    if (book.getId() > 0) {
-      if (findBookById(book.getId()) != null) {
-        BookEntity entity = dbAccess.updateBook(bookMapper.toEntity(book));
+    if (book.getIdBook() > 0) {
+      BookEntity entity = bookRepository.findById(book.getIdBook());
+      if (entity != null) {
+        mapNewBook(book, entity);
+        bookRepository.persist(entity);
         return bookMapper.toDTO(entity);
       }
     }
     return null;
   }
-  public void deleteBook(Long id) {
-    dbAccess.deleteById(id);
+
+  private void mapNewBook(BookDTO book, BookEntity entity) {
+    entity.title = book.title;
+    entity.isbn13 = book.isbn_13;
+    entity.isbn10 = book.isbn_10;
+    entity.author = book.author;
+    entity.yearOfPublication = book.yearOfPublication;
+    entity.nbOfPages = book.nbOfPages;
+    entity.rank = book.rank;
+    entity.price = book.price;
+    entity.smallImageUrl = book.smallImageUrl;
+    entity.mediumImageUrl = book.mediumImageUrl;
+    entity.description = book.description;
+  }
+
+  public boolean deleteBook(Long id) {
+    return bookRepository.deleteByIdRepo(id);
   }
 
 }

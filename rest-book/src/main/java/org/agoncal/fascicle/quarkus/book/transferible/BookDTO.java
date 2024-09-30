@@ -6,14 +6,25 @@ import java.net.URL;
 
 public class BookDTO {
 
-  public long id;
+  public long idBook;
+  public String title;
+  public String isbn_13;
+  public String isbn_10;
+  public String author;
+  public Integer yearOfPublication;
+  public Integer nbOfPages;
+  public Integer rank;
+  public BigDecimal price;
+  public URL smallImageUrl;
+  public URL mediumImageUrl;
+  public String description;
 
-  public long getId() {
-    return id;
+  public long getIdBook() {
+    return idBook;
   }
 
-  public void setId(long id) {
-    this.id = id;
+  public void setIdBook(long idBook) {
+    this.idBook = idBook;
   }
 
   public String getTitle() {
@@ -103,17 +114,5 @@ public class BookDTO {
   public void setDescription(String description) {
     this.description = description;
   }
-
-  public String title;
-  public String isbn_13;
-  public String isbn_10;
-  public String author;
-  public Integer yearOfPublication;
-  public Integer nbOfPages;
-  public Integer rank;
-  public BigDecimal price;
-  public URL smallImageUrl;
-  public URL mediumImageUrl;
-  public String description;
 
 }

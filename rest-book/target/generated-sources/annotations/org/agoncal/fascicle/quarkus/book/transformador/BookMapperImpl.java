@@ -9,7 +9,7 @@ import org.agoncal.fascicle.quarkus.book.transferible.CreateBookDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-09-27T13:16:18-0300",
+    date = "2024-09-30T10:31:32-0300",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.9 (GraalVM Community)"
 )
 @Singleton
@@ -26,8 +26,8 @@ public class BookMapperImpl implements BookMapper {
 
         bookDTO.setIsbn_13( bookEntity.isbn13 );
         bookDTO.setIsbn_10( bookEntity.isbn10 );
-        if ( bookEntity.id != null ) {
-            bookDTO.setId( bookEntity.id );
+        if ( bookEntity.idBook != null ) {
+            bookDTO.setIdBook( bookEntity.idBook );
         }
         bookDTO.setTitle( bookEntity.title );
         bookDTO.setAuthor( bookEntity.author );
@@ -52,6 +52,7 @@ public class BookMapperImpl implements BookMapper {
 
         bookEntity.isbn13 = bookDTO.getIsbn_13();
         bookEntity.isbn10 = bookDTO.getIsbn_10();
+        bookEntity.idBook = bookDTO.getIdBook();
         bookEntity.title = bookDTO.getTitle();
         bookEntity.author = bookDTO.getAuthor();
         bookEntity.yearOfPublication = bookDTO.getYearOfPublication();

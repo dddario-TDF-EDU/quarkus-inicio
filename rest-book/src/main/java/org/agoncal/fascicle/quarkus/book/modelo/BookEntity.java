@@ -2,10 +2,7 @@ package org.agoncal.fascicle.quarkus.book.modelo;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -20,9 +17,14 @@ import java.util.Random;
 
 @Schema(description = "Book representation")
 @Entity
-public class BookEntity extends PanacheEntity {
+@Table(name = "Books")
+public class BookEntity {
 
   //añadido para sacar panache entity (id)
+  @Id
+  @GeneratedValue
+  public Long idBook;
+
   @NotNull
   @Schema(required = true)
   public String title;
@@ -46,11 +48,7 @@ public class BookEntity extends PanacheEntity {
   @Size(min = 1, max = 10000)
   public String description;
 
-  public static BookEntity findRandom() {
-    long countBooks = BookEntity.count();
-    int randomBook = new Random().nextInt((int) countBooks);
-    return BookEntity.findAll().page(randomBook, 1).firstResult();
-  }
+
 
 
 

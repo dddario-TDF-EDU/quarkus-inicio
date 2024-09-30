@@ -3,6 +3,7 @@ package org.agoncal.fascicle.quarkus.book.recurso;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
@@ -119,7 +120,7 @@ public class BookResource {
 //  @RolesAllowed("admin")
   public Response createBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CreateBookDTO.class))) @Valid CreateBookDTO book, @Context UriInfo uriInfo) {
     BookDTO bookCreado = service.persistBook(book);
-    UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(bookCreado.id));
+    UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(bookCreado.getIdBook()));
     LOGGER.debug("News book created with URI " + builder.build().toString());
     return Response.created(builder.build()).build();
   }
@@ -129,9 +130,11 @@ public class BookResource {
   @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class)))
   @Counted(name = "countUpdateBook", description = "Counts how many times the updateBook method has been invoked")
   @Timed(name = "timeUpdateBook", description = "Times how long it takes to invoke the updateBook method", unit = MetricUnits.MILLISECONDS)
+  @Transactional
   @PUT
   //@RolesAllowed("admin")
   public Response updateBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class))) @Valid BookDTO book) {
+    LOGGER.debug(book + "asdasds");
     book = service.updateBook(book);
     LOGGER.debug("Book updated with new valued " + book);
     return Response.ok(book).build();
