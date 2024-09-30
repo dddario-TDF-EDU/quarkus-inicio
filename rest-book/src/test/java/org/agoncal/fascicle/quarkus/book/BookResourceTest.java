@@ -3,7 +3,7 @@ package org.agoncal.fascicle.quarkus.book;
 //import io.quarkus.test.junit.DisabledOnNativeImage;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.common.mapper.TypeRef;
-import org.agoncal.fascicle.quarkus.book.modelo.Book;
+import org.agoncal.fascicle.quarkus.book.modelo.BookEntity;
 import org.agoncal.fascicle.quarkus.book.transferible.BookDTO;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.MethodOrderer;
@@ -74,8 +74,8 @@ public class BookResourceTest {
 
   private static int nbBooks;
   private static String bookId;
-  private TypeRef<List<Book>> getBookTypeRef() {
-    return new TypeRef<List<Book>>() {
+  private TypeRef<List<BookEntity>> getBookTypeRef() {
+    return new TypeRef<List<BookEntity>>() {
     };
   }
 
