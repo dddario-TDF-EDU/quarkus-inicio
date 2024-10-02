@@ -18,7 +18,6 @@ public class AutorEntity {
   @Id
   @GeneratedValue
   public Long idAuthor;
-
   @NotNull
   @Schema(required = true)
   public String name;
