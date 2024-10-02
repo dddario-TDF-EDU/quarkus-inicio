@@ -3,38 +3,28 @@ package org.agoncal.fascicle.quarkus.book.servicio;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.bind.JsonbBuilder;
-import jakarta.persistence.Column;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
+
 import org.agoncal.fascicle.quarkus.book.acceso.BookRepository;
+import org.agoncal.fascicle.quarkus.book.modelo.LibroEntity;
 import org.agoncal.fascicle.quarkus.book.servicio.numberResources.IsbnNumbers;
 import org.agoncal.fascicle.quarkus.book.servicio.numberResources.NumberProxy;
-
-import org.agoncal.fascicle.quarkus.book.modelo.BookEntity;
-import org.agoncal.fascicle.quarkus.book.transferible.BookDTO;
-import org.agoncal.fascicle.quarkus.book.transferible.CreateBookDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.libro.CrearLibroDTO;
 import org.agoncal.fascicle.quarkus.book.transformador.BookMapper;
+
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import org.jboss.logging.Logger;
 
-//import javax.enterprise.context.ApplicationScoped;
-//import javax.inject.Inject;
-//import javax.json.bind.JsonbBuilder;
-//import javax.persistence.EntityManager;
-//import javax.transaction.Transactional;
-//import javax.validation.Valid;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
-import java.net.URL;
+
 import java.time.Instant;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @ApplicationScoped
 public class BookService {
@@ -50,15 +40,15 @@ public class BookService {
   BookRepository bookRepository;
 
   @Fallback(fallbackMethod = "fallbackPersistBook")
-  public BookDTO persistBook(@Valid CreateBookDTO book) {
+  public LibroDTO persistBook(@Valid CrearLibroDTO book) {
 // The Book microservice invokes the Number microservice
     IsbnNumbers isbnNumbers = numberProxy.generateIsbnNumbers();
-    BookEntity newBook = bookMapper.toNewEntity(book);
+    LibroEntity newBook = bookMapper.toNewEntity(book);
     newBook.isbn13 = isbnNumbers.getIsbn13();
     newBook.isbn10 = isbnNumbers.getIsbn10();
     LOGGER.info(newBook);
     bookRepository.createNewBookRepo(newBook); //???
-    return bookMapper.toDTO(newBook);
+    return bookMapper.aDTO(newBook);
   }
 
 //  private BookDTO fallbackPersistBook(CreateBookDTO newBook) throws FileNotFoundException {
@@ -69,7 +59,7 @@ public class BookService {
 //    }
 //    throw new IllegalStateException();
 //  }
-  private BookDTO fallbackPersistBook(CreateBookDTO newBook) {
+  private LibroDTO fallbackPersistBook(CrearLibroDTO newBook) {
     LOGGER.warn("Falling back on persisting a book");
     String bookJson = JsonbBuilder.create().toJson(newBook);
 
@@ -81,26 +71,26 @@ public class BookService {
     }
 
     // Retornar un objeto BookDTO vacío o con valores predeterminados
-    return new BookDTO(); // O ajusta esto según sea necesario
+    return new LibroDTO(); // O ajusta esto según sea necesario
   }
 
 
-  public List<BookDTO> findAllBooks() {
-    List<BookEntity> booksEntities = bookRepository.listAll();
-    List<BookDTO> booksDTO = new ArrayList<>();
-    for (BookEntity bookEntity: booksEntities
+  public List<LibroDTO> findAllBooks() {
+    List<LibroEntity> booksEntities = bookRepository.listAll();
+    List<LibroDTO> booksDTO = new ArrayList<>();
+    for (LibroEntity libroEntity : booksEntities
          ) {
-      booksDTO.add(bookMapper.toDTO(bookEntity));
+      booksDTO.add(bookMapper.aDTO(libroEntity));
     }
     return booksDTO; //AAAAAA
   }
 
 
-  public BookDTO findBookById(Long id) {
-    BookEntity bookQuery = bookRepository.findByIdRepo(id);
+  public LibroDTO findBookById(Long id) {
+    LibroEntity bookQuery = bookRepository.findByIdRepo(id);
     if (bookQuery != null) {
       //BookEntity bookEntity = bookQuery.get();
-      BookDTO result = bookMapper.toDTO(bookQuery);
+      LibroDTO result = bookMapper.aDTO(bookQuery);
       return result;
     } else {
       return null;
@@ -108,33 +98,33 @@ public class BookService {
 
   }
 
-  public BookDTO findRandomBook() {
-    return bookMapper.toDTO(bookRepository.findRandomBookRepo());
+  public LibroDTO findRandomBook() {
+    return bookMapper.aDTO(bookRepository.findRandomBookRepo());
   }
-  public BookDTO updateBook(@Valid BookDTO book) {
+  public LibroDTO updateBook(@Valid LibroDTO book) {
     if (book.getIdBook() > 0) {
-      BookEntity entity = bookRepository.findById(book.getIdBook());
+      LibroEntity entity = bookRepository.findById(book.getIdBook());
       if (entity != null) {
         mapNewBook(book, entity);
         bookRepository.persist(entity);
-        return bookMapper.toDTO(entity);
+        return bookMapper.aDTO(entity);
       }
     }
     return null;
   }
 
-  private void mapNewBook(BookDTO book, BookEntity entity) {
-    entity.title = book.title;
+  private void mapNewBook(LibroDTO book, LibroEntity entity) {
+    entity.titulo = book.titulo;
     entity.isbn13 = book.isbn_13;
     entity.isbn10 = book.isbn_10;
-    entity.author = book.author;
+    entity.autores_de_libros = book.autores;
     entity.yearOfPublication = book.yearOfPublication;
-    entity.nbOfPages = book.nbOfPages;
-    entity.rank = book.rank;
-    entity.price = book.price;
+    entity.num_paginas = book.num_paginas;
+    entity.ranking = book.ranking;
+    entity.precio = book.precio;
     entity.smallImageUrl = book.smallImageUrl;
     entity.mediumImageUrl = book.mediumImageUrl;
-    entity.description = book.description;
+    entity.descripcion = book.descripcion;
   }
 
   public boolean deleteBook(Long id) {

@@ -5,8 +5,6 @@ import jakarta.inject.Inject;
 
 import org.agoncal.fascicle.quarkus.book.servicio.BookService;
 
-import org.agoncal.fascicle.quarkus.book.modelo.BookEntity;
-import org.agoncal.fascicle.quarkus.book.transferible.BookDTO;
 import org.eclipse.microprofile.health.Readiness;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
@@ -14,7 +12,7 @@ import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
 
 //import javax.enterprise.context.ApplicationScoped;
 //import javax.inject.Inject;
-import java.util.List;
+
 
 @Readiness
 @ApplicationScoped

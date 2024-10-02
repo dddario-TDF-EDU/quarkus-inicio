@@ -3,12 +3,8 @@ package org.agoncal.fascicle.quarkus.book;
 //import io.quarkus.test.junit.DisabledOnNativeImage;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.common.mapper.TypeRef;
-import org.agoncal.fascicle.quarkus.book.modelo.BookEntity;
-import org.agoncal.fascicle.quarkus.book.transferible.BookDTO;
-import org.hamcrest.core.Is;
+import org.agoncal.fascicle.quarkus.book.modelo.LibroEntity;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 // end::adocImports[]
 
@@ -22,9 +18,6 @@ import static io.restassured.RestAssured.given;
 //import javax.ws.rs.core.HttpHeaders;
 //import javax.ws.rs.core.MediaType;
 
-import static jakarta.ws.rs.core.HttpHeaders.ACCEPT;
-import static jakarta.ws.rs.core.HttpHeaders.CONTENT_TYPE;
-import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 //import static javax.ws.rs.core.HttpHeaders.ACCEPT;
 //import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 //import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -33,7 +26,6 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 //import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 //import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 //import static javax.ws.rs.core.Response.Status.OK;
-import static jakarta.ws.rs.core.Response.Status.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasKey;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -74,8 +66,8 @@ public class BookResourceTest {
 
   private static int nbBooks;
   private static String bookId;
-  private TypeRef<List<BookEntity>> getBookTypeRef() {
-    return new TypeRef<List<BookEntity>>() {
+  private TypeRef<List<LibroEntity>> getBookTypeRef() {
+    return new TypeRef<List<LibroEntity>>() {
     };
   }
 

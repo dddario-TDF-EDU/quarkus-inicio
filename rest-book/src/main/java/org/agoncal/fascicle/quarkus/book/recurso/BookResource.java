@@ -9,8 +9,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 
 import org.agoncal.fascicle.quarkus.book.servicio.BookService;
-import org.agoncal.fascicle.quarkus.book.transferible.BookDTO;
-import org.agoncal.fascicle.quarkus.book.transferible.CreateBookDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.libro.CrearLibroDTO;
 import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
@@ -30,11 +30,6 @@ import org.jboss.logging.Logger;
 //import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
-
-import io.quarkus.security.Authenticated;
-import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 
 import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 
@@ -59,7 +54,7 @@ public class BookResource {
     }
 
   @Operation(summary = "Returns a random book")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = LibroDTO.class)))
   // tag::adocMetrics[]
   @Counted(name = "countGetRandomBook", description = "Counts how many times the getRandomBook method has been invoked")
   @Timed(name = "timeGetRandomBook", description = "Times how long it takes to invoke the getRandomBook method", unit = MetricUnits.MILLISECONDS)
@@ -67,13 +62,13 @@ public class BookResource {
   @GET
   @Path("/random")
   public Response getRandomBook() {
-    BookDTO book = service.findRandomBook();
+    LibroDTO book = service.findRandomBook();
     LOGGER.debug("Found random book " + book);
     return Response.ok(book).build();
   }
 
   @Operation(summary = "Returns all the books from the database")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class, type = SchemaType.ARRAY)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = LibroDTO.class, type = SchemaType.ARRAY)))
   @APIResponse(responseCode = "204", description = "No books")
   // tag::adocMetrics[]
   @Counted(name = "countGetAllBooks", description = "Counts how many times the getAllBooks method has been invoked")
@@ -82,13 +77,13 @@ public class BookResource {
   @GET
   //@PermitAll
   public Response getAllBooks() {
-    List<BookDTO> books = service.findAllBooks();
+    List<LibroDTO> books = service.findAllBooks();
     LOGGER.debug("Total number of books " + books);
     return Response.ok(books).build();
   }
 
   @Operation(summary = "Returns a book for a given identifier")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = LibroDTO.class)))
   @APIResponse(responseCode = "404", description = "The book is not found for the given identifier")
   // tag::adocMetrics[]
   @Counted(name = "countGetBook", description = "Counts how many times the getBook method has been invoked")
@@ -100,7 +95,7 @@ public class BookResource {
   //@PermitAll
   public Response getBook(@Parameter(description = "Book identifier", required = true)
                           @PathParam("id") Long id) {
-    BookDTO book = service.findBookById(id);
+    LibroDTO book = service.findBookById(id);
     if (book != null) {
       LOGGER.debug("Found book " + book);
       return Response.ok(book).build();
@@ -118,8 +113,8 @@ public class BookResource {
   @Timed(name = "timeCreateBook", description = "Times how long it takes to invoke the createBook method", unit = MetricUnits.MILLISECONDS)
   @POST
 //  @RolesAllowed("admin")
-  public Response createBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CreateBookDTO.class))) @Valid CreateBookDTO book, @Context UriInfo uriInfo) {
-    BookDTO bookCreado = service.persistBook(book);
+  public Response createBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CrearLibroDTO.class))) @Valid CrearLibroDTO book, @Context UriInfo uriInfo) {
+    LibroDTO bookCreado = service.persistBook(book);
     UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(bookCreado.getIdBook()));
     LOGGER.debug("News book created with URI " + builder.build().toString());
     return Response.created(builder.build()).build();
@@ -127,13 +122,13 @@ public class BookResource {
 
   @Operation(summary = "Updates an existing book")
   @APIResponse(responseCode = "200", description = "The updated book", content =
-  @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class)))
+  @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = LibroDTO.class)))
   @Counted(name = "countUpdateBook", description = "Counts how many times the updateBook method has been invoked")
   @Timed(name = "timeUpdateBook", description = "Times how long it takes to invoke the updateBook method", unit = MetricUnits.MILLISECONDS)
   @Transactional
   @PUT
   //@RolesAllowed("admin")
-  public Response updateBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookDTO.class))) @Valid BookDTO book) {
+  public Response updateBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = LibroDTO.class))) @Valid LibroDTO book) {
     LOGGER.debug(book + "asdasds");
     book = service.updateBook(book);
     LOGGER.debug("Book updated with new valued " + book);

@@ -1,13 +1,10 @@
 package org.agoncal.fascicle.quarkus.book.transformador;
 
-import org.agoncal.fascicle.quarkus.book.modelo.BookEntity;
-import org.agoncal.fascicle.quarkus.book.transferible.BookDTO;
-import org.agoncal.fascicle.quarkus.book.transferible.CreateBookDTO;
-import org.mapstruct.InheritInverseConfiguration;
+import org.agoncal.fascicle.quarkus.book.modelo.LibroEntity;
+import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.libro.CrearLibroDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 @Mapper()
 public interface BookMapper {
@@ -15,17 +12,13 @@ public interface BookMapper {
 
   @Mapping(target = "isbn_13", source = "isbn13")
   @Mapping(target = "isbn_10", source = "isbn10")
-  BookDTO toDTO(BookEntity bookEntity);
+  LibroDTO aDTO(LibroEntity libroEntity);
 
   @Mapping(target = "isbn13", source = "isbn_13")
   @Mapping(target = "isbn10", source = "isbn_10")
-  BookEntity toEntity(BookDTO bookDTO);
+  LibroEntity toEntity(LibroDTO libroDTO);
 
-
-  @Mapping(target = "title", source = "title")
-  @Mapping(target = "author", source = "author")
   @Mapping(target = "yearOfPublication", source = "yearOfPublication")
-  BookEntity toNewEntity(CreateBookDTO newBook);
-  //es un repeat del toDTO
-  //List<BookDTO> toDTOList(List<BookEntity> books);
+  LibroEntity toNewEntity(CrearLibroDTO newBook);
+
 }

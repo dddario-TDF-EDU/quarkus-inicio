@@ -3,13 +3,13 @@ package org.agoncal.fascicle.quarkus.book.transformador;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import javax.annotation.processing.Generated;
-import org.agoncal.fascicle.quarkus.book.modelo.BookEntity;
-import org.agoncal.fascicle.quarkus.book.transferible.BookDTO;
-import org.agoncal.fascicle.quarkus.book.transferible.CreateBookDTO;
+import org.agoncal.fascicle.quarkus.book.modelo.LibroEntity;
+import org.agoncal.fascicle.quarkus.book.transferible.libro.CrearLibroDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-09-30T10:31:32-0300",
+    date = "2024-10-02T11:30:07-0300",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.9 (GraalVM Community)"
 )
 @Singleton
@@ -17,67 +17,63 @@ import org.agoncal.fascicle.quarkus.book.transferible.CreateBookDTO;
 public class BookMapperImpl implements BookMapper {
 
     @Override
-    public BookDTO toDTO(BookEntity bookEntity) {
-        if ( bookEntity == null ) {
+    public LibroDTO aDTO(LibroEntity libroEntity) {
+        if ( libroEntity == null ) {
             return null;
         }
 
-        BookDTO bookDTO = new BookDTO();
+        LibroDTO libroDTO = new LibroDTO();
 
-        bookDTO.setIsbn_13( bookEntity.isbn13 );
-        bookDTO.setIsbn_10( bookEntity.isbn10 );
-        if ( bookEntity.idBook != null ) {
-            bookDTO.setIdBook( bookEntity.idBook );
+        libroDTO.setIsbn_13( libroEntity.isbn13 );
+        libroDTO.setIsbn_10( libroEntity.isbn10 );
+        libroDTO.setYearOfPublication( libroEntity.yearOfPublication );
+        libroDTO.setSmallImageUrl( libroEntity.smallImageUrl );
+        libroDTO.setMediumImageUrl( libroEntity.mediumImageUrl );
+        if ( libroEntity.id_libro != null ) {
+            libroDTO.id_libro = libroEntity.id_libro;
         }
-        bookDTO.setTitle( bookEntity.title );
-        bookDTO.setAuthor( bookEntity.author );
-        bookDTO.setYearOfPublication( bookEntity.yearOfPublication );
-        bookDTO.setNbOfPages( bookEntity.nbOfPages );
-        bookDTO.setRank( bookEntity.rank );
-        bookDTO.setPrice( bookEntity.price );
-        bookDTO.setSmallImageUrl( bookEntity.smallImageUrl );
-        bookDTO.setMediumImageUrl( bookEntity.mediumImageUrl );
-        bookDTO.setDescription( bookEntity.description );
+        libroDTO.titulo = libroEntity.titulo;
+        libroDTO.num_paginas = libroEntity.num_paginas;
+        libroDTO.ranking = libroEntity.ranking;
+        libroDTO.precio = libroEntity.precio;
+        libroDTO.descripcion = libroEntity.descripcion;
 
-        return bookDTO;
+        return libroDTO;
     }
 
     @Override
-    public BookEntity toEntity(BookDTO bookDTO) {
-        if ( bookDTO == null ) {
+    public LibroEntity toEntity(LibroDTO libroDTO) {
+        if ( libroDTO == null ) {
             return null;
         }
 
-        BookEntity bookEntity = new BookEntity();
+        LibroEntity libroEntity = new LibroEntity();
 
-        bookEntity.isbn13 = bookDTO.getIsbn_13();
-        bookEntity.isbn10 = bookDTO.getIsbn_10();
-        bookEntity.idBook = bookDTO.getIdBook();
-        bookEntity.title = bookDTO.getTitle();
-        bookEntity.author = bookDTO.getAuthor();
-        bookEntity.yearOfPublication = bookDTO.getYearOfPublication();
-        bookEntity.nbOfPages = bookDTO.getNbOfPages();
-        bookEntity.rank = bookDTO.getRank();
-        bookEntity.price = bookDTO.getPrice();
-        bookEntity.smallImageUrl = bookDTO.getSmallImageUrl();
-        bookEntity.mediumImageUrl = bookDTO.getMediumImageUrl();
-        bookEntity.description = bookDTO.getDescription();
+        libroEntity.isbn13 = libroDTO.getIsbn_13();
+        libroEntity.isbn10 = libroDTO.getIsbn_10();
+        libroEntity.id_libro = libroDTO.id_libro;
+        libroEntity.titulo = libroDTO.titulo;
+        libroEntity.yearOfPublication = libroDTO.getYearOfPublication();
+        libroEntity.num_paginas = libroDTO.num_paginas;
+        libroEntity.ranking = libroDTO.ranking;
+        libroEntity.precio = libroDTO.precio;
+        libroEntity.smallImageUrl = libroDTO.getSmallImageUrl();
+        libroEntity.mediumImageUrl = libroDTO.getMediumImageUrl();
+        libroEntity.descripcion = libroDTO.descripcion;
 
-        return bookEntity;
+        return libroEntity;
     }
 
     @Override
-    public BookEntity toNewEntity(CreateBookDTO newBook) {
+    public LibroEntity toNewEntity(CrearLibroDTO newBook) {
         if ( newBook == null ) {
             return null;
         }
 
-        BookEntity bookEntity = new BookEntity();
+        LibroEntity libroEntity = new LibroEntity();
 
-        bookEntity.title = newBook.getTitle();
-        bookEntity.author = newBook.getAuthor();
-        bookEntity.yearOfPublication = newBook.getYearOfPublication();
+        libroEntity.yearOfPublication = newBook.getYearOfPublication();
 
-        return bookEntity;
+        return libroEntity;
     }
 }
