@@ -4,31 +4,31 @@ package org.agoncal.fascicle.quarkus.book.transferible.autor;
 
 public class CrearAutorDTO {
 
-  public String name;
-  public String surname;
-  public String nationality;
+  public String nombre;
+  public String apellido;
+  public String nacionalidad;
 
-  public String getName() {
-    return name;
+  public String getNombre() {
+    return nombre;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setNombre(String nombre) {
+    this.nombre = nombre;
   }
 
-  public String getSurname() {
-    return surname;
+  public String getApellido() {
+    return apellido;
   }
 
-  public void setSurname(String surname) {
-    this.surname = surname;
+  public void setApellido(String apellido) {
+    this.apellido = apellido;
   }
 
-  public String getNationality() {
-    return nationality;
+  public String getNacionalidad() {
+    return nacionalidad;
   }
 
-  public void setNationality(String nationality) {
-    this.nationality = nationality;
+  public void setNacionalidad(String nacionalidad) {
+    this.nacionalidad = nacionalidad;
   }
 }

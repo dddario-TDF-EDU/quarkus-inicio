@@ -17,16 +17,16 @@ public class AutorEntity {
   //añadido para sacar panache entity (id)
   @Id
   @GeneratedValue
-  public Long idAuthor;
+  public Long id_autor;
   @NotNull
   @Schema(required = true)
-  public String name;
+  public String nombre;
   @NotNull
   @Schema(required = true)
-  public String surname;
+  public String apellido;
   @NotNull
   @Schema(required = true)
-  public String nationality;
+  public String nacionalidad;
   @ManyToMany(mappedBy = "autores_de_libros")
   private Set<LibroEntity> autorias = new HashSet<>();
 }

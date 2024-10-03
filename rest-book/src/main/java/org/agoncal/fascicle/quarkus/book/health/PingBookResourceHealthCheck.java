@@ -2,7 +2,7 @@ package org.agoncal.fascicle.quarkus.book.health;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.agoncal.fascicle.quarkus.book.recurso.BookResource;
+import org.agoncal.fascicle.quarkus.book.recurso.libro.BookResource;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.Liveness;

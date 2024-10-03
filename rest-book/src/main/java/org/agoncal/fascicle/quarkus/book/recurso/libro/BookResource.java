@@ -1,4 +1,4 @@
-package org.agoncal.fascicle.quarkus.book.recurso;
+package org.agoncal.fascicle.quarkus.book.recurso.libro;
 
 
 import jakarta.enterprise.context.ApplicationScoped;

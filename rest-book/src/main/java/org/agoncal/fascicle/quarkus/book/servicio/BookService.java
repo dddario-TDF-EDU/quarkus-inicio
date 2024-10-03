@@ -76,7 +76,7 @@ public class BookService {
 
 
   public List<LibroDTO> findAllBooks() {
-    List<LibroEntity> booksEntities = bookRepository.listAll();
+    List<LibroEntity> booksEntities = bookRepository.returnAllBooksRepo();
     List<LibroDTO> booksDTO = new ArrayList<>();
     for (LibroEntity libroEntity : booksEntities
          ) {
@@ -87,7 +87,7 @@ public class BookService {
 
 
   public LibroDTO findBookById(Long id) {
-    LibroEntity bookQuery = bookRepository.findByIdRepo(id);
+    LibroEntity bookQuery = bookRepository.findBookByIdRepo(id);
     if (bookQuery != null) {
       //BookEntity bookEntity = bookQuery.get();
       LibroDTO result = bookMapper.aDTO(bookQuery);
@@ -105,7 +105,7 @@ public class BookService {
     if (book.getIdBook() > 0) {
       LibroEntity entity = bookRepository.findById(book.getIdBook());
       if (entity != null) {
-        mapNewBook(book, entity);
+        bookMapper.updateBookFromDTO(book, entity);
         bookRepository.persist(entity);
         return bookMapper.aDTO(entity);
       }
@@ -113,23 +113,8 @@ public class BookService {
     return null;
   }
 
-  private void mapNewBook(LibroDTO book, LibroEntity entity) {
-    entity.titulo = book.titulo;
-    entity.isbn13 = book.isbn_13;
-    entity.isbn10 = book.isbn_10;
-    entity.autores_de_libros = book.autores;
-    entity.yearOfPublication = book.yearOfPublication;
-    entity.num_paginas = book.num_paginas;
-    entity.ranking = book.ranking;
-    entity.precio = book.precio;
-    entity.smallImageUrl = book.smallImageUrl;
-    entity.mediumImageUrl = book.mediumImageUrl;
-    entity.descripcion = book.descripcion;
-  }
-
   public boolean deleteBook(Long id) {
-    return bookRepository.deleteByIdRepo(id);
+    return bookRepository.deleteBookByIdRepo(id);
   }
 
 }
-

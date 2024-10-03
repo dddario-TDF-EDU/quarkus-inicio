@@ -1,43 +1,38 @@
 package org.agoncal.fascicle.quarkus.book.transferible.autor;
 
-import jakarta.validation.constraints.NotNull;
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
-
 public class AutorDTO {
 
-  public Long idAuthor;
-  public String name;
-  public String surname;
+  public Long id_author;
+  public String nombre;
+  public String apellido;
+  public String nacionalidad;
 
-  public Long getIdAuthor() {
-    return idAuthor;
+
+  public Long getId_author() {return id_author; }
+
+  public String getNombre() {
+    return nombre;
   }
 
-  public String getName() {
-    return name;
+  public void setNombre(String nombre) {
+    this.nombre = nombre;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public String getApellido() {
+    return apellido;
   }
 
-  public String getSurname() {
-    return surname;
+  public void setApellido(String apellido) {
+    this.apellido = apellido;
   }
 
-  public void setSurname(String surname) {
-    this.surname = surname;
+  public String getNacionalidad() {
+    return nacionalidad;
   }
 
-  public String getNationality() {
-    return nationality;
+  public void setNacionalidad(String nacionalidad) {
+    this.nacionalidad = nacionalidad;
   }
-
-  public void setNationality(String nationality) {
-    this.nationality = nationality;
-  }
-
-  public String nationality;
 
 
 }

@@ -29,7 +29,7 @@ public class BookRepository implements PanacheRepository<LibroEntity> {
   }
 
   @Transactional(Transactional.TxType.SUPPORTS)
-  public LibroEntity findByIdRepo(Long id) {
+  public LibroEntity findBookByIdRepo(Long id) {
     return findById(id);
   }
 
@@ -50,7 +50,7 @@ public class BookRepository implements PanacheRepository<LibroEntity> {
     return updatedEntity;
   }
 
-  public boolean deleteByIdRepo(Long id) {
+  public boolean deleteBookByIdRepo(Long id) {
     return deleteById(id);
   }
 
