@@ -77,11 +77,11 @@ public class BookService {
 
   public List<LibroDTO> findAllBooks() {
     List<LibroEntity> booksEntities = bookRepository.returnAllBooksRepo();
-    List<LibroDTO> booksDTO = new ArrayList<>();
-    for (LibroEntity libroEntity : booksEntities
-         ) {
-      booksDTO.add(bookMapper.aDTO(libroEntity));
-    }
+    List<LibroDTO> booksDTO = bookMapper.toListDTO(booksEntities);
+//    for (LibroEntity libroEntity : booksEntities
+//         ) {
+//      booksDTO.add(bookMapper.aDTO(libroEntity));
+//    }
     return booksDTO; //AAAAAA
   }
 
@@ -102,13 +102,11 @@ public class BookService {
     return bookMapper.aDTO(bookRepository.findRandomBookRepo());
   }
   public LibroDTO updateBook(@Valid LibroDTO book) {
-    if (book.getIdBook() > 0) {
-      LibroEntity entity = bookRepository.findById(book.getIdBook());
-      if (entity != null) {
-        bookMapper.updateBookFromDTO(book, entity);
-        bookRepository.persist(entity);
-        return bookMapper.aDTO(entity);
-      }
+    LibroEntity entity = bookRepository.findById(book.getIdBook());
+    if (entity != null) {
+      bookMapper.updateBookFromDTO(book, entity);
+      bookRepository.persist(entity);
+      return bookMapper.aDTO(entity);
     }
     return null;
   }

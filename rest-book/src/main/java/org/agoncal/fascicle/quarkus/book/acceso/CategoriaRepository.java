@@ -5,7 +5,6 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.agoncal.fascicle.quarkus.book.modelo.CategoriaEntity;
@@ -25,10 +24,10 @@ public class CategoriaRepository implements PanacheRepository<CategoriaEntity> {
   public List<CategoriaEntity> returnAllCategoriasRepo() { return listAll(); }
 
   @Transactional(Transactional.TxType.SUPPORTS)
-  public  CategoriaEntity findCategoriaByIdRepo (Long id) { return findById(id); }
+  public CategoriaEntity findCategoriaByIdRepo (Long id) { return findById(id); }
 
   @Transactional(Transactional.TxType.SUPPORTS)
-  public  CategoriaEntity findCategoriaByNombre (String nombre) {
+  public CategoriaEntity findCategoriaByNombre (String nombre) {
     return find("nombre", nombre).firstResult();
   }
 

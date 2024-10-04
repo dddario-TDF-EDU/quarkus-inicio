@@ -1,10 +1,5 @@
 package org.agoncal.fascicle.quarkus.book.transferible.categoria;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToMany;
-import org.agoncal.fascicle.quarkus.book.modelo.CategoriaEntity;
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
-
 public class CrearCategoriaDTO {
 
   public String nombre;

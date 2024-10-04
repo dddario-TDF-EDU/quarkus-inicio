@@ -9,12 +9,12 @@ import java.util.Set;
 
 @Schema(description = "Category representation")
 @Entity
-@Table(name = "Categorias")
+@Table(name = "categorias", schema = "public")
 public class CategoriaEntity {
 
   //añadido para sacar panache entity (id)
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   public Long id_categoria;
 
   @NotNull

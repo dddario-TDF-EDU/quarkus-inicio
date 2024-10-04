@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Schema(description = "Book representation")
 @Entity
-@Table(name = "Libros")
+@Table(name = "libros")
 public class LibroEntity {
 
   //añadido para sacar panache entity (id)
@@ -52,10 +52,7 @@ public class LibroEntity {
   public CategoriaEntity categoriaEntity;
 
 
-  @ManyToMany(cascade = {
-    CascadeType.PERSIST,
-    CascadeType.MERGE
-  })
+  @ManyToMany(cascade = CascadeType.ALL)
   @JoinTable(name = "autoria_de_libros",
     joinColumns = @JoinColumn(name = "nro_libro"),
     inverseJoinColumns = @JoinColumn(name = "nro_autor")

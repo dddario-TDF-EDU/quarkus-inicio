@@ -1,12 +1,10 @@
 package org.agoncal.fascicle.quarkus.book.acceso;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.agoncal.fascicle.quarkus.book.modelo.CategoriaEntity;
 import org.agoncal.fascicle.quarkus.book.modelo.ComentarioEntity;
 
 import java.util.List;

@@ -2,6 +2,7 @@ package org.agoncal.fascicle.quarkus.book.acceso;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -11,6 +12,7 @@ import org.agoncal.fascicle.quarkus.book.modelo.AutorEntity;
 
 import java.util.List;
 
+@ApplicationScoped
 public class AutorRepository implements PanacheRepository<AutorEntity> {
 
   @Inject

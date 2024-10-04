@@ -28,7 +28,7 @@ public interface BookMapper {
 
   @Mapping(target = "isbn13", source = "isbn_13")
   @Mapping(target = "isbn10", source = "isbn_10")
-  @Mapping(target = "autores", source = "autores_de_libros")
+  @Mapping(target = "autores_de_libros", source = "autores")
   void updateBookFromDTO(LibroDTO libroDTO, @MappingTarget LibroEntity libroEntity);
 
 }

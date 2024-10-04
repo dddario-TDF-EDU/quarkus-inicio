@@ -4,7 +4,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import org.agoncal.fascicle.quarkus.book.acceso.CategoriaRepository;
-import org.agoncal.fascicle.quarkus.book.modelo.AutorEntity;
 import org.agoncal.fascicle.quarkus.book.modelo.CategoriaEntity;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.CrearCategoriaDTO;
@@ -50,4 +49,15 @@ public class CategoriaService {
   public boolean deleteCategoriaById(Long id) {
     return categoriaRepository.deleteCategoriaById(id);
   }
+
+  public CategoriaDTO updateCategoria(@Valid CategoriaDTO categoriaDTO) {
+    CategoriaEntity categoriaEntity = categoriaRepository.findCategoriaByIdRepo(categoriaDTO.getId_categoria());
+    if (categoriaEntity != null) {
+       categoriaMapper.updateCategoriaFromDTO(categoriaDTO, categoriaEntity);
+       categoriaRepository.persist(categoriaEntity);
+       return categoriaMapper.toDTO(categoriaEntity);
+    }
+    return null;
+  }
+
 }

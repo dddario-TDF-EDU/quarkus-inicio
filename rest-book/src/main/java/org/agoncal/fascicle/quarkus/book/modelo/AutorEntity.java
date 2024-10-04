@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Schema(description = "Authors representation")
 @Entity
-@Table(name = "Autores")
+@Table(name = "autores")
 public class AutorEntity {
 
   //añadido para sacar panache entity (id)
@@ -28,5 +28,5 @@ public class AutorEntity {
   @Schema(required = true)
   public String nacionalidad;
   @ManyToMany(mappedBy = "autores_de_libros")
-  private Set<LibroEntity> autorias = new HashSet<>();
+  public Set<LibroEntity> autorias = new HashSet<>();
 }
