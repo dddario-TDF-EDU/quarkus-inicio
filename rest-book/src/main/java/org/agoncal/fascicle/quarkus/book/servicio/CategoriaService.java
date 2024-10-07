@@ -22,10 +22,10 @@ public class CategoriaService {
   CategoriaMapper categoriaMapper;
 
 
-  public CategoriaDTO persistCategoria(@Valid CrearCategoriaDTO crearCategoriaDTO) {
+  public CategoriaDTO persistCategoria(CrearCategoriaDTO crearCategoriaDTO) {
     CategoriaEntity categoriaEntity = categoriaMapper.toNewEntity(crearCategoriaDTO);
-    if(categoriaRepository.findCategoriaByNombre(categoriaEntity.nombre) != null) {
-      categoriaRepository.persist(categoriaEntity);
+    if(categoriaRepository.findCategoriaByNombre(crearCategoriaDTO.nombre) != null) {
+      categoriaRepository.createCategoriaRepo(categoriaEntity);
       return categoriaMapper.toDTO(categoriaEntity);
     } else {
       return null;
@@ -43,6 +43,7 @@ public class CategoriaService {
   }
 
   public List<CategoriaDTO> returnAllCategorias() {
+    System.out.print("asdasdsaasdasdaaaaaaa");
     return categoriaMapper.toListDTO(categoriaRepository.returnAllCategoriasRepo());
   }
 

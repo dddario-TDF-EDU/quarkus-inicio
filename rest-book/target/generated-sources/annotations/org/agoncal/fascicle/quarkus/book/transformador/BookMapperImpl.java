@@ -14,7 +14,7 @@ import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-10-04T13:03:54-0300",
+    date = "2024-10-07T13:40:57-0300",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.9 (GraalVM Community)"
 )
 @Singleton

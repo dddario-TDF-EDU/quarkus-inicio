@@ -20,8 +20,15 @@ public class CategoriaRepository implements PanacheRepository<CategoriaEntity> {
 
   public void createCategoriaRepo(@Valid CategoriaEntity newCategoria) { persist(newCategoria); }
 
-  @Transactional(Transactional.TxType.SUPPORTS)
-  public List<CategoriaEntity> returnAllCategoriasRepo() { return listAll(); }
+    @Transactional(Transactional.TxType.SUPPORTS)
+//  public List<CategoriaEntity> returnAllCategoriasRepo() {
+//    System.out.print("Repository aaaaaaaaaaaaaaaaaaaaaaaaaaaa" + listAll() + "finlistaaaaal");
+//    return listAll(); }
+
+  public List<CategoriaEntity> returnAllCategoriasRepo() {
+    return em.createQuery("SELECT c FROM CategoriaEntity c", CategoriaEntity.class).getResultList();
+  }
+
 
   @Transactional(Transactional.TxType.SUPPORTS)
   public CategoriaEntity findCategoriaByIdRepo (Long id) { return findById(id); }

@@ -26,5 +26,6 @@
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/modelo/CategoriaEntity.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/acceso/BookRepository.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/servicio/numberResources/NumberProxy.java
+/home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/transferible/categoria/AgregarSubcategoriaDTO.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/transferible/categoria/CrearCategoriaDTO.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/modelo/AutorEntity.java

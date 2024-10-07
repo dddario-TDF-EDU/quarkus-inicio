@@ -8,6 +8,9 @@ import org.jboss.logging.Logger;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
 //import javax.enterprise.context.ApplicationScoped;
 //import javax.enterprise.event.Observes;
 
@@ -16,7 +19,6 @@ import jakarta.enterprise.event.Observes;
 class BookApplicationLifeCycle {
 
   private static final Logger LOGGER = Logger.getLogger(BookApplicationLifeCycle.class);
-
   void onStart(@Observes StartupEvent ev) {
     LOGGER.info("______                 _");
     LOGGER.info("| ___ \\              | |");
