@@ -12,24 +12,24 @@ import java.util.Set;
 
 public class LibroDTO {
 
-  public long id_libro;
+  public Integer id_libro;
   public String titulo;
   public String isbn_13;
   public String isbn_10;
   public Set<AutorEntity> autores = new HashSet<>();
-  public Integer yearOfPublication;
-  public Integer num_paginas;
-  public Integer ranking;
+  public short yearOfPublication;
+  public short num_paginas;
+  public short ranking;
   public BigDecimal precio;
   public URL smallImageUrl;
   public URL mediumImageUrl;
   public String descripcion;
 
-  public long getIdBook() {
+  public Integer getIdBook() {
     return id_libro;
   }
 
-  public void setIdBook(long idBook) {
+  public void setIdBook(Integer idBook) {
     this.id_libro = idBook;
   }
 
@@ -65,27 +65,27 @@ public class LibroDTO {
     this.autores = autores;
   }
 
-  public Integer getYearOfPublication() {
+  public short getYearOfPublication() {
     return yearOfPublication;
   }
 
-  public void setYearOfPublication(Integer yearOfPublication) {
+  public void setYearOfPublication(short yearOfPublication) {
     this.yearOfPublication = yearOfPublication;
   }
 
-  public Integer getNbOfPages() {
+  public short getNbOfPages() {
     return num_paginas;
   }
 
-  public void setNbOfPages(Integer nbOfPages) {
+  public void setNbOfPages(short nbOfPages) {
     this.num_paginas = nbOfPages;
   }
 
-  public Integer getRank() {
+  public short getRank() {
     return ranking;
   }
 
-  public void setRank(Integer rank) {
+  public void setRank(short rank) {
     this.ranking = rank;
   }
 

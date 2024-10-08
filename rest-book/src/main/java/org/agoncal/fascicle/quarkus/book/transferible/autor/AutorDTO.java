@@ -2,13 +2,13 @@ package org.agoncal.fascicle.quarkus.book.transferible.autor;
 
 public class AutorDTO {
 
-  public Long id_author;
+  public Integer id_author;
   public String nombre;
   public String apellido;
   public String nacionalidad;
 
 
-  public Long getId_author() {return id_author; }
+  public Integer getId_author() {return id_author; }
 
   public String getNombre() {
     return nombre;

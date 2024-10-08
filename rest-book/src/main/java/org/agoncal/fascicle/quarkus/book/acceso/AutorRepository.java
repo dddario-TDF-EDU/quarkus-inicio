@@ -28,7 +28,7 @@ public class AutorRepository implements PanacheRepository<AutorEntity> {
   }
 
   @Transactional(Transactional.TxType.SUPPORTS)
-  public AutorEntity findAutorByIdRepo(Long id) { return findById(id); }
+  public AutorEntity findAutorByIdRepo(Integer id) { return findById((long)id); }
 
   @Transactional(Transactional.TxType.SUPPORTS)
   public boolean findAutorByName(@Valid AutorEntity autorEntity) {
@@ -41,8 +41,8 @@ public class AutorRepository implements PanacheRepository<AutorEntity> {
     return updatedEntity;
   }
 
-  public boolean deleteAutorByIdRepo(Long id) {
-    return deleteById(id);
+  public boolean deleteAutorByIdRepo(Integer id) {
+    return deleteById((long)id);
   }
 
   public void persist(AutorEntity autorEntity) {

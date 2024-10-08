@@ -95,7 +95,7 @@ public class BookResource {
   @Path("/{id}")
   //@PermitAll
   public Response getBook(@Parameter(description = "Book identifier", required = true)
-                          @PathParam("id") Long id) {
+                          @PathParam("id") Integer id) {
     LibroDTO book = service.findBookById(id);
     if (book != null) {
       LOGGER.debug("Found book " + book);

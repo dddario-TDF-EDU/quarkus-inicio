@@ -14,8 +14,8 @@ public class CategoriaEntity {
 
   //añadido para sacar panache entity (id)
   @Id
-  @GeneratedValue()
-  public Long id_categoria;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  public Integer id_categoria;
 
   @NotNull
   @Schema(required = true)

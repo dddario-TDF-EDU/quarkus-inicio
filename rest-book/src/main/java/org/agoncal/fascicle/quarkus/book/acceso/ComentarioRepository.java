@@ -20,14 +20,14 @@ public class ComentarioRepository implements PanacheRepository<ComentarioEntity>
   public List<ComentarioEntity> returnAllComentariosRepo() { return listAll(); }
 
   @Transactional(Transactional.TxType.SUPPORTS)
-  public  ComentarioEntity findComentarioByIdRepo (Long id) { return findById(id); }
+  public  ComentarioEntity findComentarioByIdRepo (Integer id) { return findById(Long.valueOf(id)); }
 
   public ComentarioEntity updateComentarioRepo(@Valid ComentarioEntity comentario) {
     ComentarioEntity comentarioEntity = em.merge(comentario);
     return  comentarioEntity;
   }
 
-  public boolean deleteComentarioById(Long id) { return deleteById(id); }
+  public boolean deleteComentarioById(Integer id) { return deleteById(Long.valueOf(id)); }
 
   public void persist(ComentarioEntity comentarioEntity) { PanacheRepository.super.persist(comentarioEntity); }
 

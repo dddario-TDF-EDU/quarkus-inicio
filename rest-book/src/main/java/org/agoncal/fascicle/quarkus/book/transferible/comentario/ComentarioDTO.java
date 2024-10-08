@@ -9,17 +9,17 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 public class ComentarioDTO {
 
-  public Long id_comentario;
+  public Integer id_comentario;
   public String email;
   public String texto;
-  public Integer puntuacion;
-  public Long libro_id;
+  public short puntuacion;
+  public Integer libro_id;
 
-  public Long getId_comentario() {
+  public Integer getId_comentario() {
     return id_comentario;
   }
 
-  public void setId_comentario(Long id_comentario) {
+  public void setId_comentario(Integer id_comentario) {
     this.id_comentario = id_comentario;
   }
 
@@ -39,19 +39,19 @@ public class ComentarioDTO {
     this.texto = texto;
   }
 
-  public Integer getPuntuacion() {
+  public short getPuntuacion() {
     return puntuacion;
   }
 
-  public void setPuntuacion(Integer puntuacion) {
+  public void setPuntuacion(short puntuacion) {
     this.puntuacion = puntuacion;
   }
 
-  public Long getLibro_id() {
+  public Integer getLibro_id() {
     return libro_id;
   }
 
-  public void setLibro_id(Long libro_id) {
+  public void setLibro_id(Integer libro_id) {
     this.libro_id = libro_id;
   }
 }

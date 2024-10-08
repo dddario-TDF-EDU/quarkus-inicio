@@ -8,13 +8,13 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 @Schema(description = "Comments representation")
 @Entity
-@Table(name = "Comments")
+@Table(name = "comentarios")
 public class ComentarioEntity {
 
   //añadido para sacar panache entity (id)
   @Id
-  @GeneratedValue
-  public Long id_comentario;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  public Integer id_comentario;
 
   @NotNull
   @Schema(required = true)
@@ -23,9 +23,10 @@ public class ComentarioEntity {
   @Schema(required = true)
   public String texto; //revisar
   @Min(1) @Max(10)
-  public Integer puntuacion;
+  public short puntuacion;
   @ManyToOne
+  @JoinColumn(name = "libro_id", referencedColumnName = "id_libro")
   @NotNull
   @Schema(required = true)
-  public LibroEntity libro_id;
+  public LibroEntity libro;
 }

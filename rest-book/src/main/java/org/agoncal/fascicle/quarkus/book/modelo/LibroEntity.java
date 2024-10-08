@@ -21,8 +21,8 @@ public class LibroEntity {
 
   //añadido para sacar panache entity (id)
   @Id
-  @GeneratedValue
-  public Long id_libro;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  public Integer id_libro;
 
   @NotNull
   @Schema(required = true)
@@ -32,11 +32,11 @@ public class LibroEntity {
   @Column(name = "isbn_10")
   public String isbn10;
   @Column(name = "year_of_publication")
-  public Integer yearOfPublication;
+  public short yearOfPublication;
   @Column(name = "num_de_paginas")
-  public Integer num_paginas;
+  public short num_paginas;
   @Min(1) @Max(10)
-  public Integer ranking;
+  public short ranking;
   public BigDecimal precio;
   @Column(name = "small_image_url")
   public URL smallImageUrl;
@@ -48,7 +48,7 @@ public class LibroEntity {
 
   @NotNull
   @ManyToOne()
-  @JoinColumn(name = "categoryId", nullable = false)
+  @JoinColumn(name = "nro_categoria", referencedColumnName = "id_categoria", nullable = false)
   public CategoriaEntity categoriaEntity;
 
 

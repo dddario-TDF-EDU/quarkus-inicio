@@ -86,7 +86,7 @@ public class BookService {
   }
 
 
-  public LibroDTO findBookById(Long id) {
+  public LibroDTO findBookById(Integer id) {
     LibroEntity bookQuery = bookRepository.findBookByIdRepo(id);
     if (bookQuery != null) {
       //BookEntity bookEntity = bookQuery.get();
@@ -102,7 +102,7 @@ public class BookService {
     return bookMapper.aDTO(bookRepository.findRandomBookRepo());
   }
   public LibroDTO updateBook(@Valid LibroDTO book) {
-    LibroEntity entity = bookRepository.findById(book.getIdBook());
+    LibroEntity entity = bookRepository.findById(Long.valueOf(book.getIdBook()));
     if (entity != null) {
       bookMapper.updateBookFromDTO(book, entity);
       bookRepository.persist(entity);

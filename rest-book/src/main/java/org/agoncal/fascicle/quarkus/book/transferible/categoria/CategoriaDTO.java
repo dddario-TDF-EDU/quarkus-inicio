@@ -6,11 +6,11 @@ import java.util.Set;
 
 public class CategoriaDTO {
 
-  public Long id_categoria;
+  public Integer id_categoria;
   public String nombre;
   private Set<CategoriaEntity> subcategorias;
 
-  public Long getId_categoria() {
+  public Integer getId_categoria() {
     return this.id_categoria;
   }
 

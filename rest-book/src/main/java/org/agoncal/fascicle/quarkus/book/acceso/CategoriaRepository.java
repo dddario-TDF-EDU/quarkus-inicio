@@ -31,7 +31,7 @@ public class CategoriaRepository implements PanacheRepository<CategoriaEntity> {
 
 
   @Transactional(Transactional.TxType.SUPPORTS)
-  public CategoriaEntity findCategoriaByIdRepo (Long id) { return findById(id); }
+  public CategoriaEntity findCategoriaByIdRepo (Integer id) { return findById((long)id); }
 
   @Transactional(Transactional.TxType.SUPPORTS)
   public CategoriaEntity findCategoriaByNombre (String nombre) {

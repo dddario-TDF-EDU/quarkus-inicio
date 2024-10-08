@@ -16,8 +16,9 @@ public class AutorEntity {
 
   //añadido para sacar panache entity (id)
   @Id
-  @GeneratedValue
-  public Long id_autor;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  //@SequenceGenerator(name = "autores_SEQ", sequenceName = "autores_SEQ", allocationSize = 1)
+  public Integer id_autor;
   @NotNull
   @Schema(required = true)
   public String nombre;

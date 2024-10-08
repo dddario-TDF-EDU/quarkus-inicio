@@ -14,7 +14,7 @@ import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-10-07T13:40:57-0300",
+    date = "2024-10-08T13:42:05-0300",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.9 (GraalVM Community)"
 )
 @Singleton
@@ -34,9 +34,7 @@ public class BookMapperImpl implements BookMapper {
         libroDTO.setYearOfPublication( libroEntity.yearOfPublication );
         libroDTO.setSmallImageUrl( libroEntity.smallImageUrl );
         libroDTO.setMediumImageUrl( libroEntity.mediumImageUrl );
-        if ( libroEntity.id_libro != null ) {
-            libroDTO.id_libro = libroEntity.id_libro;
-        }
+        libroDTO.id_libro = libroEntity.id_libro;
         libroDTO.titulo = libroEntity.titulo;
         libroDTO.num_paginas = libroEntity.num_paginas;
         libroDTO.ranking = libroEntity.ranking;

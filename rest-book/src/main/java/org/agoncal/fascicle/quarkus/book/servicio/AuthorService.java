@@ -35,7 +35,7 @@ public class AuthorService {
     return  autorMapper.toListDTO(autorEntities);
   }
 
-  public AutorDTO findAutorById(Long id) {
+  public AutorDTO findAutorById(Integer id) {
     AutorEntity autorEntity = autorRepository.findAutorByIdRepo(id);
     if (autorEntity != null) {
       return autorMapper.toDTO(autorEntity);
@@ -55,6 +55,6 @@ public class AuthorService {
     return null;
   }
 
-  public boolean deleteAutor(Long id) { return autorRepository.deleteAutorByIdRepo(id); }
+  public boolean deleteAutor(Integer id) { return autorRepository.deleteAutorByIdRepo(id); }
 
 }

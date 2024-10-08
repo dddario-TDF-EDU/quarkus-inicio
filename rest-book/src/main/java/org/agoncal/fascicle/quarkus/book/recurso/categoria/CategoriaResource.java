@@ -44,7 +44,7 @@ public class CategoriaResource {
   @GET
   @Path("/{id}")
   public Response getCategoria(@Parameter(description = "Categoria identifier", required = true)
-                          @PathParam("id") Long id) {
+                          @PathParam("id") Integer id) {
     CategoriaDTO categoriaDTO = categoriaService.findCategoriaById(id);
     if (categoriaDTO != null) {
       LOGGER.debug("Found categoria " + categoriaDTO);
@@ -58,15 +58,17 @@ public class CategoriaResource {
 
   @POST
   public Response createCategoria(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CrearCategoriaDTO.class))) @Valid CrearCategoriaDTO newCategoria, @Context UriInfo uriInfo) {
+    System.out.println("Cuerpo de la solicitud: " + newCategoria.getNombre());
+
     CategoriaDTO categoriaDTO = categoriaService.persistCategoria(newCategoria);
-//    if (categoriaDTO!= null) {
+    if (categoriaDTO!= null) {
       UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(categoriaDTO.getId_categoria()));
       LOGGER.debug("News categoria created with URI " + builder.build().toString());
       LOGGER.debug("asdasddsad " + categoriaDTO);
       return Response.created(builder.build()).build();
-//    } else {
-//      return Response.serverError().build();
-//    }
+    } else {
+      return Response.serverError().build();
+    }
   }
 
   @PUT

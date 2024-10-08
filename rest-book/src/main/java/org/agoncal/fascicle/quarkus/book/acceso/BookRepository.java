@@ -29,8 +29,8 @@ public class BookRepository implements PanacheRepository<LibroEntity> {
   }
 
   @Transactional(Transactional.TxType.SUPPORTS)
-  public LibroEntity findBookByIdRepo(Long id) {
-    return findById(id);
+  public LibroEntity findBookByIdRepo(Integer id) {
+    return findById(Long.valueOf(id));
   }
 
   @Transactional(Transactional.TxType.SUPPORTS)

@@ -23,8 +23,10 @@ public class CategoriaService {
 
 
   public CategoriaDTO persistCategoria(CrearCategoriaDTO crearCategoriaDTO) {
+    System.out.println("cuerpo en servicio" + crearCategoriaDTO.getNombre());
     CategoriaEntity categoriaEntity = categoriaMapper.toNewEntity(crearCategoriaDTO);
-    if(categoriaRepository.findCategoriaByNombre(crearCategoriaDTO.nombre) != null) {
+    System.out.println("cuerpo en servicio transformado a identidad" + categoriaEntity.nombre);
+    if(categoriaRepository.findCategoriaByNombre(crearCategoriaDTO.nombre) == null) {
       categoriaRepository.createCategoriaRepo(categoriaEntity);
       return categoriaMapper.toDTO(categoriaEntity);
     } else {
@@ -32,7 +34,7 @@ public class CategoriaService {
     }
   }
 
-  public CategoriaDTO findCategoriaById(@Valid Long id) {
+  public CategoriaDTO findCategoriaById(@Valid Integer id) {
     CategoriaEntity categoriaEntity = categoriaRepository.findCategoriaByIdRepo(id);
     return categoriaMapper.toDTO(categoriaEntity);
   }

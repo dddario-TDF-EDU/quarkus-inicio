@@ -7,7 +7,7 @@ import java.util.Set;
 public class CrearLibroDTO {
   public String title;
   public Set<AutorEntity> autores;
-  public Integer yearOfPublication;
+  public short yearOfPublication;
 
   public String getTitle() {
     return title;
@@ -27,11 +27,11 @@ public class CrearLibroDTO {
 
   public void addAuthor(AutorEntity autor) { this.autores.add(autor); }
 
-  public Integer getYearOfPublication() {
+  public short getYearOfPublication() {
     return yearOfPublication;
   }
 
-  public void setYearOfPublication(Integer yearOfPublication) {
+  public void setYearOfPublication(short yearOfPublication) {
     this.yearOfPublication = yearOfPublication;
   }
 
