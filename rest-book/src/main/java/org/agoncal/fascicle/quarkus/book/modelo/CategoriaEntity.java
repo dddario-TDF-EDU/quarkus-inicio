@@ -26,6 +26,6 @@ public class CategoriaEntity {
     joinColumns = @JoinColumn(name = "categoria_padre"),
     inverseJoinColumns = @JoinColumn(name = "categoria_hija")
   )
-  private Set<CategoriaEntity> subcategorias = new HashSet<>();
+  public Set<CategoriaEntity> subcategorias = new HashSet<CategoriaEntity>();
 
 }

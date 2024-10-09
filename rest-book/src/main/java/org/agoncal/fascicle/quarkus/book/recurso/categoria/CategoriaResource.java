@@ -9,6 +9,7 @@ import org.agoncal.fascicle.quarkus.book.servicio.CategoriaService;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.CrearCategoriaDTO;
 
+import org.agoncal.fascicle.quarkus.book.transferible.categoria.UpdateNombreCategoriaDTO;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
@@ -16,8 +17,6 @@ import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.List;
 
 import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
@@ -35,7 +34,6 @@ public class CategoriaResource {
 
   @GET
   public Response getAllCategorias() {
-    System.out.print("Hello wordasdasdsadsds ");
     List<CategoriaDTO> categorias = categoriaService.returnAllCategorias();
     LOGGER.debug("Total number of categorias " + categorias);
     return Response.ok(categorias).build();
@@ -72,9 +70,20 @@ public class CategoriaResource {
   }
 
   @PUT
-  public Response updateCategoria(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CategoriaDTO.class))) @Valid CategoriaDTO categoria) {
+  @Path("/{id}")
+  public Response addSubcategoria(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CategoriaDTO.class)))@PathParam("id") Integer id, @Valid CategoriaDTO subcategoria, @Context UriInfo uriInfo) {
+    CategoriaDTO categoriaFinal = categoriaService.addSubcategoria(subcategoria, id);
+    if (categoriaFinal == null) {
+      return Response.serverError().build();
+    } else {
+      return Response.ok(categoriaFinal).build();
+    }
+  }
+
+  @PUT
+  public Response updateNombreCategoria(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = UpdateNombreCategoriaDTO.class))) @Valid UpdateNombreCategoriaDTO categoria) {
     LOGGER.debug((categoria));
-    categoria = categoriaService.updateCategoria(categoria);
+    categoria = categoriaService.updateNombreCategoria(categoria);
     return Response.ok(categoria).build();
   }
 

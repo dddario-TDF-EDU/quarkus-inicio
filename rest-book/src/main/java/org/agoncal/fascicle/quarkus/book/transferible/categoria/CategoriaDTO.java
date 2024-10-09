@@ -2,13 +2,14 @@ package org.agoncal.fascicle.quarkus.book.transferible.categoria;
 
 import org.agoncal.fascicle.quarkus.book.modelo.CategoriaEntity;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class CategoriaDTO {
 
   public Integer id_categoria;
   public String nombre;
-  private Set<CategoriaEntity> subcategorias;
+  public Set<CategoriaDTO> subcategorias = new HashSet<>();
 
   public Integer getId_categoria() {
     return this.id_categoria;
@@ -22,14 +23,14 @@ public class CategoriaDTO {
     this.nombre = nombre;
   }
 
-  public Set<CategoriaEntity> getCategoriaPadre() {
+  public Set<CategoriaDTO> getSubcategorias() {
     return this.subcategorias;
   }
 
-  public void setCategoriaPadre(Set<CategoriaEntity> categoriaPadre) {
-    this.subcategorias = categoriaPadre;
+  public void setSubcategorias(Set<CategoriaDTO> subcategorias) {
+    this.subcategorias = subcategorias;
   }
 
-  public void addCategoriaPadre(CategoriaEntity categoriaEntity) { this.subcategorias.add(categoriaEntity); }
+  //public void addSubcategorias(CategoriaDTO categoriaDTO) { this.subcategorias.add(categoriaDTO); }
 
 }

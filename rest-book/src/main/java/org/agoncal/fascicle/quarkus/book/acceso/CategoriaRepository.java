@@ -20,13 +20,9 @@ public class CategoriaRepository implements PanacheRepository<CategoriaEntity> {
 
   public void createCategoriaRepo(@Valid CategoriaEntity newCategoria) { persist(newCategoria); }
 
-    @Transactional(Transactional.TxType.SUPPORTS)
-//  public List<CategoriaEntity> returnAllCategoriasRepo() {
-//    System.out.print("Repository aaaaaaaaaaaaaaaaaaaaaaaaaaaa" + listAll() + "finlistaaaaal");
-//    return listAll(); }
-
+  @Transactional(Transactional.TxType.SUPPORTS)
   public List<CategoriaEntity> returnAllCategoriasRepo() {
-    return em.createQuery("SELECT c FROM CategoriaEntity c", CategoriaEntity.class).getResultList();
+    return em.createQuery("FROM CategoriaEntity", CategoriaEntity.class).getResultList();
   }
 
 
@@ -39,9 +35,19 @@ public class CategoriaRepository implements PanacheRepository<CategoriaEntity> {
   }
 
 
+
   public CategoriaEntity updateCategoriaRepo(@Valid CategoriaEntity categoria) {
-    CategoriaEntity updateEntity = em.merge(categoria);
-    return  updateEntity;
+    return em.merge(categoria);
+  }
+
+  public void addSubcategoriaRepo(@Valid CategoriaEntity padre, @Valid CategoriaEntity hija) {
+    em.createQuery( "INSERT INTO CategoriaEntity (" +
+        "subcategorias INSERT INTO (categoria_padre, categoria_hija) VALUES (1,2)) " +
+      "VALUES (1,2)")
+      .setParameter(1,padre.id_categoria)
+      .setParameter(2, hija.id_categoria)
+      .executeUpdate();
+    return  ;
   }
 
   public boolean deleteCategoriaById(Long id) { return deleteById(id); }

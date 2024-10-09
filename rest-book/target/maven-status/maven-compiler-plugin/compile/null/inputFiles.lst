@@ -2,6 +2,7 @@
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/modelo/LibroEntity.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/transferible/categoria/CategoriaDTO.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/acceso/AutorRepository.java
+/home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/transferible/categoria/UpdateNombreCategoriaDTO.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/transferible/libro/CrearLibroDTO.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/servicio/numberResources/IsbnNumbers.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/recurso/categoria/CategoriaResource.java
@@ -25,7 +26,7 @@
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/recurso/libro/BookResource.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/modelo/CategoriaEntity.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/acceso/BookRepository.java
+/home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/transferible/categoria/AddSubcategoriaDTO.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/servicio/numberResources/NumberProxy.java
-/home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/transferible/categoria/AgregarSubcategoriaDTO.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/transferible/categoria/CrearCategoriaDTO.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/modelo/AutorEntity.java
