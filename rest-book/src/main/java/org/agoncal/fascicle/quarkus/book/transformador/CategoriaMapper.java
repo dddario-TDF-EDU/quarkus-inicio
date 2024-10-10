@@ -2,6 +2,7 @@ package org.agoncal.fascicle.quarkus.book.transformador;
 
 import org.agoncal.fascicle.quarkus.book.modelo.CategoriaEntity;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaSencillaDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.CrearCategoriaDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.UpdateNombreCategoriaDTO;
 import org.mapstruct.Mapper;
@@ -21,6 +22,7 @@ public interface CategoriaMapper {
   UpdateNombreCategoriaDTO entityToNombreDTO(CategoriaEntity categoriaEntity);
 
   List<CategoriaDTO> listEntityToListDTO(List<CategoriaEntity> categoriaEntityList);
+  List<CategoriaSencillaDTO> listEntityToListSimpleDTO(List<CategoriaEntity> categoriaEntityList);
 
   void updateNombreCategoriaFromDTO(UpdateNombreCategoriaDTO categoriaDTO, @MappingTarget  CategoriaEntity categoriaEntity);
 

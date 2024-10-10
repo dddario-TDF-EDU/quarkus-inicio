@@ -21,7 +21,7 @@ public class CategoriaEntity {
   @Schema(required = true)
   public String nombre; //revisar
 
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.ALL)
   @JoinTable(name = "subcategorias",
     joinColumns = @JoinColumn(name = "categoria_padre"),
     inverseJoinColumns = @JoinColumn(name = "categoria_hija")

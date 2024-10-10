@@ -9,12 +9,13 @@ import java.util.Set;
 import javax.annotation.processing.Generated;
 import org.agoncal.fascicle.quarkus.book.modelo.CategoriaEntity;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaSencillaDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.CrearCategoriaDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.UpdateNombreCategoriaDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-10-09T13:05:55-0300",
+    date = "2024-10-10T11:58:29-0300",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.9 (GraalVM Community)"
 )
 @Singleton
@@ -93,6 +94,20 @@ public class CategoriaMapperImpl implements CategoriaMapper {
     }
 
     @Override
+    public List<CategoriaSencillaDTO> listEntityToListSimpleDTO(List<CategoriaEntity> categoriaEntityList) {
+        if ( categoriaEntityList == null ) {
+            return null;
+        }
+
+        List<CategoriaSencillaDTO> list = new ArrayList<CategoriaSencillaDTO>( categoriaEntityList.size() );
+        for ( CategoriaEntity categoriaEntity : categoriaEntityList ) {
+            list.add( categoriaEntityToCategoriaSencillaDTO( categoriaEntity ) );
+        }
+
+        return list;
+    }
+
+    @Override
     public void updateNombreCategoriaFromDTO(UpdateNombreCategoriaDTO categoriaDTO, CategoriaEntity categoriaEntity) {
         if ( categoriaDTO == null ) {
             return;
@@ -152,5 +167,18 @@ public class CategoriaMapperImpl implements CategoriaMapper {
         }
 
         return set1;
+    }
+
+    protected CategoriaSencillaDTO categoriaEntityToCategoriaSencillaDTO(CategoriaEntity categoriaEntity) {
+        if ( categoriaEntity == null ) {
+            return null;
+        }
+
+        CategoriaSencillaDTO categoriaSencillaDTO = new CategoriaSencillaDTO();
+
+        categoriaSencillaDTO.setNombre( categoriaEntity.nombre );
+        categoriaSencillaDTO.id_categoria = categoriaEntity.id_categoria;
+
+        return categoriaSencillaDTO;
     }
 }

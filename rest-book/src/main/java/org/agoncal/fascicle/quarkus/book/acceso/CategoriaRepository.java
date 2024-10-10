@@ -5,6 +5,7 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PreRemove;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.agoncal.fascicle.quarkus.book.modelo.CategoriaEntity;
@@ -24,33 +25,51 @@ public class CategoriaRepository implements PanacheRepository<CategoriaEntity> {
   public List<CategoriaEntity> returnAllCategoriasRepo() {
     return em.createQuery("FROM CategoriaEntity", CategoriaEntity.class).getResultList();
   }
-
-
   @Transactional(Transactional.TxType.SUPPORTS)
-  public CategoriaEntity findCategoriaByIdRepo (Integer id) { return findById((long)id); }
+  public CategoriaEntity findCategoriaByIdRepo (Integer id) {
+    return em.find(CategoriaEntity.class, id);
+  }
 
   @Transactional(Transactional.TxType.SUPPORTS)
   public CategoriaEntity findCategoriaByNombre (String nombre) {
-    return find("nombre", nombre).firstResult();
+    CategoriaEntity resultado = em.createQuery( "SELECT c FROM CategoriaEntity c WHERE c.nombre = :nombre", CategoriaEntity.class).setParameter("nombre", nombre).getResultList().stream().findFirst().orElse(null);
+//    if (resultado == null) {
+//      return null;
+//    } else {
+      return resultado;
+    //}
   }
-
-
 
   public CategoriaEntity updateCategoriaRepo(@Valid CategoriaEntity categoria) {
     return em.merge(categoria);
   }
 
-  public void addSubcategoriaRepo(@Valid CategoriaEntity padre, @Valid CategoriaEntity hija) {
-    em.createQuery( "INSERT INTO CategoriaEntity (" +
-        "subcategorias INSERT INTO (categoria_padre, categoria_hija) VALUES (1,2)) " +
-      "VALUES (1,2)")
-      .setParameter(1,padre.id_categoria)
-      .setParameter(2, hija.id_categoria)
-      .executeUpdate();
-    return  ;
+  public CategoriaEntity addSubcategoriaRepo(@Valid CategoriaEntity padre, @Valid CategoriaEntity hija) {
+    padre.subcategorias.add(hija);
+    updateCategoriaRepo(padre);
+    return  padre;
   }
 
-  public boolean deleteCategoriaById(Long id) { return deleteById(id); }
+  public CategoriaEntity removeSubcategoriaRepo(@Valid CategoriaEntity padre, @Valid CategoriaEntity hija) {
+    padre.subcategorias.remove(hija);
+    updateCategoriaRepo(padre);
+    return  padre;
+  }
+
+  public void deleteCategoriaById(Integer id) {
+    CategoriaEntity catHija = findCategoriaByIdRepo(id);
+    removeRelations(catHija);
+    em.flush();
+    em.remove(catHija);
+  }
+
+  @PreRemove
+  private void removeRelations(CategoriaEntity catHija) {
+    for (CategoriaEntity catsPadre : catHija.subcategorias) {
+      catsPadre.subcategorias.remove(catHija);
+    }
+    catHija.subcategorias.clear();
+  }
 
   public void persist(CategoriaEntity categoriaEntity) { PanacheRepository.super.persist(categoriaEntity); }
 
