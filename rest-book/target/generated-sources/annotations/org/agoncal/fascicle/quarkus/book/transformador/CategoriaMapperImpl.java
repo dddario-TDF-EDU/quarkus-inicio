@@ -9,13 +9,13 @@ import java.util.Set;
 import javax.annotation.processing.Generated;
 import org.agoncal.fascicle.quarkus.book.modelo.CategoriaEntity;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaDTO;
-import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaSencillaDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaSimpleDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.CrearCategoriaDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.UpdateNombreCategoriaDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-10-10T11:58:29-0300",
+    date = "2024-10-10T13:14:47-0300",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.9 (GraalVM Community)"
 )
 @Singleton
@@ -94,14 +94,14 @@ public class CategoriaMapperImpl implements CategoriaMapper {
     }
 
     @Override
-    public List<CategoriaSencillaDTO> listEntityToListSimpleDTO(List<CategoriaEntity> categoriaEntityList) {
+    public List<CategoriaSimpleDTO> listEntityToListSimpleDTO(List<CategoriaEntity> categoriaEntityList) {
         if ( categoriaEntityList == null ) {
             return null;
         }
 
-        List<CategoriaSencillaDTO> list = new ArrayList<CategoriaSencillaDTO>( categoriaEntityList.size() );
+        List<CategoriaSimpleDTO> list = new ArrayList<CategoriaSimpleDTO>( categoriaEntityList.size() );
         for ( CategoriaEntity categoriaEntity : categoriaEntityList ) {
-            list.add( categoriaEntityToCategoriaSencillaDTO( categoriaEntity ) );
+            list.add( categoriaEntityToCategoriaSimpleDTO( categoriaEntity ) );
         }
 
         return list;
@@ -169,16 +169,16 @@ public class CategoriaMapperImpl implements CategoriaMapper {
         return set1;
     }
 
-    protected CategoriaSencillaDTO categoriaEntityToCategoriaSencillaDTO(CategoriaEntity categoriaEntity) {
+    protected CategoriaSimpleDTO categoriaEntityToCategoriaSimpleDTO(CategoriaEntity categoriaEntity) {
         if ( categoriaEntity == null ) {
             return null;
         }
 
-        CategoriaSencillaDTO categoriaSencillaDTO = new CategoriaSencillaDTO();
+        CategoriaSimpleDTO categoriaSimpleDTO = new CategoriaSimpleDTO();
 
-        categoriaSencillaDTO.setNombre( categoriaEntity.nombre );
-        categoriaSencillaDTO.id_categoria = categoriaEntity.id_categoria;
+        categoriaSimpleDTO.setNombre( categoriaEntity.nombre );
+        categoriaSimpleDTO.id_categoria = categoriaEntity.id_categoria;
 
-        return categoriaSencillaDTO;
+        return categoriaSimpleDTO;
     }
 }

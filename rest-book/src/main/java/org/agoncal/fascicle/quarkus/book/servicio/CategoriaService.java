@@ -7,12 +7,11 @@ import jakarta.validation.Valid;
 import org.agoncal.fascicle.quarkus.book.acceso.CategoriaRepository;
 import org.agoncal.fascicle.quarkus.book.modelo.CategoriaEntity;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaDTO;
-import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaSencillaDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaSimpleDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.CrearCategoriaDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.UpdateNombreCategoriaDTO;
 import org.agoncal.fascicle.quarkus.book.transformador.CategoriaMapper;
 
-import java.util.HashSet;
 import java.util.List;
 
 @Transactional
@@ -52,7 +51,7 @@ public class CategoriaService {
   }
 
   @Transactional(Transactional.TxType.SUPPORTS)
-  public List<CategoriaSencillaDTO> returnAllCategorias() {
+  public List<CategoriaSimpleDTO> returnAllCategorias() {
     return categoriaMapper.listEntityToListSimpleDTO(categoriaRepository.returnAllCategoriasRepo());
   }
 

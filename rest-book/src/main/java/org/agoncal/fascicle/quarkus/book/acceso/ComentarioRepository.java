@@ -1,6 +1,7 @@
 package org.agoncal.fascicle.quarkus.book.acceso;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -9,6 +10,8 @@ import org.agoncal.fascicle.quarkus.book.modelo.ComentarioEntity;
 
 import java.util.List;
 
+@ApplicationScoped
+@Transactional(Transactional.TxType.REQUIRED)
 public class ComentarioRepository implements PanacheRepository<ComentarioEntity> {
 
   @Inject
@@ -16,19 +19,25 @@ public class ComentarioRepository implements PanacheRepository<ComentarioEntity>
 
   public void createComentarioRepo(@Valid ComentarioEntity newComentario ) { persist(newComentario); }
 
-  @Transactional(Transactional.TxType.SUPPORTS)
-  public List<ComentarioEntity> returnAllComentariosRepo() { return listAll(); }
+//  @Transactional(Transactional.TxType.SUPPORTS)
+//  public List<ComentarioEntity> returnAllComentariosRepo() {
+//    return em.createQuery( "FROM ComentarioEntity", ComentarioEntity.class).getResultList();
+//  }
 
   @Transactional(Transactional.TxType.SUPPORTS)
-  public  ComentarioEntity findComentarioByIdRepo (Integer id) { return findById(Long.valueOf(id)); }
+  public List<ComentarioEntity> returnAllComentariosRepo() {
+    return em.createQuery( "FROM ComentarioEntity", ComentarioEntity.class).getResultList();
+  }
+
+  @Transactional(Transactional.TxType.SUPPORTS)
+  public  ComentarioEntity findComentarioByIdRepo (Integer id) { return em.find(ComentarioEntity.class, id); }
 
   public ComentarioEntity updateComentarioRepo(@Valid ComentarioEntity comentario) {
     ComentarioEntity comentarioEntity = em.merge(comentario);
     return  comentarioEntity;
   }
 
-  public boolean deleteComentarioById(Integer id) { return deleteById(Long.valueOf(id)); }
+  public void deleteComentarioById(Integer id) { em.remove(findComentarioByIdRepo(id)); }
 
-  public void persist(ComentarioEntity comentarioEntity) { PanacheRepository.super.persist(comentarioEntity); }
 
 }

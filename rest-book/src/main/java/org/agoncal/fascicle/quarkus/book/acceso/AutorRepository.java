@@ -24,28 +24,26 @@ public class AutorRepository implements PanacheRepository<AutorEntity> {
 
   @Transactional(Transactional.TxType.SUPPORTS)
   public List<AutorEntity> returnAllAutoresRepo() {
-    return listAll();
+    return em.createQuery("FROM AutorEntity", AutorEntity.class).getResultList();
   }
 
   @Transactional(Transactional.TxType.SUPPORTS)
-  public AutorEntity findAutorByIdRepo(Integer id) { return findById((long)id); }
+  public AutorEntity findAutorByIdRepo(Integer id) { return em.find(AutorEntity.class, id); }
 
   @Transactional(Transactional.TxType.SUPPORTS)
-  public boolean findAutorByName(@Valid AutorEntity autorEntity) {
+  public AutorEntity findAutorByName(@Valid String autorName) {
     //query consulta
-    return false;
+    return null;
   }
 
   public AutorEntity updateAutorRepo(@Valid AutorEntity book) {
-    AutorEntity updatedEntity = em.merge(book); // AAAAA
+    AutorEntity updatedEntity = em.merge(book);
     return updatedEntity;
   }
 
-  public boolean deleteAutorByIdRepo(Integer id) {
-    return deleteById((long)id);
+  public void deleteAutorByIdRepo(Integer id) {
+    AutorEntity autorEntity = findAutorByIdRepo(id);
+    em.remove(autorEntity);
   }
 
-  public void persist(AutorEntity autorEntity) {
-    PanacheRepository.super.persist(autorEntity);
-  }
 }

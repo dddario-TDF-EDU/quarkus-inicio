@@ -1,7 +1,6 @@
 org/agoncal/fascicle/quarkus/book/transformador/CategoriaMapperImpl.class
 org/agoncal/fascicle/quarkus/book/servicio/BookService.class
 org/agoncal/fascicle/quarkus/book/transferible/categoria/UpdateNombreCategoriaDTO.class
-org/agoncal/fascicle/quarkus/book/transferible/categoria/AddSubcategoriaDTO.class
 org/agoncal/fascicle/quarkus/book/transformador/BookMapperImpl.class
 org/agoncal/fascicle/quarkus/book/modelo/LibroEntity.class
 org/agoncal/fascicle/quarkus/book/transferible/libro/LibroDTO.class

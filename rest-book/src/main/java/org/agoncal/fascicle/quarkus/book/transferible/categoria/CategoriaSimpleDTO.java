@@ -1,7 +1,7 @@
 package org.agoncal.fascicle.quarkus.book.transferible.categoria;
 
 
-public class CategoriaSencillaDTO {
+public class CategoriaSimpleDTO {
   public Integer id_categoria;
   public String nombre;
 

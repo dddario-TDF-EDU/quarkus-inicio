@@ -1,19 +1,16 @@
 package org.agoncal.fascicle.quarkus.book.transferible.autor;
 
-
 import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class AutorDTO {
+public class AutorSimpleDTO {
 
   public Integer id_autor;
   public String nombre;
   public String apellido;
   public String nacionalidad;
-  public Set<LibroDTO> autorias = new HashSet<>();
-
 
   public Integer getId_autor() {return id_autor; }
 
@@ -39,13 +36,5 @@ public class AutorDTO {
 
   public void setNacionalidad(String nacionalidad) {
     this.nacionalidad = nacionalidad;
-  }
-
-  public Set<LibroDTO> getAutorias() {
-    return autorias;
-  }
-
-  public void setAutorias(Set<LibroDTO> autorias) {
-    this.autorias = autorias;
   }
 }

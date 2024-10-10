@@ -7,7 +7,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import org.agoncal.fascicle.quarkus.book.servicio.CategoriaService;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaDTO;
-import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaSencillaDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaSimpleDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.CrearCategoriaDTO;
 
 import org.agoncal.fascicle.quarkus.book.transferible.categoria.UpdateNombreCategoriaDTO;
@@ -35,7 +35,7 @@ public class CategoriaResource {
 
   @GET
   public Response getAllCategorias() {
-    List<CategoriaSencillaDTO> categorias = categoriaService.returnAllCategorias();
+    List<CategoriaSimpleDTO> categorias = categoriaService.returnAllCategorias();
     return Response.ok(categorias).build();
   }
 
