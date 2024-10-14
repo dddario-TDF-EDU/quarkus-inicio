@@ -8,7 +8,7 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 
-import org.agoncal.fascicle.quarkus.book.servicio.BookService;
+import org.agoncal.fascicle.quarkus.book.servicio.LibroService;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.CrearLibroDTO;
 
@@ -36,16 +36,16 @@ import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 
 //import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
-@Path("/api/books")
+@Path("/api/libros")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Tag(name = "Book Endpoint")
+@Tag(name = "Libro Endpoint")
 //@Authenticated
 @ApplicationScoped
-public class BookResource {
+public class LibroResource {
   @Inject
-  BookService service;
-  private static final Logger LOGGER = Logger.getLogger(BookResource.class);
+  LibroService libroService;
+  private static final Logger LOGGER = Logger.getLogger(LibroResource.class);
     @GET
     @Path("/ping")
     @Produces(MediaType.TEXT_PLAIN)
@@ -54,7 +54,7 @@ public class BookResource {
       return "ping";
     }
 
-  @Operation(summary = "Returns a random book")
+  @Operation(summary = "Returns a random libro")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = LibroDTO.class)))
   // tag::adocMetrics[]
   @Counted(name = "countGetRandomBook", description = "Counts how many times the getRandomBook method has been invoked")
@@ -63,7 +63,7 @@ public class BookResource {
   @GET
   @Path("/random")
   public Response getRandomBook() {
-    LibroDTO book = service.findRandomBook();
+    LibroDTO book = libroService.findRandomBook();
     LOGGER.debug("Found random book " + book);
     return Response.ok(book).build();
   }
@@ -78,7 +78,7 @@ public class BookResource {
   @GET
   //@PermitAll
   public Response getAllBooks() {
-    List<LibroDTO> books = service.findAllBooks();
+    List<LibroDTO> books = libroService.findAllBooks();
     LOGGER.debug("Total number of books " + books);
     return Response.ok(books).build();
   }
@@ -96,7 +96,7 @@ public class BookResource {
   //@PermitAll
   public Response getBook(@Parameter(description = "Book identifier", required = true)
                           @PathParam("id") Integer id) {
-    LibroDTO book = service.findBookById(id);
+    LibroDTO book = libroService.findBookById(id);
     if (book != null) {
       LOGGER.debug("Found book " + book);
       return Response.ok(book).build();
@@ -110,15 +110,19 @@ public class BookResource {
   @Operation(summary = "Creates a valid book")
   @APIResponse(responseCode = "201", description = "The URI of the created book",
     content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = URI.class)))
-  @Counted(name = "countCreateBook", description = "Counts how many times the createBook method has been invoked")
-  @Timed(name = "timeCreateBook", description = "Times how long it takes to invoke the createBook method", unit = MetricUnits.MILLISECONDS)
+//  @Counted(name = "countCreateBook", description = "Counts how many times the createBook method has been invoked")
+//  @Timed(name = "timeCreateBook", description = "Times how long it takes to invoke the createBook method", unit = MetricUnits.MILLISECONDS)
   @POST
 //  @RolesAllowed("admin")
-  public Response createBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CrearLibroDTO.class))) @Valid CrearLibroDTO book, @Context UriInfo uriInfo) {
-    LibroDTO bookCreado = service.persistBook(book);
-    UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(bookCreado.getIdBook()));
-    LOGGER.debug("News book created with URI " + builder.build().toString());
-    return Response.created(builder.build()).build();
+  public Response createBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CrearLibroDTO.class))) @Valid CrearLibroDTO newLibro, @Context UriInfo uriInfo) {
+    LibroDTO bookCreado = libroService.persistBook(newLibro);
+    if (bookCreado != null) {
+      UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(12));
+      LOGGER.debug("News book created with URI " + builder.build().toString());
+      return Response.created(builder.build()).build();
+    } else {
+      return Response.status(NOT_FOUND).build();
+    }
   }
 
   @Operation(summary = "Updates an existing book")
@@ -131,7 +135,7 @@ public class BookResource {
   //@RolesAllowed("admin")
   public Response updateBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = LibroDTO.class))) @Valid LibroDTO book) {
     LOGGER.debug(book + "asdasds");
-    book = service.updateBook(book);
+    book = libroService.updateBook(book);
     LOGGER.debug("Book updated with new valued " + book);
     return Response.ok(book).build();
   }
@@ -145,8 +149,8 @@ public class BookResource {
   @DELETE
   @Path("/{id}")
   //@RolesAllowed("admin")
-  public Response deleteBook(@Parameter(description = "Book identifier", required = true) @PathParam("id") Long id) {
-    service.deleteBook(id);
+  public Response deleteBook(@Parameter(description = "Book identifier", required = true) @PathParam("id") Integer id) {
+    libroService.deleteBook(id);
     LOGGER.debug("Book deleted with " + id);
     return Response.noContent().build();
   }

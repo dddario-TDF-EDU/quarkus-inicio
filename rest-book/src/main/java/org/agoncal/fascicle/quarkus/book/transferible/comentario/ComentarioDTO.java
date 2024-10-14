@@ -15,6 +15,16 @@ public class ComentarioDTO {
   public short puntuacion;
   public Integer libro_id;
 
+  public Integer nro_linea;
+
+  public Integer getNro_linea() {
+    return nro_linea;
+  }
+
+  public void setNro_linea(Integer nro_linea) {
+    this.nro_linea = nro_linea;
+  }
+
   public Integer getId_comentario() {
     return id_comentario;
   }

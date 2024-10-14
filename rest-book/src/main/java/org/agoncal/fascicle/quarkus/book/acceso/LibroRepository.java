@@ -14,23 +14,24 @@ import java.util.Random;
 
 @ApplicationScoped
 @Transactional(Transactional.TxType.REQUIRED)
-public class BookRepository implements PanacheRepository<LibroEntity> {
+public class LibroRepository implements PanacheRepository<LibroEntity> {
 
   @Inject
   EntityManager em;
 
   public void createNewBookRepo(@Valid LibroEntity newBook) {
-    persist(newBook);
+    em.persist(newBook);
+    em.flush();
   }
 
   @Transactional(Transactional.TxType.SUPPORTS)
   public List<LibroEntity> returnAllBooksRepo() {
-    return listAll();
+    return em.createQuery("FROM LibroEntity", LibroEntity.class).getResultList();
   }
 
   @Transactional(Transactional.TxType.SUPPORTS)
   public LibroEntity findBookByIdRepo(Integer id) {
-    return findById(Long.valueOf(id));
+    return em.find(LibroEntity.class, id);
   }
 
   @Transactional(Transactional.TxType.SUPPORTS)
@@ -50,8 +51,11 @@ public class BookRepository implements PanacheRepository<LibroEntity> {
     return updatedEntity;
   }
 
-  public boolean deleteBookByIdRepo(Long id) {
-    return deleteById(id);
+  public void deleteBookByIdRepo(Integer id) {
+    LibroEntity libroEntity = findBookByIdRepo(id);
+    if (libroEntity != null) {
+      em.remove(libroEntity);
+    }
   }
 
   public LibroEntity findRandomRepo() {

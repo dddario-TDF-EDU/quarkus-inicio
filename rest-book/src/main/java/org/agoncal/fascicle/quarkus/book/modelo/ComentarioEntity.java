@@ -29,4 +29,7 @@ public class ComentarioEntity {
   @NotNull
   @Schema(required = true)
   public LibroEntity libro;
+  @NotNull
+  @Schema(required = true)
+  public Integer nro_linea;
 }

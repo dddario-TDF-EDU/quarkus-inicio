@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.agoncal.fascicle.quarkus.book.modelo.ComentarioEntity;
 
+import java.util.Comparator;
 import java.util.List;
 
 @ApplicationScoped
@@ -19,14 +20,19 @@ public class ComentarioRepository implements PanacheRepository<ComentarioEntity>
 
   public void createComentarioRepo(@Valid ComentarioEntity newComentario ) { persist(newComentario); }
 
-//  @Transactional(Transactional.TxType.SUPPORTS)
-//  public List<ComentarioEntity> returnAllComentariosRepo() {
-//    return em.createQuery( "FROM ComentarioEntity", ComentarioEntity.class).getResultList();
-//  }
-
   @Transactional(Transactional.TxType.SUPPORTS)
   public List<ComentarioEntity> returnAllComentariosRepo() {
     return em.createQuery( "FROM ComentarioEntity", ComentarioEntity.class).getResultList();
+  }
+
+  @Transactional(Transactional.TxType.SUPPORTS)
+  public Integer getNroLinea (Integer id_libro) {
+    ComentarioEntity resultado = em.createQuery( "SELECT MAX(c.nro_linea) FROM ComentarioEntity c WHERE c.libro_id = :id_libro", ComentarioEntity.class).setParameter("id_libro", id_libro).getResultList().stream().findFirst().orElse(null);
+    if (resultado == null) {
+      return 1;
+    } else {
+      return resultado.nro_linea + 1;
+    }
   }
 
   @Transactional(Transactional.TxType.SUPPORTS)

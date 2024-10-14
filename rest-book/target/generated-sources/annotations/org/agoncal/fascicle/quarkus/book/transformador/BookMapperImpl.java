@@ -8,13 +8,16 @@ import java.util.List;
 import java.util.Set;
 import javax.annotation.processing.Generated;
 import org.agoncal.fascicle.quarkus.book.modelo.AutorEntity;
+import org.agoncal.fascicle.quarkus.book.modelo.CategoriaEntity;
 import org.agoncal.fascicle.quarkus.book.modelo.LibroEntity;
+import org.agoncal.fascicle.quarkus.book.transferible.autor.AutorSimpleDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaSimpleDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.CrearLibroDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-10-10T13:07:59-0300",
+    date = "2024-10-14T13:39:08-0300",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.9 (GraalVM Community)"
 )
 @Singleton
@@ -22,7 +25,7 @@ import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
 public class BookMapperImpl implements BookMapper {
 
     @Override
-    public LibroDTO aDTO(LibroEntity libroEntity) {
+    public LibroDTO entitytoDTO(LibroEntity libroEntity) {
         if ( libroEntity == null ) {
             return null;
         }
@@ -31,10 +34,10 @@ public class BookMapperImpl implements BookMapper {
 
         libroDTO.setIsbn_13( libroEntity.isbn13 );
         libroDTO.setIsbn_10( libroEntity.isbn10 );
+        libroDTO.setId_libro( libroEntity.id_libro );
         libroDTO.setYearOfPublication( libroEntity.yearOfPublication );
         libroDTO.setSmallImageUrl( libroEntity.smallImageUrl );
         libroDTO.setMediumImageUrl( libroEntity.mediumImageUrl );
-        libroDTO.id_libro = libroEntity.id_libro;
         libroDTO.titulo = libroEntity.titulo;
         libroDTO.num_paginas = libroEntity.num_paginas;
         libroDTO.ranking = libroEntity.ranking;
@@ -45,7 +48,7 @@ public class BookMapperImpl implements BookMapper {
     }
 
     @Override
-    public LibroEntity toEntity(LibroDTO libroDTO) {
+    public LibroEntity dtoToEntity(LibroDTO libroDTO) {
         if ( libroDTO == null ) {
             return null;
         }
@@ -54,7 +57,7 @@ public class BookMapperImpl implements BookMapper {
 
         libroEntity.isbn13 = libroDTO.getIsbn_13();
         libroEntity.isbn10 = libroDTO.getIsbn_10();
-        libroEntity.id_libro = libroDTO.id_libro;
+        libroEntity.id_libro = libroDTO.getId_libro();
         libroEntity.titulo = libroDTO.titulo;
         libroEntity.yearOfPublication = libroDTO.getYearOfPublication();
         libroEntity.num_paginas = libroDTO.num_paginas;
@@ -68,27 +71,32 @@ public class BookMapperImpl implements BookMapper {
     }
 
     @Override
-    public LibroEntity toNewEntity(CrearLibroDTO newBook) {
-        if ( newBook == null ) {
+    public LibroEntity dtoToNewEntity(CrearLibroDTO crearLibroDTO) {
+        if ( crearLibroDTO == null ) {
             return null;
         }
 
         LibroEntity libroEntity = new LibroEntity();
 
-        libroEntity.yearOfPublication = newBook.getYearOfPublication();
+        libroEntity.yearOfPublication = crearLibroDTO.getYearOfPublication();
+        libroEntity.autores_de_libros = autorSimpleDTOSetToAutorEntitySet( crearLibroDTO.getAutores() );
+        libroEntity.categoriaEntity = categoriaSimpleDTOToCategoriaEntity( crearLibroDTO.getCategoria() );
+        libroEntity.num_paginas = crearLibroDTO.getNum_paginas();
+        libroEntity.ranking = crearLibroDTO.getRanking();
+        libroEntity.precio = crearLibroDTO.getPrecio();
 
         return libroEntity;
     }
 
     @Override
-    public List<LibroDTO> toListDTO(List<LibroEntity> libroEntityList) {
+    public List<LibroDTO> entityListToListDTO(List<LibroEntity> libroEntityList) {
         if ( libroEntityList == null ) {
             return null;
         }
 
         List<LibroDTO> list = new ArrayList<LibroDTO>( libroEntityList.size() );
         for ( LibroEntity libroEntity : libroEntityList ) {
-            list.add( aDTO( libroEntity ) );
+            list.add( entitytoDTO( libroEntity ) );
         }
 
         return list;
@@ -103,7 +111,7 @@ public class BookMapperImpl implements BookMapper {
         libroEntity.isbn13 = libroDTO.getIsbn_13();
         libroEntity.isbn10 = libroDTO.getIsbn_10();
         if ( libroEntity.autores_de_libros != null ) {
-            Set<AutorEntity> set = libroDTO.autores;
+            Set<AutorEntity> set = autorSimpleDTOSetToAutorEntitySet( libroDTO.getIdAutores() );
             if ( set != null ) {
                 libroEntity.autores_de_libros.clear();
                 libroEntity.autores_de_libros.addAll( set );
@@ -113,12 +121,12 @@ public class BookMapperImpl implements BookMapper {
             }
         }
         else {
-            Set<AutorEntity> set = libroDTO.autores;
+            Set<AutorEntity> set = autorSimpleDTOSetToAutorEntitySet( libroDTO.getIdAutores() );
             if ( set != null ) {
-                libroEntity.autores_de_libros = new LinkedHashSet<AutorEntity>( set );
+                libroEntity.autores_de_libros = set;
             }
         }
-        libroEntity.id_libro = libroDTO.id_libro;
+        libroEntity.id_libro = libroDTO.getId_libro();
         libroEntity.titulo = libroDTO.titulo;
         libroEntity.yearOfPublication = libroDTO.getYearOfPublication();
         libroEntity.num_paginas = libroDTO.num_paginas;
@@ -127,5 +135,46 @@ public class BookMapperImpl implements BookMapper {
         libroEntity.smallImageUrl = libroDTO.getSmallImageUrl();
         libroEntity.mediumImageUrl = libroDTO.getMediumImageUrl();
         libroEntity.descripcion = libroDTO.descripcion;
+    }
+
+    protected AutorEntity autorSimpleDTOToAutorEntity(AutorSimpleDTO autorSimpleDTO) {
+        if ( autorSimpleDTO == null ) {
+            return null;
+        }
+
+        AutorEntity autorEntity = new AutorEntity();
+
+        autorEntity.id_autor = autorSimpleDTO.getId_autor();
+        autorEntity.nombre = autorSimpleDTO.getNombre();
+        autorEntity.apellido = autorSimpleDTO.getApellido();
+        autorEntity.nacionalidad = autorSimpleDTO.getNacionalidad();
+
+        return autorEntity;
+    }
+
+    protected Set<AutorEntity> autorSimpleDTOSetToAutorEntitySet(Set<AutorSimpleDTO> set) {
+        if ( set == null ) {
+            return null;
+        }
+
+        Set<AutorEntity> set1 = new LinkedHashSet<AutorEntity>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        for ( AutorSimpleDTO autorSimpleDTO : set ) {
+            set1.add( autorSimpleDTOToAutorEntity( autorSimpleDTO ) );
+        }
+
+        return set1;
+    }
+
+    protected CategoriaEntity categoriaSimpleDTOToCategoriaEntity(CategoriaSimpleDTO categoriaSimpleDTO) {
+        if ( categoriaSimpleDTO == null ) {
+            return null;
+        }
+
+        CategoriaEntity categoriaEntity = new CategoriaEntity();
+
+        categoriaEntity.id_categoria = categoriaSimpleDTO.getId_categoria();
+        categoriaEntity.nombre = categoriaSimpleDTO.getNombre();
+
+        return categoriaEntity;
     }
 }

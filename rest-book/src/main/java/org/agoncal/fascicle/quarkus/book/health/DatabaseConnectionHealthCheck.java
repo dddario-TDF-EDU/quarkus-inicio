@@ -3,7 +3,7 @@ package org.agoncal.fascicle.quarkus.book.health;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-import org.agoncal.fascicle.quarkus.book.servicio.BookService;
+import org.agoncal.fascicle.quarkus.book.servicio.LibroService;
 
 import org.eclipse.microprofile.health.Readiness;
 import org.eclipse.microprofile.health.HealthCheck;
@@ -18,7 +18,7 @@ import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
 @ApplicationScoped
 public class DatabaseConnectionHealthCheck implements HealthCheck {
   @Inject
-  BookService bookService;
+  LibroService libroService;
 
   @Override
   public HealthCheckResponse call() {

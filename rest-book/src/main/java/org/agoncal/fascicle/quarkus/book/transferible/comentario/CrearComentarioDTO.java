@@ -5,7 +5,7 @@ public class CrearComentarioDTO {
   public String email;
   public String texto;
   public Integer puntuacion;
-  public Long libro_id;
+  public Integer libro_id;
 
   public String getEmail() {
     return email;
@@ -31,11 +31,11 @@ public class CrearComentarioDTO {
     this.puntuacion = puntuacion;
   }
 
-  public Long getLibro_id() {
+  public Integer getLibro_id() {
     return libro_id;
   }
 
-  public void setLibro_id(Long libro_id) {
+  public void setLibro_id(Integer libro_id) {
     this.libro_id = libro_id;
   }
 }
