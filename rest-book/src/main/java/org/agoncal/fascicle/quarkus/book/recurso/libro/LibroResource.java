@@ -12,6 +12,7 @@ import org.agoncal.fascicle.quarkus.book.servicio.LibroService;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.CrearLibroDTO;
 
+import org.agoncal.fascicle.quarkus.book.transferible.libro.UpdateLibroDTO;
 import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
@@ -68,12 +69,12 @@ public class LibroResource {
     return Response.ok(book).build();
   }
 
-  @Operation(summary = "Returns all the books from the database")
+  @Operation(summary = "Returns all the libros from the database")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = LibroDTO.class, type = SchemaType.ARRAY)))
   @APIResponse(responseCode = "204", description = "No books")
   // tag::adocMetrics[]
-  @Counted(name = "countGetAllBooks", description = "Counts how many times the getAllBooks method has been invoked")
-  @Timed(name = "timeGetAllBooks", description = "Times how long it takes to invoke the getAllBooks method", unit = MetricUnits.MILLISECONDS)
+  @Counted(name = "countGetAllLibros", description = "Counts how many times the getAllLibros method has been invoked")
+  @Timed(name = "timeGetAllLibros", description = "Times how long it takes to invoke the getAllLibros method", unit = MetricUnits.MILLISECONDS)
   // end::adocMetrics[]
   @GET
   //@PermitAll
@@ -116,13 +117,9 @@ public class LibroResource {
 //  @RolesAllowed("admin")
   public Response createBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CrearLibroDTO.class))) @Valid CrearLibroDTO newLibro, @Context UriInfo uriInfo) {
     LibroDTO bookCreado = libroService.persistBook(newLibro);
-    if (bookCreado != null) {
-      UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(12));
-      LOGGER.debug("News book created with URI " + builder.build().toString());
-      return Response.created(builder.build()).build();
-    } else {
-      return Response.status(NOT_FOUND).build();
-    }
+    UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(bookCreado.id_libro));
+    LOGGER.debug("News book created with URI " + builder.build().toString());
+    return Response.created(builder.build()).build();
   }
 
   @Operation(summary = "Updates an existing book")
@@ -133,9 +130,9 @@ public class LibroResource {
   @Transactional
   @PUT
   //@RolesAllowed("admin")
-  public Response updateBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = LibroDTO.class))) @Valid LibroDTO book) {
+  public Response updateBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = UpdateLibroDTO.class))) @Valid UpdateLibroDTO book) {
     LOGGER.debug(book + "asdasds");
-    book = libroService.updateBook(book);
+    LibroDTO libroDTO = libroService.updateBook(book);
     LOGGER.debug("Book updated with new valued " + book);
     return Response.ok(book).build();
   }

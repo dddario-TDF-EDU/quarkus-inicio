@@ -28,7 +28,7 @@ public class AutorRepository implements PanacheRepository<AutorEntity> {
   }
 
   @Transactional(Transactional.TxType.SUPPORTS)
-  public AutorEntity findAutorByIdRepo(Integer id) { return em.find(AutorEntity.class, id); }
+  public AutorEntity findAutorByIdRepo(Integer id) { return em.createQuery("SELECT a FROM AutorEntity a WHERE a.id_autor = :id", AutorEntity.class).setParameter("id", id).getResultList().stream().findFirst().orElse(null); }
 
   @Transactional(Transactional.TxType.SUPPORTS)
   public AutorEntity findAutorByName(@Valid String autorName) {

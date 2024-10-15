@@ -52,7 +52,7 @@ public class LibroEntity {
   public CategoriaEntity categoriaEntity;
 
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
   @JoinTable(name = "autoria_de_libros",
     joinColumns = @JoinColumn(name = "nro_libro"),
     inverseJoinColumns = @JoinColumn(name = "nro_autor")

@@ -1,35 +1,26 @@
 package org.agoncal.fascicle.quarkus.book.transferible.libro;
 
-import org.agoncal.fascicle.quarkus.book.transferible.autor.AutorSimpleDTO;
-import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaSimpleDTO;
-
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
 public class CrearLibroDTO {
-  public String title;
+  public String titulo;
   public short yearOfPublication;
   public String isbn_13;
   public String isbn_10;
-  public Set<AutorSimpleDTO> autores = new HashSet<>();
+  public Set<Integer> id_autores = new HashSet<>();
   public short num_paginas;
   public short ranking;
   public BigDecimal precio;
-
-  public Integer getCategoriaId() {
-    return categoria.getId_categoria();
+  public Integer id_categoria;
+  public Integer getId_categoria() {
+    return this.id_categoria;
   }
 
-  public CategoriaSimpleDTO getCategoria() {
-    return categoria;
+  public void setId_categoria(Integer id_categoria) {
+    this.id_categoria = id_categoria;
   }
-
-  public void setCategoria(CategoriaSimpleDTO categoria) {
-    this.categoria = categoria;
-  }
-
-  public CategoriaSimpleDTO categoria;
 
   public String getIsbn_13() {
     return isbn_13;
@@ -73,20 +64,20 @@ public class CrearLibroDTO {
 
 
 
-  public Set<AutorSimpleDTO> getAutores() {
-    return autores;
+  public Set<Integer> getId_autores() {
+    return this.id_autores;
   }
 
-  public void setAutores(Set<AutorSimpleDTO> autores) {
-    this.autores = autores;
+  public void setId_autores(Set<Integer> id_autores) {
+    this.id_autores = id_autores;
   }
 
-  public String getTitle() {
-    return title;
+  public String getTitulo() {
+    return titulo;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
+  public void setTitulo(String titulo) {
+    this.titulo = titulo;
   }
 
   public short getYearOfPublication() {

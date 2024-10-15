@@ -15,7 +15,7 @@ import org.agoncal.fascicle.quarkus.book.transferible.categoria.UpdateNombreCate
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-10-14T13:39:08-0300",
+    date = "2024-10-15T13:20:06-0300",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.9 (GraalVM Community)"
 )
 @Singleton

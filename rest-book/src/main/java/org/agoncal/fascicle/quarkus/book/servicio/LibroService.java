@@ -9,12 +9,13 @@ import jakarta.validation.Valid;
 import org.agoncal.fascicle.quarkus.book.acceso.AutorRepository;
 import org.agoncal.fascicle.quarkus.book.acceso.CategoriaRepository;
 import org.agoncal.fascicle.quarkus.book.acceso.LibroRepository;
+import org.agoncal.fascicle.quarkus.book.modelo.AutorEntity;
 import org.agoncal.fascicle.quarkus.book.modelo.LibroEntity;
 import org.agoncal.fascicle.quarkus.book.servicio.numberResources.IsbnNumbers;
 import org.agoncal.fascicle.quarkus.book.servicio.numberResources.NumberProxy;
-import org.agoncal.fascicle.quarkus.book.transferible.autor.AutorSimpleDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.CrearLibroDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.libro.UpdateLibroDTO;
 import org.agoncal.fascicle.quarkus.book.transformador.BookMapper;
 
 import org.eclipse.microprofile.faulttolerance.Fallback;
@@ -27,6 +28,7 @@ import java.io.PrintWriter;
 
 import java.time.Instant;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -51,37 +53,69 @@ public class LibroService {
   CategoriaRepository categoriaRepository;
   @Fallback(fallbackMethod = "fallbackPersistBook")
   public LibroDTO persistBook(@Valid CrearLibroDTO crearLibroDTO) {
-    crearLibroDTO.setAutores(corregirIdAutores(crearLibroDTO));
-    if (crearLibroDTO.getAutores() != null & revisarCategoria(crearLibroDTO) != null) {
+    crearLibroDTO.setId_autores(corregirIdAutores(crearLibroDTO));
+    if (crearLibroDTO.getId_autores() != null & revisarCategoria(crearLibroDTO) != null) {
         asignarValoresIsbn(crearLibroDTO);
         LibroEntity newBook = bookMapper.dtoToNewEntity(crearLibroDTO);
-      System.out.println(newBook.id_libro + " mi ID");
-      libroRepository.createNewBookRepo(newBook); //???
-      System.out.println(newBook.id_libro + " mi ID nuevo?");
-      return bookMapper.entitytoDTO(newBook);
+        System.out.println(newBook.id_libro + " mi ID");
+        newBook.categoriaEntity = categoriaRepository.findCategoriaByIdRepo(crearLibroDTO.getId_categoria());
+        newBook.autores_de_libros = asignarAutores(crearLibroDTO);
+        detallarClase(newBook);
+        libroRepository.createNewBookRepo(newBook); //???
+        System.out.println(newBook.id_libro + " mi ID nuevo?");
+      return bookMapper.entityToDTO(newBook);
     } else {
       return null;
     }
   }
 
-  private Set<AutorSimpleDTO> corregirIdAutores(CrearLibroDTO crearLibroDTO) {
-    Set<AutorSimpleDTO> autores = crearLibroDTO.getAutores();
-//    System.out.println(autores.getClass() + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    for (AutorSimpleDTO autor: autores
+  private void detallarClase(LibroEntity libroEntity) {
+    System.out.println("LIBROOOOOOOOOOOOO");
+    System.out.println("id libro: "+libroEntity.id_libro);
+    System.out.println("titulo: "+libroEntity.titulo);
+    System.out.println("isbn10: " +libroEntity.isbn10);
+    System.out.println("isbn13: " +libroEntity.isbn13);
+    System.out.println("year: " +libroEntity.yearOfPublication);
+    System.out.println("num_pags: " +libroEntity.num_paginas);
+    System.out.println("rank: " +libroEntity.ranking);
+    System.out.println("precio: " +libroEntity.precio);
+    System.out.println("small: " +libroEntity.smallImageUrl);
+    System.out.println("medium: " +libroEntity.mediumImageUrl);
+    System.out.println("descripcion: " +libroEntity.descripcion);
+    System.out.println("categoria: " +libroEntity.categoriaEntity.id_categoria);
+    System.out.println("autores: " +libroEntity.autores_de_libros.size());
+  }
+
+  private Set<AutorEntity> asignarAutores(CrearLibroDTO crearLibroDTO) {
+    Set<Integer> id_autores = crearLibroDTO.getId_autores();
+    Set<AutorEntity> autorEntities = new HashSet<>();
+    for (Integer id_autor: id_autores
+    ) {
+      autorEntities.add(autorRepository.findAutorByIdRepo(id_autor));
+    }
+
+    return autorEntities;
+  }
+
+  private Set<Integer> corregirIdAutores(CrearLibroDTO crearLibroDTO) {
+    Set<Integer> autores = crearLibroDTO.getId_autores();
+    System.out.println(autores.size() + " aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa tamaño");
+    for (Integer id_autor: autores
          ) {
-      if (autorRepository.findAutorByIdRepo(autor.getId_autor()) == null) {
-        autores.remove(autor);
+      if (autorRepository.findAutorByIdRepo(id_autor) == null) {
+        System.out.println("AUTOR" + id_autor + "removidooooo");
+        autores.remove(id_autor);
       } else {
-        System.out.println("SI HAY AUTOR");
+        System.out.println("SI HAY AUTOR" + id_autor);
       }
     }
     return autores;
   }
 
   private Integer revisarCategoria(CrearLibroDTO crearLibroDTO) {
-    if (categoriaRepository.findCategoriaByIdRepo(crearLibroDTO.getCategoriaId()) != null) {
+    if (categoriaRepository.findCategoriaByIdRepo(crearLibroDTO.getId_categoria()) != null) {
       System.out.println("hay categoriaaaaaaaaaaa");
-      return crearLibroDTO.categoria.getId_categoria();
+      return crearLibroDTO.getId_categoria();
     } else {
       return null;
     }
@@ -119,12 +153,7 @@ public class LibroService {
 
   public List<LibroDTO> findAllBooks() {
     List<LibroEntity> booksEntities = libroRepository.returnAllBooksRepo();
-    List<LibroDTO> booksDTO = bookMapper.entityListToListDTO(booksEntities);
-//    for (LibroEntity libroEntity : booksEntities
-//         ) {
-//      booksDTO.add(bookMapper.aDTO(libroEntity));
-//    }
-    return booksDTO; //AAAAAA
+    return bookMapper.entityListToListDTO(booksEntities);
   }
 
 
@@ -132,7 +161,7 @@ public class LibroService {
     LibroEntity bookQuery = libroRepository.findBookByIdRepo(id);
     if (bookQuery != null) {
       //BookEntity bookEntity = bookQuery.get();
-      LibroDTO result = bookMapper.entitytoDTO(bookQuery);
+      LibroDTO result = bookMapper.entityToDTO(bookQuery);
       return result;
     } else {
       return null;
@@ -141,14 +170,15 @@ public class LibroService {
   }
 
   public LibroDTO findRandomBook() {
-    return bookMapper.entitytoDTO(libroRepository.findRandomBookRepo());
+    return bookMapper.entityToDTO(libroRepository.findRandomBookRepo());
   }
-  public LibroDTO updateBook(@Valid LibroDTO book) {
-    LibroEntity entity = libroRepository.findById(Long.valueOf(book.getId_libro()));
+  public LibroDTO updateBook(@Valid UpdateLibroDTO book) {
+    LibroEntity entity = libroRepository.findBookByIdRepo(book.getId_libro());
     if (entity != null) {
+      System.out.println("SOY NULLL  " + entity);
       bookMapper.updateBookFromDTO(book, entity);
       libroRepository.persist(entity);
-      return bookMapper.entitytoDTO(entity);
+      return bookMapper.entityToDTO(entity);
     }
     return null;
   }

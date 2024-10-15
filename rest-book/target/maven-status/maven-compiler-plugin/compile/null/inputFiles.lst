@@ -19,6 +19,7 @@
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/recurso/BookApplicationLifeCycle.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/servicio/ComentarioService.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/health/DatabaseConnectionHealthCheck.java
+/home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/transferible/libro/UpdateLibroDTO.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/acceso/ComentarioRepository.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/recurso/libro/LibroResource.java
 /home/dario/Proyecto/libroTerminado/quarkus-inicio/rest-book/src/main/java/org/agoncal/fascicle/quarkus/book/recurso/BookApplication.java

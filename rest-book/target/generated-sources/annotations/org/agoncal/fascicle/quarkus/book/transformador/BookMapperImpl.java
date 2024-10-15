@@ -3,21 +3,16 @@ package org.agoncal.fascicle.quarkus.book.transformador;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import javax.annotation.processing.Generated;
-import org.agoncal.fascicle.quarkus.book.modelo.AutorEntity;
-import org.agoncal.fascicle.quarkus.book.modelo.CategoriaEntity;
 import org.agoncal.fascicle.quarkus.book.modelo.LibroEntity;
-import org.agoncal.fascicle.quarkus.book.transferible.autor.AutorSimpleDTO;
-import org.agoncal.fascicle.quarkus.book.transferible.categoria.CategoriaSimpleDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.CrearLibroDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.libro.UpdateLibroDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-10-14T13:39:08-0300",
+    date = "2024-10-15T13:20:06-0300",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.9 (GraalVM Community)"
 )
 @Singleton
@@ -25,7 +20,7 @@ import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
 public class BookMapperImpl implements BookMapper {
 
     @Override
-    public LibroDTO entitytoDTO(LibroEntity libroEntity) {
+    public LibroDTO entityToDTO(LibroEntity libroEntity) {
         if ( libroEntity == null ) {
             return null;
         }
@@ -78,9 +73,10 @@ public class BookMapperImpl implements BookMapper {
 
         LibroEntity libroEntity = new LibroEntity();
 
+        libroEntity.isbn13 = crearLibroDTO.getIsbn_13();
+        libroEntity.isbn10 = crearLibroDTO.getIsbn_10();
+        libroEntity.titulo = crearLibroDTO.getTitulo();
         libroEntity.yearOfPublication = crearLibroDTO.getYearOfPublication();
-        libroEntity.autores_de_libros = autorSimpleDTOSetToAutorEntitySet( crearLibroDTO.getAutores() );
-        libroEntity.categoriaEntity = categoriaSimpleDTOToCategoriaEntity( crearLibroDTO.getCategoria() );
         libroEntity.num_paginas = crearLibroDTO.getNum_paginas();
         libroEntity.ranking = crearLibroDTO.getRanking();
         libroEntity.precio = crearLibroDTO.getPrecio();
@@ -96,85 +92,28 @@ public class BookMapperImpl implements BookMapper {
 
         List<LibroDTO> list = new ArrayList<LibroDTO>( libroEntityList.size() );
         for ( LibroEntity libroEntity : libroEntityList ) {
-            list.add( entitytoDTO( libroEntity ) );
+            list.add( entityToDTO( libroEntity ) );
         }
 
         return list;
     }
 
     @Override
-    public void updateBookFromDTO(LibroDTO libroDTO, LibroEntity libroEntity) {
-        if ( libroDTO == null ) {
+    public void updateBookFromDTO(UpdateLibroDTO updateLibroDTO, LibroEntity libroEntity) {
+        if ( updateLibroDTO == null ) {
             return;
         }
 
-        libroEntity.isbn13 = libroDTO.getIsbn_13();
-        libroEntity.isbn10 = libroDTO.getIsbn_10();
-        if ( libroEntity.autores_de_libros != null ) {
-            Set<AutorEntity> set = autorSimpleDTOSetToAutorEntitySet( libroDTO.getIdAutores() );
-            if ( set != null ) {
-                libroEntity.autores_de_libros.clear();
-                libroEntity.autores_de_libros.addAll( set );
-            }
-            else {
-                libroEntity.autores_de_libros = null;
-            }
-        }
-        else {
-            Set<AutorEntity> set = autorSimpleDTOSetToAutorEntitySet( libroDTO.getIdAutores() );
-            if ( set != null ) {
-                libroEntity.autores_de_libros = set;
-            }
-        }
-        libroEntity.id_libro = libroDTO.getId_libro();
-        libroEntity.titulo = libroDTO.titulo;
-        libroEntity.yearOfPublication = libroDTO.getYearOfPublication();
-        libroEntity.num_paginas = libroDTO.num_paginas;
-        libroEntity.ranking = libroDTO.ranking;
-        libroEntity.precio = libroDTO.precio;
-        libroEntity.smallImageUrl = libroDTO.getSmallImageUrl();
-        libroEntity.mediumImageUrl = libroDTO.getMediumImageUrl();
-        libroEntity.descripcion = libroDTO.descripcion;
-    }
-
-    protected AutorEntity autorSimpleDTOToAutorEntity(AutorSimpleDTO autorSimpleDTO) {
-        if ( autorSimpleDTO == null ) {
-            return null;
-        }
-
-        AutorEntity autorEntity = new AutorEntity();
-
-        autorEntity.id_autor = autorSimpleDTO.getId_autor();
-        autorEntity.nombre = autorSimpleDTO.getNombre();
-        autorEntity.apellido = autorSimpleDTO.getApellido();
-        autorEntity.nacionalidad = autorSimpleDTO.getNacionalidad();
-
-        return autorEntity;
-    }
-
-    protected Set<AutorEntity> autorSimpleDTOSetToAutorEntitySet(Set<AutorSimpleDTO> set) {
-        if ( set == null ) {
-            return null;
-        }
-
-        Set<AutorEntity> set1 = new LinkedHashSet<AutorEntity>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( AutorSimpleDTO autorSimpleDTO : set ) {
-            set1.add( autorSimpleDTOToAutorEntity( autorSimpleDTO ) );
-        }
-
-        return set1;
-    }
-
-    protected CategoriaEntity categoriaSimpleDTOToCategoriaEntity(CategoriaSimpleDTO categoriaSimpleDTO) {
-        if ( categoriaSimpleDTO == null ) {
-            return null;
-        }
-
-        CategoriaEntity categoriaEntity = new CategoriaEntity();
-
-        categoriaEntity.id_categoria = categoriaSimpleDTO.getId_categoria();
-        categoriaEntity.nombre = categoriaSimpleDTO.getNombre();
-
-        return categoriaEntity;
+        libroEntity.isbn13 = updateLibroDTO.getIsbn_13();
+        libroEntity.isbn10 = updateLibroDTO.getIsbn_10();
+        libroEntity.id_libro = updateLibroDTO.getId_libro();
+        libroEntity.titulo = updateLibroDTO.getTitulo();
+        libroEntity.yearOfPublication = updateLibroDTO.getYearOfPublication();
+        libroEntity.num_paginas = updateLibroDTO.getNum_paginas();
+        libroEntity.ranking = updateLibroDTO.getRanking();
+        libroEntity.precio = updateLibroDTO.getPrecio();
+        libroEntity.smallImageUrl = updateLibroDTO.getSmallImageUrl();
+        libroEntity.mediumImageUrl = updateLibroDTO.getMediumImageUrl();
+        libroEntity.descripcion = updateLibroDTO.getDescripcion();
     }
 }

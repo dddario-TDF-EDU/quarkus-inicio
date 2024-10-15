@@ -1,50 +1,38 @@
 package org.agoncal.fascicle.quarkus.book.transferible.libro;
 
-
-import org.agoncal.fascicle.quarkus.book.modelo.AutorEntity;
-import org.agoncal.fascicle.quarkus.book.transferible.autor.AutorDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.autor.AutorSimpleDTO;
 
 import java.math.BigDecimal;
-
 import java.net.URL;
-
 import java.util.HashSet;
 import java.util.Set;
 
-public class LibroDTO {
+public class UpdateLibroDTO {
 
   public Integer id_libro;
   public String titulo;
   public String isbn_13;
   public String isbn_10;
-
-  public Set<AutorSimpleDTO> autores = new HashSet<>();
-
-
   public short yearOfPublication;
   public short num_paginas;
   public short ranking;
   public BigDecimal precio;
   public URL smallImageUrl;
-  public URL mediumImageUrl;
-  public String descripcion;
-  public Integer id_categoria;
-
-  public Integer getId_categoria() {
-    return id_categoria;
-  }
-
-  public void setId_categoria(Integer id_categoria) {
-    this.id_categoria = id_categoria;
-  }
 
   public Integer getId_libro() {
-    return this.id_libro;
+    return id_libro;
   }
 
   public void setId_libro(Integer id_libro) {
     this.id_libro = id_libro;
+  }
+
+  public String getTitulo() {
+    return titulo;
+  }
+
+  public void setTitulo(String titulo) {
+    this.titulo = titulo;
   }
 
   public String getIsbn_13() {
@@ -71,6 +59,30 @@ public class LibroDTO {
     this.yearOfPublication = yearOfPublication;
   }
 
+  public short getNum_paginas() {
+    return num_paginas;
+  }
+
+  public void setNum_paginas(short num_paginas) {
+    this.num_paginas = num_paginas;
+  }
+
+  public short getRanking() {
+    return ranking;
+  }
+
+  public void setRanking(short ranking) {
+    this.ranking = ranking;
+  }
+
+  public BigDecimal getPrecio() {
+    return precio;
+  }
+
+  public void setPrecio(BigDecimal precio) {
+    this.precio = precio;
+  }
+
   public URL getSmallImageUrl() {
     return smallImageUrl;
   }
@@ -87,12 +99,14 @@ public class LibroDTO {
     this.mediumImageUrl = mediumImageUrl;
   }
 
-  public String getDescription() {
+  public String getDescripcion() {
     return descripcion;
   }
 
-  public void setDescription(String description) {
-    this.descripcion = description;
+  public void setDescripcion(String descripcion) {
+    this.descripcion = descripcion;
   }
 
+  public URL mediumImageUrl;
+  public String descripcion;
 }

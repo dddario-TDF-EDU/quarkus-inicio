@@ -7,6 +7,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+
 import org.agoncal.fascicle.quarkus.book.modelo.LibroEntity;
 
 import java.util.List;
@@ -31,7 +32,13 @@ public class LibroRepository implements PanacheRepository<LibroEntity> {
 
   @Transactional(Transactional.TxType.SUPPORTS)
   public LibroEntity findBookByIdRepo(Integer id) {
-    return em.find(LibroEntity.class, id);
+    LibroEntity libroEntity = em.createQuery("SELECT l FROM LibroEntity l WHERE l.id_libro = :id", LibroEntity.class).setParameter("id", id).getResultList().stream().findFirst().orElse(null);
+    if (libroEntity == null) {
+      return null;
+    } else {
+      return libroEntity;
+    }
+    //return em.createQuery("SELECT l FROM LibroEntity l WHERE l.id_libro = :id", LibroEntity.class).setParameter("id", id).getResultList().stream().findFirst().orElse(null);
   }
 
   @Transactional(Transactional.TxType.SUPPORTS)

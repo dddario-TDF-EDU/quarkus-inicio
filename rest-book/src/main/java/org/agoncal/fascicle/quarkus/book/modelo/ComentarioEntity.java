@@ -24,7 +24,7 @@ public class ComentarioEntity {
   public String texto; //revisar
   @Min(1) @Max(10)
   public short puntuacion;
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "libro_id", referencedColumnName = "id_libro")
   @NotNull
   @Schema(required = true)
