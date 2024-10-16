@@ -2,6 +2,7 @@ package org.agoncal.fascicle.quarkus.book.transformador;
 
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
@@ -12,7 +13,7 @@ import org.agoncal.fascicle.quarkus.book.transferible.libro.UpdateLibroDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-10-15T13:20:06-0300",
+    date = "2024-10-16T13:42:42-0300",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.9 (GraalVM Community)"
 )
 @Singleton
@@ -78,8 +79,9 @@ public class BookMapperImpl implements BookMapper {
         libroEntity.titulo = crearLibroDTO.getTitulo();
         libroEntity.yearOfPublication = crearLibroDTO.getYearOfPublication();
         libroEntity.num_paginas = crearLibroDTO.getNum_paginas();
-        libroEntity.ranking = crearLibroDTO.getRanking();
         libroEntity.precio = crearLibroDTO.getPrecio();
+
+        libroEntity.ranking = new BigDecimal( "0" );
 
         return libroEntity;
     }

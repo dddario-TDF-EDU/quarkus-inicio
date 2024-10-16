@@ -10,13 +10,14 @@ import javax.annotation.processing.Generated;
 import org.agoncal.fascicle.quarkus.book.modelo.AutorEntity;
 import org.agoncal.fascicle.quarkus.book.modelo.LibroEntity;
 import org.agoncal.fascicle.quarkus.book.transferible.autor.AutorDTO;
+import org.agoncal.fascicle.quarkus.book.transferible.autor.AutorEnLibroDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.autor.AutorSimpleDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.autor.CrearAutorDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-10-15T13:20:06-0300",
+    date = "2024-10-16T13:42:43-0300",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.9 (GraalVM Community)"
 )
 @Singleton
@@ -84,6 +85,20 @@ public class AutorMapperImpl implements AutorMapper {
         }
 
         return list;
+    }
+
+    @Override
+    public Set<AutorEnLibroDTO> listEntityToListEnLibroDTO(Set<AutorEntity> autorEntityList) {
+        if ( autorEntityList == null ) {
+            return null;
+        }
+
+        Set<AutorEnLibroDTO> set = new LinkedHashSet<AutorEnLibroDTO>( Math.max( (int) ( autorEntityList.size() / .75f ) + 1, 16 ) );
+        for ( AutorEntity autorEntity : autorEntityList ) {
+            set.add( autorEntityToAutorEnLibroDTO( autorEntity ) );
+        }
+
+        return set;
     }
 
     @Override
@@ -193,5 +208,18 @@ public class AutorMapperImpl implements AutorMapper {
         autorSimpleDTO.id_autor = autorEntity.id_autor;
 
         return autorSimpleDTO;
+    }
+
+    protected AutorEnLibroDTO autorEntityToAutorEnLibroDTO(AutorEntity autorEntity) {
+        if ( autorEntity == null ) {
+            return null;
+        }
+
+        AutorEnLibroDTO autorEnLibroDTO = new AutorEnLibroDTO();
+
+        autorEnLibroDTO.setApellido( autorEntity.apellido );
+        autorEnLibroDTO.setNombre( autorEntity.nombre );
+
+        return autorEnLibroDTO;
     }
 }

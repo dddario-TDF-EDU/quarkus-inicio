@@ -11,7 +11,7 @@ public class CrearLibroDTO {
   public String isbn_10;
   public Set<Integer> id_autores = new HashSet<>();
   public short num_paginas;
-  public short ranking;
+
   public BigDecimal precio;
   public Integer id_categoria;
   public Integer getId_categoria() {
@@ -44,14 +44,6 @@ public class CrearLibroDTO {
 
   public void setNum_paginas(short num_paginas) {
     this.num_paginas = num_paginas;
-  }
-
-  public short getRanking() {
-    return ranking;
-  }
-
-  public void setRanking(short ranking) {
-    this.ranking = ranking;
   }
 
   public BigDecimal getPrecio() {

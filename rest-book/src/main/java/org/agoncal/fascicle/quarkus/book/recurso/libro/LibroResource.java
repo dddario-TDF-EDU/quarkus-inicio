@@ -107,6 +107,29 @@ public class LibroResource {
     }
   }
 
+  @Operation(summary = "Returns a book for a given identifier")
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = LibroDTO.class)))
+  @APIResponse(responseCode = "404", description = "The book is not found for the given identifier")
+  // tag::adocMetrics[]
+  @Counted(name = "countGetBook", description = "Counts how many times the getBook method has been invoked")
+  @Timed(name = "timeGetBook", description = "Times how long it takes to invoke the getBook method", unit = MetricUnits.MILLISECONDS)
+  // end::adocMetrics[]
+
+  @GET
+  @Path("autor/{id}")
+  //@PermitAll
+  public Response getBookByAutor(@Parameter(description = "Book identifier", required = true)
+                          @PathParam("id") Integer id) {
+    List<LibroDTO> book = libroService.findBookByAutorId(id);
+    if (book != null) {
+      LOGGER.debug("Found book " + book);
+      return Response.ok(book).build();
+    } else {
+      LOGGER.debug("No books found with autor_id " + id);
+      return Response.status(NOT_FOUND).build();
+    }
+  }
+
   // PARTE CON Keycloak
   @Operation(summary = "Creates a valid book")
   @APIResponse(responseCode = "201", description = "The URI of the created book",

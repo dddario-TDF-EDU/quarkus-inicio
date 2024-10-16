@@ -25,6 +25,22 @@ public class LibroRepository implements PanacheRepository<LibroEntity> {
     em.flush();
   }
 
+  public List<LibroEntity> returnByAutor(@Valid Integer id_autor) {
+    return em.createNativeQuery("SELECT libros.id_libro," +
+      "libros.titulo," +
+      "libros.isbn_13," +
+      "libros.isbn_10," +
+      "libros.year_of_publication," +
+      "libros.num_de_paginas," +
+      "libros.ranking," +
+      "libros.precio," +
+      "libros.small_image_url," +
+      "libros.medium_image_url," +
+      "libros.descripcion," +
+      "libros.nro_categoria " +
+      "FROM libros JOIN autoria_de_libros ON libros.id_libro=autoria_de_libros.nro_libro WHERE nro_autor = :id_autor", LibroEntity.class).setParameter("id_autor", id_autor).getResultList();
+  }
+
   @Transactional(Transactional.TxType.SUPPORTS)
   public List<LibroEntity> returnAllBooksRepo() {
     return em.createQuery("FROM LibroEntity", LibroEntity.class).getResultList();
@@ -32,7 +48,8 @@ public class LibroRepository implements PanacheRepository<LibroEntity> {
 
   @Transactional(Transactional.TxType.SUPPORTS)
   public LibroEntity findBookByIdRepo(Integer id) {
-    LibroEntity libroEntity = em.createQuery("SELECT l FROM LibroEntity l WHERE l.id_libro = :id", LibroEntity.class).setParameter("id", id).getResultList().stream().findFirst().orElse(null);
+    LibroEntity libroEntity = em.createQuery("SELECT l FROM LibroEntity l WHERE l.id_libro = :id", LibroEntity.class)
+      .setParameter("id", id).getResultList().stream().findFirst().orElse(null);
     if (libroEntity == null) {
       return null;
     } else {

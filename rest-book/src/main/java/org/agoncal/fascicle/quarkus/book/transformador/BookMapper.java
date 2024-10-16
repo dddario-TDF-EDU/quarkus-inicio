@@ -16,25 +16,26 @@ public interface BookMapper {
 
   @Mapping(target = "isbn_13", source = "isbn13")
   @Mapping(target = "isbn_10", source = "isbn10")
-  LibroDTO entityToDTO(LibroEntity libroEntity);
+  public LibroDTO entityToDTO(LibroEntity libroEntity);
 
   @Mapping(target = "isbn13", source = "isbn_13")
   @Mapping(target = "isbn10", source = "isbn_10")
-  LibroEntity dtoToEntity(LibroDTO libroDTO);
+  public LibroEntity dtoToEntity(LibroDTO libroDTO);
 
 
   @Mapping(target = "autores_de_libros", ignore = true)
   @Mapping(target = "categoriaEntity", ignore = true)
+  @Mapping(target = "ranking", constant = "0")
   @Mapping(target = "isbn13", source = "isbn_13")
   @Mapping(target = "isbn10", source = "isbn_10")
-  LibroEntity dtoToNewEntity(CrearLibroDTO crearLibroDTO);
+  public LibroEntity dtoToNewEntity(CrearLibroDTO crearLibroDTO);
 
   @Mapping(source = "isbn13", target = "isbn_13")
   @Mapping(source = "isbn10", target = "isbn_10")
-  List<LibroDTO> entityListToListDTO(List<LibroEntity> libroEntityList);
+  public List<LibroDTO> entityListToListDTO(List<LibroEntity> libroEntityList);
 
   @Mapping(target = "isbn13", source = "isbn_13")
   @Mapping(target = "isbn10", source = "isbn_10")
-  void updateBookFromDTO(UpdateLibroDTO updateLibroDTO, @MappingTarget LibroEntity libroEntity);
+  public void updateBookFromDTO(UpdateLibroDTO updateLibroDTO, @MappingTarget LibroEntity libroEntity);
 
 }

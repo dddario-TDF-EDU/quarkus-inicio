@@ -15,7 +15,7 @@ public class UpdateLibroDTO {
   public String isbn_10;
   public short yearOfPublication;
   public short num_paginas;
-  public short ranking;
+  public BigDecimal ranking;
   public BigDecimal precio;
   public URL smallImageUrl;
 
@@ -67,11 +67,11 @@ public class UpdateLibroDTO {
     this.num_paginas = num_paginas;
   }
 
-  public short getRanking() {
+  public BigDecimal getRanking() {
     return ranking;
   }
 
-  public void setRanking(short ranking) {
+  public void setRanking(BigDecimal ranking) {
     this.ranking = ranking;
   }
 

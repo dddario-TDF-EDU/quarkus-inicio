@@ -13,7 +13,7 @@ import org.agoncal.fascicle.quarkus.book.transferible.comentario.UpdateComentari
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-10-15T13:20:06-0300",
+    date = "2024-10-16T13:42:42-0300",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.9 (GraalVM Community)"
 )
 @Singleton
@@ -65,9 +65,7 @@ public class ComentarioMapperImpl implements ComentarioMapper {
 
         comentarioEntity.email = crearComentarioDTO.getEmail();
         comentarioEntity.texto = crearComentarioDTO.getTexto();
-        if ( crearComentarioDTO.getPuntuacion() != null ) {
-            comentarioEntity.puntuacion = crearComentarioDTO.getPuntuacion().shortValue();
-        }
+        comentarioEntity.puntuacion = crearComentarioDTO.getPuntuacion();
 
         return comentarioEntity;
     }

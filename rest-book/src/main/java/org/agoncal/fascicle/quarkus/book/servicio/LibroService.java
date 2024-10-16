@@ -16,6 +16,7 @@ import org.agoncal.fascicle.quarkus.book.servicio.numberResources.NumberProxy;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.CrearLibroDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.UpdateLibroDTO;
+import org.agoncal.fascicle.quarkus.book.transformador.AutorMapper;
 import org.agoncal.fascicle.quarkus.book.transformador.BookMapper;
 
 import org.eclipse.microprofile.faulttolerance.Fallback;
@@ -28,6 +29,7 @@ import java.io.PrintWriter;
 
 import java.time.Instant;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,6 +44,9 @@ public class LibroService {
   NumberProxy numberProxy;
   @Inject
   BookMapper bookMapper;
+
+  @Inject
+  AutorMapper autorMapper;
 
   @Inject
   LibroRepository libroRepository;
@@ -64,6 +69,15 @@ public class LibroService {
         libroRepository.createNewBookRepo(newBook); //???
         System.out.println(newBook.id_libro + " mi ID nuevo?");
       return bookMapper.entityToDTO(newBook);
+    } else {
+      return null;
+    }
+  }
+
+  public  List<LibroDTO> findBookByAutorId(Integer id_autor) {
+    List<LibroDTO> libroDTOList = bookMapper.entityListToListDTO(libroRepository.returnByAutor(id_autor));
+    if (libroDTOList != null) {
+      return libroDTOList;
     } else {
       return null;
     }
@@ -153,8 +167,23 @@ public class LibroService {
 
   public List<LibroDTO> findAllBooks() {
     List<LibroEntity> booksEntities = libroRepository.returnAllBooksRepo();
-    return bookMapper.entityListToListDTO(booksEntities);
+    List<LibroDTO> libroDTOList = new ArrayList<>();
+    if (booksEntities != null) {
+      for (LibroEntity libroEntity: booksEntities
+      ) {
+        LibroDTO item = bookMapper.entityToDTO(libroEntity);
+        item.autores = autorMapper.listEntityToListEnLibroDTO(libroEntity.autores_de_libros);
+        item.setCategoria(libroEntity.categoriaEntity.nombre);
+        libroDTOList.add(item);
+      }
+      return libroDTOList;
+    }
+
+    return null;
   }
+
+
+
 
 
   public LibroDTO findBookById(Integer id) {

@@ -4,7 +4,7 @@ public class CrearComentarioDTO {
 
   public String email;
   public String texto;
-  public Integer puntuacion;
+  public short puntuacion;
   public Integer libro_id;
 
   public String getEmail() {
@@ -23,11 +23,11 @@ public class CrearComentarioDTO {
     this.texto = texto;
   }
 
-  public Integer getPuntuacion() {
+  public short getPuntuacion() {
     return puntuacion;
   }
 
-  public void setPuntuacion(Integer puntuacion) {
+  public void setPuntuacion(short puntuacion) {
     this.puntuacion = puntuacion;
   }
 

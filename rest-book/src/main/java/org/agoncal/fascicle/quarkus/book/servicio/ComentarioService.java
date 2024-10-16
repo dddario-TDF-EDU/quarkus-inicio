@@ -13,6 +13,7 @@ import org.agoncal.fascicle.quarkus.book.transferible.comentario.CrearComentario
 import org.agoncal.fascicle.quarkus.book.transferible.comentario.UpdateComentarioDTO;
 import org.agoncal.fascicle.quarkus.book.transformador.ComentarioMapper;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -31,15 +32,14 @@ public class ComentarioService {
   LibroRepository libroRepository;
 
   public ComentarioDTO persistComentario(@Valid CrearComentarioDTO crearComentarioDTO) {
-    System.out.println(crearComentarioDTO.libro_id + "aaaaaaaaaaaa mi id");
     LibroEntity libroEntity = libroRepository.findBookByIdRepo(crearComentarioDTO.libro_id);
     if (libroEntity != null) {
-      System.out.println(libroEntity.id_libro + "traje mi id");
+      updateRanking(crearComentarioDTO.puntuacion, libroEntity);
       ComentarioEntity comentarioEntity = comentarioMapper.dtoToNewEntity(crearComentarioDTO);
       comentarioEntity.libro = libroEntity;
-      describirEntity(comentarioEntity);
+      //describirEntity(comentarioEntity);
+
       comentarioEntity.nro_linea = devolverNroLinea(comentarioEntity.libro.id_libro);
-      //comentarioEntity.nro_linea = comentarioRepository.getLineas(comentarioEntity.libro.id_libro);
       comentarioRepository.createComentarioRepo(comentarioEntity);
       return comentarioMapper.entityToDTO(comentarioEntity);
     } else {
@@ -54,6 +54,15 @@ public class ComentarioService {
     } else {
       ComentarioEntity comentarioEntity = comentarioEntities.get(comentarioEntities.size()-1);
       return comentarioEntity.nro_linea + 1;
+    }
+  }
+
+  private void updateRanking(short nuevaPuntuacion, LibroEntity libroEntity) {
+    BigDecimal puntuacion = libroEntity.ranking;
+    if (puntuacion.compareTo(BigDecimal.ZERO) != 0) {
+      libroEntity.ranking = BigDecimal.valueOf(nuevaPuntuacion);
+    } else {
+      short newAverage = (comentarioRepository.sumatoriaPuntuacion(libroEntity.id_libro) + nuevaPuntuacion) / (comentarioRepository.cantOpiniones(libroEntity.id_libro) + 1);
     }
   }
 

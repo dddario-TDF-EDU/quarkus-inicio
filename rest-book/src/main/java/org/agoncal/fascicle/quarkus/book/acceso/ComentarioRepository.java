@@ -35,6 +35,15 @@ public class ComentarioRepository implements PanacheRepository<ComentarioEntity>
   }
 
   @Transactional(Transactional.TxType.SUPPORTS)
+  public  short sumatoriaPuntuacion (Integer id_libro) {
+    Object sumatoria = em.createNativeQuery("SELECT SUM(puntuacion) FROM comentario WHERE libro_id = :id_libro", Integer.class)
+      .setParameter("id:libro", id_libro).getSingleResult();
+    short a = sumatoria.shortVa
+    return a;
+  }
+
+
+  @Transactional(Transactional.TxType.SUPPORTS)
   public  ComentarioEntity findComentarioByIdRepo (Integer id) { return em.find(ComentarioEntity.class, id); }
 
   public ComentarioEntity updateComentarioRepo(@Valid ComentarioEntity comentario) {
