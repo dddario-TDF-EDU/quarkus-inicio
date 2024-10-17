@@ -1,5 +1,6 @@
 package org.agoncal.fascicle.quarkus.book.transferible.libro;
 
+import org.agoncal.fascicle.quarkus.book.transferible.autor.AutorEnLibroDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.autor.AutorSimpleDTO;
 
 import java.math.BigDecimal;
@@ -18,6 +19,26 @@ public class UpdateLibroDTO {
   public BigDecimal ranking;
   public BigDecimal precio;
   public URL smallImageUrl;
+  public Set<Integer> id_autores = new HashSet<>();
+  public Integer id_categoria;
+  public URL mediumImageUrl;
+  public String descripcion;
+
+  public Set<Integer> getAutores() {
+    return id_autores;
+  }
+
+  public void setAutores(Set<Integer> autores) {
+    this.id_autores = autores;
+  }
+
+  public Integer getId_categoria() {
+    return id_categoria;
+  }
+
+  public void setId_categoria(Integer id_categoria) {
+    this.id_categoria = id_categoria;
+  }
 
   public Integer getId_libro() {
     return id_libro;
@@ -107,6 +128,5 @@ public class UpdateLibroDTO {
     this.descripcion = descripcion;
   }
 
-  public URL mediumImageUrl;
-  public String descripcion;
+
 }

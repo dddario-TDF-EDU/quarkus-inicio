@@ -16,7 +16,9 @@ public class LibroDTO {
   public String titulo;
   public String isbn_13;
   public String isbn_10;
+
   public Set<AutorEnLibroDTO> autores = new HashSet<>();
+
   public short yearOfPublication;
   public short num_paginas;
   public BigDecimal ranking;
@@ -25,13 +27,20 @@ public class LibroDTO {
   public URL mediumImageUrl;
   public String descripcion;
   public String categoria;
-
   public String getCategoria() {
     return categoria;
   }
 
   public void setCategoria(String categoria) {
     this.categoria = categoria;
+  }
+
+  public Set<AutorEnLibroDTO> getAutores() {
+    return autores;
+  }
+
+  public void setAutores(Set<AutorEnLibroDTO> autores) {
+    this.autores = autores;
   }
 
   public Integer getId_libro() {

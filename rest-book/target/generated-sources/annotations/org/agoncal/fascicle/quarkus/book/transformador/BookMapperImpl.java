@@ -3,8 +3,6 @@ package org.agoncal.fascicle.quarkus.book.transformador;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.processing.Generated;
 import org.agoncal.fascicle.quarkus.book.modelo.LibroEntity;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.CrearLibroDTO;
@@ -13,15 +11,15 @@ import org.agoncal.fascicle.quarkus.book.transferible.libro.UpdateLibroDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-10-17T08:47:27-0300",
+    date = "2024-10-17T12:50:00-0300",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.9 (GraalVM Community)"
 )
 @Singleton
 @Named
-public class BookMapperImpl implements BookMapper {
+public class BookMapperImpl extends BookMapper {
 
     @Override
-    public LibroDTO entityToDTO(LibroEntity libroEntity) {
+    protected LibroDTO auxEntityToDTO(LibroEntity libroEntity) {
         if ( libroEntity == null ) {
             return null;
         }
@@ -84,20 +82,6 @@ public class BookMapperImpl implements BookMapper {
         libroEntity.ranking = new BigDecimal( "0" );
 
         return libroEntity;
-    }
-
-    @Override
-    public List<LibroDTO> entityListToListDTO(List<LibroEntity> libroEntityList) {
-        if ( libroEntityList == null ) {
-            return null;
-        }
-
-        List<LibroDTO> list = new ArrayList<LibroDTO>( libroEntityList.size() );
-        for ( LibroEntity libroEntity : libroEntityList ) {
-            list.add( entityToDTO( libroEntity ) );
-        }
-
-        return list;
     }
 
     @Override

@@ -35,7 +35,7 @@ public class LibroEntity {
   public short yearOfPublication;
   @Column(name = "num_de_paginas")
   public short num_paginas;
-  @Min(1) @Max(10)
+  @Min(0) @Max(10)
   public BigDecimal ranking;
   public BigDecimal precio;
   @Column(name = "small_image_url")

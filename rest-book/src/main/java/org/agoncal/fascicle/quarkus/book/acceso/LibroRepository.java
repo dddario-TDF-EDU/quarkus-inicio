@@ -8,10 +8,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
+import org.agoncal.fascicle.quarkus.book.modelo.CategoriaEntity;
 import org.agoncal.fascicle.quarkus.book.modelo.LibroEntity;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 @ApplicationScoped
 @Transactional(Transactional.TxType.REQUIRED)
@@ -22,6 +24,7 @@ public class LibroRepository implements PanacheRepository<LibroEntity> {
 
   public void createNewBookRepo(@Valid LibroEntity newBook) {
     em.persist(newBook);
+    System.out.println(newBook.id_libro + " mi ID nuevo? sss");
     em.flush();
   }
 
@@ -39,6 +42,30 @@ public class LibroRepository implements PanacheRepository<LibroEntity> {
       "libros.descripcion," +
       "libros.nro_categoria " +
       "FROM libros JOIN autoria_de_libros ON libros.id_libro=autoria_de_libros.nro_libro WHERE nro_autor = :id_autor", LibroEntity.class).setParameter("id_autor", id_autor).getResultList();
+  }
+
+  public List<LibroEntity> returnByCategoria(@Valid Integer id_categoria) {
+    List<LibroEntity> libroEntityList = em.createNativeQuery("SELECT * FROM libros WHERE nro_categoria = :id_categoria", LibroEntity.class)
+      .setParameter("id_categoria", id_categoria).getResultList();
+    List<Integer> cantSubcategorias = em.createNativeQuery("SELECT categoria_hija FROM categorias RIGHT JOIN subcategorias ON categorias.id_categoria = subcategorias.categoria_padre WHERE id_categoria = :id_categoria", Integer.class)
+      .setParameter("id_categoria", id_categoria).getResultList();
+    for (Integer id_subcategoria: cantSubcategorias
+         ) {
+      List<LibroEntity> nuevosLibros = em.createNativeQuery("SELECT * FROM libros WHERE nro_categoria = :id_categoria", LibroEntity.class)
+        .setParameter("id_categoria", id_subcategoria).getResultList();
+      if (nuevosLibros != null) {
+        libroEntityList = Stream.concat(libroEntityList.stream(), nuevosLibros.stream()).toList();
+      }
+    }
+    if (libroEntityList != null) {
+      return libroEntityList;
+    } else {
+      return null;
+    }
+  }
+
+  public List<LibroEntity> returnByRank(@Valid double rank) {
+    return em.createNativeQuery("SELECT * FROM libros  l WHERE l.ranking > :rank", LibroEntity.class).setParameter("rank", rank).getResultList();
   }
 
   @Transactional(Transactional.TxType.SUPPORTS)

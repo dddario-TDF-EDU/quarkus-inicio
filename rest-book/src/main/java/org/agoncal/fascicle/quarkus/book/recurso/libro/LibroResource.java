@@ -84,6 +84,45 @@ public class LibroResource {
     return Response.ok(books).build();
   }
 
+  @Operation(summary = "Returns todos los libros con ranking mayor al ingresado")
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = LibroDTO.class, type = SchemaType.ARRAY)))
+  @APIResponse(responseCode = "204", description = "No books")
+  // tag::adocMetrics[]
+  @Counted(name = "countGetAllLibros", description = "Counts how many times the getAllLibros method has been invoked")
+  @Timed(name = "timeGetAllLibros", description = "Times how long it takes to invoke the getAllLibros method", unit = MetricUnits.MILLISECONDS)
+  // end::adocMetrics[]
+  @GET
+  @Path("/mayorA/{rank}")
+  //@PermitAll
+  public Response getByRank(@Parameter(description = "rank", required = true)
+                            @PathParam("rank") double rank) {
+    List<LibroDTO> books = libroService.returnByRank(rank);
+    if (books != null) {
+      return Response.ok(books).build();
+    } else {
+      return Response.status(NOT_FOUND).build();
+    }
+  }
+
+  @Operation(summary = "Returns todos los libros segun categoria y subcategoria")
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = LibroDTO.class, type = SchemaType.ARRAY)))
+  @APIResponse(responseCode = "204", description = "No books")
+  // tag::adocMetrics[]
+  @Counted(name = "countGetByCategoria", description = "Counts how many times the getByCategoria method has been invoked")
+  @Timed(name = "timeGetByCategoria", description = "Times how long it takes to invoke the getByCategoria method", unit = MetricUnits.MILLISECONDS)
+  // end::adocMetrics[]
+  @GET
+  @Path("/categoria/{id_categoria}")
+  //@PermitAll
+  public Response getByCategoria(@Parameter(description = "id_categoria", required = true)
+                            @PathParam("id_categoria") Integer id_categoria) {
+    List<LibroDTO> books = libroService.returnByCategoria(id_categoria);
+    if (books != null) {
+      return Response.ok(books).build();
+    } else {
+      return Response.status(NOT_FOUND).build();
+    }
+  }
 
 
   @Operation(summary = "Returns a book for a given identifier")
@@ -142,9 +181,15 @@ public class LibroResource {
 //  @RolesAllowed("admin")
   public Response createBook(@RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CrearLibroDTO.class))) @Valid CrearLibroDTO newLibro, @Context UriInfo uriInfo) {
     LibroDTO bookCreado = libroService.persistBook(newLibro);
-    UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(bookCreado.id_libro));
-    LOGGER.debug("News book created with URI " + builder.build().toString());
-    return Response.created(builder.build()).build();
+    if (bookCreado != null) {
+      UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(bookCreado.id_libro));
+      LOGGER.debug("News book created with URI " + builder.build().toString());
+      return Response.created(builder.build()).build();
+    } else {
+      System.out.println("No se creo el libro ");
+      LOGGER.debug("No se creo el libro " );
+      return Response.status(NOT_FOUND).build();
+    }
   }
 
   @Operation(summary = "Updates an existing book")

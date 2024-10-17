@@ -13,6 +13,7 @@ import org.agoncal.fascicle.quarkus.book.modelo.AutorEntity;
 import org.agoncal.fascicle.quarkus.book.modelo.LibroEntity;
 import org.agoncal.fascicle.quarkus.book.servicio.numberResources.IsbnNumbers;
 import org.agoncal.fascicle.quarkus.book.servicio.numberResources.NumberProxy;
+import org.agoncal.fascicle.quarkus.book.transferible.autor.AutorDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.LibroDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.CrearLibroDTO;
 import org.agoncal.fascicle.quarkus.book.transferible.libro.UpdateLibroDTO;
@@ -111,11 +112,37 @@ public class LibroService {
     return autorEntities;
   }
 
+  private Set<AutorEntity> asignarAutores(UpdateLibroDTO updateLibroDTO) {
+    Set<Integer> id_autores = updateLibroDTO.getAutores();
+    Set<AutorEntity> autorEntities = new HashSet<>();
+    for (Integer id_autor: id_autores
+    ) {
+      autorEntities.add(autorRepository.findAutorByIdRepo(id_autor));
+    }
+
+    return autorEntities;
+  }
+
   private Set<Integer> corregirIdAutores(CrearLibroDTO crearLibroDTO) {
     Set<Integer> autores = crearLibroDTO.getId_autores();
     System.out.println(autores.size() + " aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa tamaño");
     for (Integer id_autor: autores
          ) {
+      if (autorRepository.findAutorByIdRepo(id_autor) == null) {
+        System.out.println("AUTOR" + id_autor + "removidooooo");
+        autores.remove(id_autor);
+      } else {
+        System.out.println("SI HAY AUTOR" + id_autor);
+      }
+    }
+    return autores;
+  }
+
+  private Set<Integer> corregirIdAutores(UpdateLibroDTO updateLibroDTO) {
+    Set<Integer> autores = updateLibroDTO.getAutores();
+    System.out.println(autores.size() + " aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa tamaño");
+    for (Integer id_autor: autores
+    ) {
       if (autorRepository.findAutorByIdRepo(id_autor) == null) {
         System.out.println("AUTOR" + id_autor + "removidooooo");
         autores.remove(id_autor);
@@ -182,7 +209,20 @@ public class LibroService {
     return null;
   }
 
+  public List<LibroDTO> returnByRank(double rank) {
+    List<LibroEntity> libroEntityList = libroRepository.returnByRank(rank);
+    if (libroEntityList != null) {
+      return bookMapper.entityListToListDTO(libroEntityList);
+    } else {
+      return null;
+    }
+  }
 
+  public List<LibroDTO> returnByCategoria(Integer id_categoria) {
+    List<LibroEntity> libroEntityList = libroRepository.returnByCategoria(id_categoria);
+    List<LibroDTO> libroDTOList = bookMapper.entityListToListDTO(libroEntityList);
+    return libroDTOList;
+  }
 
 
 
@@ -201,13 +241,15 @@ public class LibroService {
   public LibroDTO findRandomBook() {
     return bookMapper.entityToDTO(libroRepository.findRandomBookRepo());
   }
-  public LibroDTO updateBook(@Valid UpdateLibroDTO book) {
-    LibroEntity entity = libroRepository.findBookByIdRepo(book.getId_libro());
-    if (entity != null) {
-      System.out.println("SOY NULLL  " + entity);
-      bookMapper.updateBookFromDTO(book, entity);
-      libroRepository.persist(entity);
-      return bookMapper.entityToDTO(entity);
+  public LibroDTO updateBook(@Valid UpdateLibroDTO updateLibroDTO) {
+    updateLibroDTO.setAutores(corregirIdAutores(updateLibroDTO));
+    LibroEntity libroEntity = libroRepository.findBookByIdRepo(updateLibroDTO.getId_libro());
+    if (libroEntity != null) {
+      bookMapper.updateBookFromDTO(updateLibroDTO, libroEntity);
+      libroEntity.autores_de_libros = asignarAutores(updateLibroDTO);
+      libroEntity.categoriaEntity = categoriaRepository.findCategoriaByIdRepo(updateLibroDTO.getId_categoria());
+      libroRepository.updateBookRepo(libroEntity);
+      return bookMapper.entityToDTO(libroEntity);
     }
     return null;
   }
