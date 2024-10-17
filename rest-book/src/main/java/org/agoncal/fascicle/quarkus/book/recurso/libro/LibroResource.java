@@ -84,6 +84,8 @@ public class LibroResource {
     return Response.ok(books).build();
   }
 
+
+
   @Operation(summary = "Returns a book for a given identifier")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = LibroDTO.class)))
   @APIResponse(responseCode = "404", description = "The book is not found for the given identifier")

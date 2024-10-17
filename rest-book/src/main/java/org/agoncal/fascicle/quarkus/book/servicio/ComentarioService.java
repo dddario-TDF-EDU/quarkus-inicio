@@ -14,6 +14,7 @@ import org.agoncal.fascicle.quarkus.book.transferible.comentario.UpdateComentari
 import org.agoncal.fascicle.quarkus.book.transformador.ComentarioMapper;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -34,11 +35,11 @@ public class ComentarioService {
   public ComentarioDTO persistComentario(@Valid CrearComentarioDTO crearComentarioDTO) {
     LibroEntity libroEntity = libroRepository.findBookByIdRepo(crearComentarioDTO.libro_id);
     if (libroEntity != null) {
-      updateRanking(crearComentarioDTO.puntuacion, libroEntity);
       ComentarioEntity comentarioEntity = comentarioMapper.dtoToNewEntity(crearComentarioDTO);
+      updateRanking(crearComentarioDTO.puntuacion, libroEntity);
+      System.out.println(crearComentarioDTO.puntuacion + "   ....puntuacion ingresada");
+      describirEntity(comentarioEntity);
       comentarioEntity.libro = libroEntity;
-      //describirEntity(comentarioEntity);
-
       comentarioEntity.nro_linea = devolverNroLinea(comentarioEntity.libro.id_libro);
       comentarioRepository.createComentarioRepo(comentarioEntity);
       return comentarioMapper.entityToDTO(comentarioEntity);
@@ -58,12 +59,11 @@ public class ComentarioService {
   }
 
   private void updateRanking(short nuevaPuntuacion, LibroEntity libroEntity) {
-    BigDecimal puntuacion = libroEntity.ranking;
-    if (puntuacion.compareTo(BigDecimal.ZERO) != 0) {
-      libroEntity.ranking = BigDecimal.valueOf(nuevaPuntuacion);
-    } else {
-      short newAverage = (comentarioRepository.sumatoriaPuntuacion(libroEntity.id_libro) + nuevaPuntuacion) / (comentarioRepository.cantOpiniones(libroEntity.id_libro) + 1);
-    }
+    Integer cantComentarios =  ((comentarioRepository.cantOpiniones(libroEntity.id_libro) + 1));
+    Integer sumatoria = ((comentarioRepository.sumatoriaPuntuacion(libroEntity.id_libro) + nuevaPuntuacion));
+    double puntuacion = (double) sumatoria/cantComentarios;
+    System.out.println(puntuacion + "   ....puntuacion ranking final, promedio de "+ sumatoria + " dividido "+ cantComentarios);
+    libroEntity.ranking = BigDecimal.valueOf(puntuacion);
   }
 
   private void describirEntity(ComentarioEntity comentarioEntity) {

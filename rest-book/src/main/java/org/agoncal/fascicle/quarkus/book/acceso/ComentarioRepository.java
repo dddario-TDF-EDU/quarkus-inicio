@@ -17,7 +17,8 @@ public class ComentarioRepository implements PanacheRepository<ComentarioEntity>
   @Inject
   EntityManager em;
 
-  public void createComentarioRepo(@Valid ComentarioEntity newComentario ) { persist(newComentario); }
+  public void createComentarioRepo(@Valid ComentarioEntity newComentario ) {
+    persist(newComentario); }
 
   @Transactional(Transactional.TxType.SUPPORTS)
   public List<ComentarioEntity> returnAllComentariosRepo() {
@@ -35,13 +36,29 @@ public class ComentarioRepository implements PanacheRepository<ComentarioEntity>
   }
 
   @Transactional(Transactional.TxType.SUPPORTS)
-  public  short sumatoriaPuntuacion (Integer id_libro) {
-    Object sumatoria = em.createNativeQuery("SELECT SUM(puntuacion) FROM comentario WHERE libro_id = :id_libro", Integer.class)
-      .setParameter("id:libro", id_libro).getSingleResult();
-    short a = sumatoria.shortVa
-    return a;
+  public  short sumatoriaPuntuacion(Integer id_libro) {
+    List<ComentarioEntity> comentarioEntities = em.createNativeQuery("SELECT * FROM comentarios c WHERE libro_id = :id_libro", ComentarioEntity.class)
+    //List<ComentarioEntity> = em.createNativeQuery("SELECT SUM(puntuacion) FROM comentarios WHERE libro_id = :id_libro")
+      .setParameter("id_libro", id_libro).getResultList();
+    Integer sumatoria = 0;
+    for (ComentarioEntity comentario: comentarioEntities
+         ) {
+      sumatoria += comentario.puntuacion;
+    }
+    return sumatoria.shortValue();
   }
 
+  @Transactional(Transactional.TxType.SUPPORTS)
+  public  short cantOpiniones(Integer id_libro) {
+    List<ComentarioEntity> comentarioEntities = em.createNativeQuery("SELECT * FROM comentarios c WHERE libro_id = :id_libro", ComentarioEntity.class)
+      .setParameter("id_libro", id_libro).getResultList();
+    Integer sumatoria = 0;
+    for (ComentarioEntity comentarioEntity: comentarioEntities
+         ) {
+      sumatoria += 1;
+    }
+    return sumatoria.shortValue();
+  }
 
   @Transactional(Transactional.TxType.SUPPORTS)
   public  ComentarioEntity findComentarioByIdRepo (Integer id) { return em.find(ComentarioEntity.class, id); }
